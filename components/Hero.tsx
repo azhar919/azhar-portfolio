@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
@@ -80,8 +81,25 @@ function AMMonogram() {
 }
 
 export default function Hero() {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Content exits as you scroll away from the hero
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const contentScale   = useTransform(scrollYProgress, [0, 0.5], [1, 0.82]);
+  const contentY       = useTransform(scrollYProgress, [0, 0.5], [0, -100]);
+
+  // Monogram exits faster and more dramatically
+  const monoOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
+  const monoScale   = useTransform(scrollYProgress, [0, 0.35], [1, 0.7]);
+  const monoY       = useTransform(scrollYProgress, [0, 0.35], [0, -80]);
+
   return (
     <section
+      ref={sectionRef}
       className="relative min-h-screen flex flex-col justify-center overflow-hidden"
       style={{ background: "#0A0A0A" }}
     >
@@ -105,8 +123,10 @@ export default function Hero() {
         <div className="flex flex-col lg:flex-row lg:items-center">
 
           {/* Left — text content */}
-          <div className="flex flex-col gap-8 lg:w-[60%] relative z-10">
-
+          <motion.div
+            style={{ opacity: contentOpacity, scale: contentScale, y: contentY }}
+            className="flex flex-col gap-8 lg:w-[60%] relative z-10"
+          >
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -175,16 +195,15 @@ export default function Hero() {
                 View CV
               </Link>
             </motion.div>
-
-          </div>
+          </motion.div>
 
           {/* Right — AM monogram */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.4, delay: 0.6, ease: EASE }}
+            style={{ opacity: monoOpacity, scale: monoScale, y: monoY, zIndex: 1 }}
             className="hidden md:flex lg:w-[40%] items-center justify-center"
-            style={{ zIndex: 1 }}
             aria-hidden="true"
           >
             <AMMonogram />
@@ -198,6 +217,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 1.2, ease: EASE }}
+        style={{ opacity: contentOpacity }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
         <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>Scroll</span>

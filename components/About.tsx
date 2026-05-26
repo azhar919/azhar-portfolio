@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
 import Image from "next/image";
 import { MapPin, Building2, Camera, Clock } from "lucide-react";
 
@@ -14,8 +14,6 @@ function LinkedinIcon() {
     </svg>
   );
 }
-
-const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
 const tags = [
   { label: "Johannesburg", icon: MapPin },
@@ -30,14 +28,109 @@ const paragraphs = [
   "Beyond design, I explore creativity through photography and videography — always observing how people interact with the world and the stories hidden in small details.",
 ];
 
+function PhotoCard() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
+  const scrollOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const scrollScale   = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.82, 1, 1, 0.9]);
+  const scrollBlur    = useTransform(scrollYProgress, [0, 0.15], ["blur(14px)", "blur(0px)"]);
+  const scrollY       = useTransform(scrollYProgress, [0, 0.18, 1], [60, 0, -30]);
+
+  const mouseX  = useMotionValue(0);
+  const mouseY  = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [12, -12]), { stiffness: 200, damping: 25 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-12, 12]), { stiffness: 200, damping: 25 });
+
+  const [glint, setGlint] = useState({ x: 50, y: 50, visible: false });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    mouseX.set(x - 0.5);
+    mouseY.set(y - 0.5);
+    setGlint({ x: x * 100, y: y * 100, visible: true });
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+    setGlint(prev => ({ ...prev, visible: false }));
+  };
+
+  return (
+    <motion.div ref={containerRef} style={{ opacity: scrollOpacity, scale: scrollScale, filter: scrollBlur, y: scrollY }}>
+      <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
+        <div style={{ perspective: "900px" }}>
+          <motion.div
+            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div style={{ borderRadius: "16px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", position: "relative" }}>
+              <Image
+                src="/images/profile.jpg"
+                alt="Azhar Mohamed"
+                width={420}
+                height={420}
+                style={{ objectFit: "cover", objectPosition: "top", display: "block", width: "100%", height: "420px" }}
+                priority
+              />
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute", inset: 0,
+                  background: `radial-gradient(circle at ${glint.x}% ${glint.y}%, rgba(255,255,255,0.2) 0%, transparent 55%)`,
+                  opacity: glint.visible ? 1 : 0,
+                  transition: "opacity 0.25s ease",
+                  pointerEvents: "none",
+                }}
+              />
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function About() {
-  const sectionRef = useRef(null);
-  const inView = useInView(sectionRef, { once: true, amount: 0.15 });
+  const textRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: textRef, offset: ["start end", "end start"] });
+
+  // Staggered entry — each element has its own input range, 0.05 apart
+  const eyebrowO    = useTransform(scrollYProgress, [0.04, 0.14, 0.76, 1], [0, 1, 1, 0]);
+  const eyebrowY    = useTransform(scrollYProgress, [0.04, 0.14, 1],        [48, 0, -28]);
+  const eyebrowBlur = useTransform(scrollYProgress, [0.04, 0.16],            ["blur(10px)", "blur(0px)"]);
+
+  const headingO    = useTransform(scrollYProgress, [0.09, 0.19, 0.76, 1], [0, 1, 1, 0]);
+  const headingY    = useTransform(scrollYProgress, [0.09, 0.19, 1],        [48, 0, -28]);
+  const headingBlur = useTransform(scrollYProgress, [0.09, 0.21],            ["blur(10px)", "blur(0px)"]);
+
+  const p1O         = useTransform(scrollYProgress, [0.14, 0.24, 0.76, 1], [0, 1, 1, 0]);
+  const p1Y         = useTransform(scrollYProgress, [0.14, 0.24, 1],        [48, 0, -28]);
+  const p1Blur      = useTransform(scrollYProgress, [0.14, 0.26],            ["blur(10px)", "blur(0px)"]);
+
+  const p2O         = useTransform(scrollYProgress, [0.19, 0.29, 0.76, 1], [0, 1, 1, 0]);
+  const p2Y         = useTransform(scrollYProgress, [0.19, 0.29, 1],        [48, 0, -28]);
+  const p2Blur      = useTransform(scrollYProgress, [0.19, 0.31],            ["blur(10px)", "blur(0px)"]);
+
+  const p3O         = useTransform(scrollYProgress, [0.24, 0.34, 0.76, 1], [0, 1, 1, 0]);
+  const p3Y         = useTransform(scrollYProgress, [0.24, 0.34, 1],        [48, 0, -28]);
+  const p3Blur      = useTransform(scrollYProgress, [0.24, 0.36],            ["blur(10px)", "blur(0px)"]);
+
+  const btnO        = useTransform(scrollYProgress, [0.29, 0.39, 0.76, 1], [0, 1, 1, 0]);
+  const btnY        = useTransform(scrollYProgress, [0.29, 0.39, 1],        [48, 0, -28]);
+  const btnBlur     = useTransform(scrollYProgress, [0.29, 0.41],            ["blur(10px)", "blur(0px)"]);
+
+  const tagsO       = useTransform(scrollYProgress, [0.34, 0.44, 0.76, 1], [0, 1, 1, 0]);
+  const tagsY       = useTransform(scrollYProgress, [0.34, 0.44, 1],        [48, 0, -28]);
+  const tagsBlur    = useTransform(scrollYProgress, [0.34, 0.46],            ["blur(10px)", "blur(0px)"]);
 
   return (
     <section id="about" className="relative overflow-hidden" style={{ background: "#111111", paddingTop: "120px", paddingBottom: "120px" }}>
 
-      {/* Ambient glow behind photo */}
       <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
         top: "10%", left: "-5%",
         width: "500px", height: "500px", borderRadius: "50%",
@@ -45,74 +138,33 @@ export default function About() {
       }} />
 
       <div className="page-container">
-        <div
-          ref={sectionRef}
-          className="grid grid-cols-1 md:grid-cols-[420px_1fr] gap-12 lg:gap-20 items-start"
-        >
-          {/* Photo */}
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, ease: EASE }}
-            style={{
-              width: "100%",
-              maxHeight: "420px",
-              borderRadius: "16px",
-              border: "1px solid rgba(255,255,255,0.08)",
-              overflow: "hidden",
-              position: "relative",
-            }}
-          >
-            <Image
-              src="/images/profile.jpg"
-              alt="Azhar Mohamed"
-              width={420}
-              height={420}
-              style={{ objectFit: "cover", objectPosition: "top", display: "block", width: "100%", height: "420px" }}
-              priority
-            />
-          </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-[420px_1fr] gap-12 lg:gap-20 items-start">
 
-          {/* Text content */}
-          <div className="flex flex-col gap-8 md:pt-6">
+          <PhotoCard />
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
-              style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D" }}
-            >
+          <div ref={textRef} className="flex flex-col gap-8 md:pt-6">
+
+            <motion.p style={{ opacity: eyebrowO, y: eyebrowY, filter: eyebrowBlur, fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D" }}>
               About Me
             </motion.p>
 
-            <motion.h2
-              initial={{ opacity: 0, y: 24 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 0.18, ease: EASE }}
-              style={{ fontSize: "42px", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#FFFFFF" }}
-            >
+            <motion.h2 style={{ opacity: headingO, y: headingY, filter: headingBlur, fontSize: "42px", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#FFFFFF" }}>
               Hi, I&apos;m Azhar
             </motion.h2>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              {paragraphs.map((para, i) => (
-                <motion.p
-                  key={i}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={inView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.28 + i * 0.1, ease: EASE }}
-                  style={{ fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.55)" }}
-                >
-                  {para}
-                </motion.p>
-              ))}
+              <motion.p style={{ opacity: p1O, y: p1Y, filter: p1Blur, fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.55)" }}>
+                {paragraphs[0]}
+              </motion.p>
+              <motion.p style={{ opacity: p2O, y: p2Y, filter: p2Blur, fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.55)" }}>
+                {paragraphs[1]}
+              </motion.p>
+              <motion.p style={{ opacity: p3O, y: p3Y, filter: p3Blur, fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.55)" }}>
+                {paragraphs[2]}
+              </motion.p>
             </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.6, ease: EASE }}
-            >
+            <motion.div style={{ opacity: btnO, y: btnY, filter: btnBlur }}>
               <a
                 href="https://www.linkedin.com/in/azhar-mohamed-3624491a3"
                 target="_blank"
@@ -127,13 +179,10 @@ export default function About() {
               </a>
             </motion.div>
 
-            <div className="flex flex-wrap gap-2">
-              {tags.map(({ label, icon: Icon }, i) => (
-                <motion.span
+            <motion.div style={{ opacity: tagsO, y: tagsY, filter: tagsBlur }} className="flex flex-wrap gap-2">
+              {tags.map(({ label, icon: Icon }) => (
+                <span
                   key={label}
-                  initial={{ opacity: 0, x: 16 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.7 + i * 0.07, ease: EASE }}
                   className="inline-flex items-center"
                   style={{
                     gap: "6px",
@@ -148,9 +197,9 @@ export default function About() {
                 >
                   <Icon size={12} color="rgba(255,255,255,0.3)" />
                   {label}
-                </motion.span>
+                </span>
               ))}
-            </div>
+            </motion.div>
 
           </div>
         </div>
