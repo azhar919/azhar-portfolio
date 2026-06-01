@@ -4,12 +4,28 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { Search, Target, Layers, Zap, TrendingUp, RefreshCw, AlertCircle, Lightbulb, Compass, CheckCircle, Hammer, BarChart2, PenTool, type LucideIcon } from "lucide-react";
 import FloatingNav from "@/components/FloatingNav";
 import ContactFooter from "@/components/ContactFooter";
 import type { CaseStudy, Section } from "../data";
 import { caseStudies } from "../data";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
+
+const SECTION_ICONS: Record<string, LucideIcon> = {
+  "Discover":       Search,
+  "Define":         Target,
+  "Design":         Layers,
+  "Deliver":        Zap,
+  "Results":        TrendingUp,
+  "Test & Iterate": RefreshCw,
+  "The Challenge":  AlertCircle,
+  "Insights":       Lightbulb,
+  "Approach":       Compass,
+  "The Solution":   CheckCircle,
+  "The Build":      Hammer,
+  "Impact":         BarChart2,
+};
 
 function getHref(slug: string): string {
   if (slug === "african-bank-website-redesign") return "/projects/african-bank/website-redesign";
@@ -258,7 +274,11 @@ function CaseSection({ section, index, onInView }: { section: Section; index: nu
           {isSideBySide ? (
             <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
               <div className="lg:w-[48%] shrink-0" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                <span style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "#C4622D" }}>{section.label}</span>
+                {(() => { const Icon = SECTION_ICONS[section.label]; return (
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "#C4622D" }}>
+                    {Icon && <Icon size={12} />}{section.label}
+                  </span>
+                ); })()}
                 <h2 style={{ fontSize: "clamp(24px, 3vw, 32px)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.25, letterSpacing: "-0.02em" }}>{section.heading}</h2>
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                   {section.body.map((para, i) => (
@@ -273,7 +293,11 @@ function CaseSection({ section, index, onInView }: { section: Section; index: nu
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: "52px" }}>
               <div style={{ display: "flex", flexDirection: "column", gap: "20px", maxWidth: "800px" }}>
-                <span style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "#C4622D" }}>{section.label}</span>
+                {(() => { const Icon = SECTION_ICONS[section.label]; return (
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "#C4622D" }}>
+                    {Icon && <Icon size={12} />}{section.label}
+                  </span>
+                ); })()}
                 <h2 style={{ fontSize: "clamp(24px, 3vw, 32px)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.25, letterSpacing: "-0.02em" }}>{section.heading}</h2>
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                   {section.body.map((para, i) => (
@@ -339,10 +363,13 @@ function LearningsSection({ learnings, onInView, navIndex }: { learnings: string
                   borderRadius: "12px", overflow: "hidden",
                 }}
               >
-                <div style={{ padding: "28px 32px", display: "flex", gap: "24px", alignItems: "flex-start", width: "100%" }}>
-                  <span style={{ fontWeight: 800, color: "rgba(196,98,45,0.5)", fontSize: "12px", lineHeight: 1, marginTop: "5px", flexShrink: 0, fontVariantNumeric: "tabular-nums", letterSpacing: "0.08em" }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+                <div style={{ padding: "28px 32px", display: "flex", gap: "20px", alignItems: "flex-start", width: "100%" }}>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", flexShrink: 0, marginTop: "2px" }}>
+                    <Lightbulb size={16} color="#C4622D" />
+                    <span style={{ fontWeight: 800, color: "rgba(196,98,45,0.5)", fontSize: "11px", lineHeight: 1, fontVariantNumeric: "tabular-nums", letterSpacing: "0.08em" }}>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
                   <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.7)", lineHeight: 1.75, margin: 0 }}>{learning}</p>
                 </div>
               </motion.div>
@@ -456,7 +483,8 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
                   style={{ marginTop: "32px", display: "flex", flexWrap: "wrap", gap: "10px" }}
                 >
                   {study.tools.map((tool) => (
-                    <span key={tool} style={{ fontSize: "12px", fontWeight: 500, color: "rgba(255,255,255,0.5)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "9999px", padding: "6px 14px" }}>
+                    <span key={tool} style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 500, color: "rgba(255,255,255,0.5)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "9999px", padding: "6px 14px" }}>
+                      <PenTool size={10} />
                       {tool}
                     </span>
                   ))}

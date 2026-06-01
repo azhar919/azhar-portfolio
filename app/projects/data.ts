@@ -1,4 +1,4 @@
-export type Section = {
+﻿export type Section = {
   label: string;
   heading: string;
   body: string[];
@@ -30,7 +30,7 @@ export const caseStudies: CaseStudy[] = [
     sections: [
       {
         label: "Discover",
-        heading: "Section 1: The Challenge — \"The Old Experience\"",
+        heading: "The Challenge — \"The Old Experience\"",
         body: [
           "The onboarding experience for Nedbank's Everyday Banking products had become outdated and overcomplicated.",
           "Clients faced too many screens, irrelevant upsells, and confusing cross-sells that made the process feel more transactional than human.",
@@ -41,7 +41,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Define",
-        heading: "Section 2: Research & Insights — \"Understanding the Pain\"",
+        heading: "Research & Insights — \"Understanding the Pain\"",
         body: [
           "To understand where friction lived, I mapped the full user journey and conducted user testing on the existing flows.",
           "Pain points emerged quickly: unclear steps, excessive screens, confusing product offers, and a lack of visible progress.",
@@ -51,7 +51,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Design",
-        heading: "Section 3: The Design Approach — \"Simplify to Clarify\"",
+        heading: "The Design Approach — \"Simplify to Clarify\"",
         body: [
           "I rebuilt the journey from the ground up — removing redundancy, merging steps, and stripping out unnecessary offers.",
           "Each screen had to earn its place.",
@@ -62,7 +62,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Deliver",
-        heading: "Section 4: The Solution — \"Designing for Ease and Trust\"",
+        heading: "The Solution — \"Designing for Ease and Trust\"",
         body: [
           "The new onboarding flow cut down steps, clarified progress, and reduced friction.",
           "Value-added offers were repositioned to appear after key tasks, ensuring clients felt supported — not sold to.",
@@ -73,7 +73,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Results",
-        heading: "Section 5: Impact",
+        heading: "Impact",
         body: [
           "The redesigned onboarding process helped bring focus back to what mattered: the client's goal.",
           "The new experience reduced friction, improved task clarity, and established reusable patterns for future product flows.",
@@ -98,7 +98,7 @@ export const caseStudies: CaseStudy[] = [
     sections: [
       {
         label: "Discover",
-        heading: "Section 1: The Challenge — \"When Banking Gets Big\"",
+        heading: "The Challenge — \"When Banking Gets Big\"",
         body: [
           "Corporate clients don't have time for friction.",
           "They manage complex portfolios, global transactions, and trade documentation daily — any inefficiency costs time and trust.",
@@ -107,7 +107,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Define",
-        heading: "Section 2: Research & Insights — \"Understanding the Corporate Mindset\"",
+        heading: "Research & Insights — \"Understanding the Corporate Mindset\"",
         body: [
           "We conducted stakeholder interviews and user feedback sessions with treasury managers, finance officers, and global trade specialists.",
           "They didn't want flashy design — they wanted clarity, reliability, and control. From these sessions, three core needs emerged: Visibility: Quick access to balances, rates, and documentation. Efficiency: Streamlined, step-light processes for recurring tasks. Confidence: Every action should feel precise and traceable.",
@@ -115,7 +115,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Design",
-        heading: "Section 3: Design Approach — \"Complexity, Organised Beautifully\"",
+        heading: "Design Approach — \"Complexity, Organised Beautifully\"",
         body: [
           "I mapped the user journeys for each core feature, identifying friction-heavy moments in navigation, form completion, and data visibility.",
           "The solution was to design with hierarchical clarity — guiding users through complexity without oversimplifying their power.",
@@ -124,7 +124,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Deliver",
-        heading: "Section 4: The Solution — \"Precision Tools for Power Users\"",
+        heading: "The Solution — \"Precision Tools for Power Users\"",
         body: [
           "The redesigned features within the Business Hub transformed the experience from dense and mechanical to structured and intuitive.",
           "Global Transactional Accounts: Simplified dashboard views for multiple currencies and real-time conversion summaries.",
@@ -134,7 +134,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Results",
-        heading: "Section 5: Impact — \"Design that Earned Trust\"",
+        heading: "Impact — \"Design that Earned Trust\"",
         body: [
           "The new experience improved user efficiency and reinforced client trust in Nedbank's enterprise digital offering.",
           "Reduced steps in key flows by up to 40%.",
@@ -162,7 +162,7 @@ export const caseStudies: CaseStudy[] = [
     sections: [
       {
         label: "Discover",
-        heading: "Section 1: The Challenge — 'A System That Lost Its Way'",
+        heading: "The Challenge — 'A System That Lost Its Way'",
         body: [
           "The internal SharePoint had become difficult to navigate — not because of visual design, but because of structure.",
           "Content was scattered, categories were unclear, and users often got lost trying to find simple information.",
@@ -172,7 +172,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Define",
-        heading: "Section 2: Research & Insights — 'Understanding Mental Models'",
+        heading: "Research & Insights — 'Understanding Mental Models'",
         body: [
           "I began with a full audit and heuristic review of the SharePoint, mapping out existing structures and identifying breakdowns in navigation and content grouping.",
           "The core issue became clear: the architecture wasn't built around user mental models — it reflected how content was stored, not how it was found.",
@@ -181,7 +181,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Design",
-        heading: "Section 3: Design Approach — 'Let Users Shape the Structure'",
+        heading: "Design Approach — 'Let Users Shape the Structure'",
         body: [
           "Instead of jumping into design, I focused on rebuilding the foundation.",
           "Through multiple card sorting exercises, I worked with users across different roles — from junior employees to senior stakeholders — to understand how they naturally grouped and labelled information.",
@@ -191,7 +191,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Test & Iterate",
-        heading: "Section 4: Validation — 'Test, Learn, Refine'",
+        heading: "Validation — 'Test, Learn, Refine'",
         body: [
           "I created the first iteration of the new information architecture and validated it through tree testing using Useberry.",
           "The initial results highlighted gaps — areas where users still struggled to locate information.",
@@ -201,7 +201,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Results",
-        heading: "Section 5: Outcome — 'Clarity Achieved'",
+        heading: "Outcome — 'Clarity Achieved'",
         body: [
           "The second iteration showed a significant improvement in usability.",
           "Users were able to find information quickly, navigate confidently, and understood the structure intuitively.",
@@ -227,7 +227,7 @@ export const caseStudies: CaseStudy[] = [
     sections: [
       {
         label: "Discover",
-        heading: "Section 1: The Challenge - \"One Experience, Six Realities\"",
+        heading: "The Challenge - \"One Experience, Six Realities\"",
         body: [
           "The Everyday Banking onboarding experience needed to scale beyond South Africa — into six African regions, each with its own regulatory rules, infrastructure constraints, and user expectations.",
           "The challenge: how do we maintain a unified onboarding experience while respecting local requirements and ensuring each flow feels natural and familiar to its region?",
@@ -235,7 +235,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Define",
-        heading: "Section 2: Research & Insights — \"Understanding Regional Contexts\"",
+        heading: "Research & Insights — \"Understanding Regional Contexts\"",
         body: [
           "We partnered with business and compliance teams to map differences in product eligibility, documentation requirements, and customer verification processes.",
           "Beyond regulatory needs, we explored subtle UX differences: connection speeds, device usage patterns, and language tone preferences.",
@@ -244,7 +244,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Design",
-        heading: "Section 3: The Design Approach — \"Consistency with Flexibility\"",
+        heading: "The Design Approach — \"Consistency with Flexibility\"",
         body: [
           "Using the design foundation built during Everyday Banking, I adapted the core onboarding flow to align with each region's unique conditions.",
           "The goal wasn't to copy — it was to translate.",
@@ -252,7 +252,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Deliver",
-        heading: "Section 4: The Solution — \"A System That Scales Gracefully\"",
+        heading: "The Solution — \"A System That Scales Gracefully\"",
         body: [
           "The new onboarding flow cut down steps, clarified progress, and reduced friction.",
           "Value-added offers were repositioned to appear after key tasks, ensuring clients felt supported — not sold to.",
@@ -261,7 +261,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Results",
-        heading: "Section 5: Impact",
+        heading: "Impact",
         body: [
           "The redesigned multi-region onboarding framework created operational efficiency and design harmony across borders.",
           "Reduced redundant regional builds.",
