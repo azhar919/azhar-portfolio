@@ -135,30 +135,46 @@ function PortraitImage({ src }: { src: string }) {
 }
 
 function PageImage({ src }: { src: string }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [hasOverflow, setHasOverflow] = useState(false);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const check = () => setHasOverflow(el.scrollHeight > el.clientHeight + 4);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   return (
-    <div style={{ width: "100%", height: "560px", borderRadius: "16px", overflow: "hidden", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)", position: "relative" }}>
-      <div style={{ width: "100%", height: "100%", overflowY: "scroll", scrollbarWidth: "thin", scrollbarColor: "rgba(255,255,255,0.15) transparent" }}>
+    <div style={{ width: "100%", height: hasOverflow ? "560px" : "auto", borderRadius: "16px", overflow: "hidden", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)", position: "relative" }}>
+      <div ref={scrollRef} style={{ width: "100%", height: "100%", overflowY: hasOverflow ? "scroll" : "visible", scrollbarWidth: "thin", scrollbarColor: "rgba(255,255,255,0.15) transparent" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
       </div>
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", background: "linear-gradient(to top, rgba(20,20,20,0.95), transparent)", pointerEvents: "none", borderRadius: "0 0 16px 16px" }} />
-      <motion.div
-        animate={{ y: [0, 6, 0] }}
-        transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-        style={{
-          position: "absolute", bottom: "16px", left: "50%", transform: "translateX(-50%)",
-          display: "flex", alignItems: "center", gap: "6px",
-          background: "rgba(255,255,255,0.1)", backdropFilter: "blur(8px)",
-          border: "1px solid rgba(255,255,255,0.15)",
-          borderRadius: "9999px", padding: "7px 14px",
-          pointerEvents: "none",
-        }}
-      >
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-          <path d="M6 2v8M3 7l3 3 3-3" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-        <span style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.06em", color: "rgba(255,255,255,0.7)", whiteSpace: "nowrap" }}>Scroll to explore</span>
-      </motion.div>
+      {hasOverflow && (
+        <>
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", background: "linear-gradient(to top, rgba(20,20,20,0.95), transparent)", pointerEvents: "none", borderRadius: "0 0 16px 16px" }} />
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              position: "absolute", bottom: "16px", left: "50%", transform: "translateX(-50%)",
+              display: "flex", alignItems: "center", gap: "6px",
+              background: "rgba(255,255,255,0.1)", backdropFilter: "blur(8px)",
+              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: "9999px", padding: "7px 14px",
+              pointerEvents: "none",
+            }}
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M6 2v8M3 7l3 3 3-3" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.06em", color: "rgba(255,255,255,0.7)", whiteSpace: "nowrap" }}>Scroll to explore</span>
+          </motion.div>
+        </>
+      )}
     </div>
   );
 }
