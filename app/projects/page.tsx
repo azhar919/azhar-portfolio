@@ -20,7 +20,7 @@ const projects = [
   {
     slug: "business-banking",
     company: "Nedbank",
-    title: "Business Banking",
+    title: "Corporate Banking",
     description:
       "Designing precision tools for corporate clients managing complex financial operations — built for scale, trust, and the power users who depend on it daily.",
   },

@@ -39,7 +39,7 @@ const workItems = [
   {
     company: "Nedbank",
     links: [
-      { label: "Business Banking",    desc: "Designing for scale, precision, and trust",                  href: "/projects/business-banking" },
+      { label: "Corporate Banking",   desc: "Designing for scale, precision, and trust",                  href: "/projects/business-banking" },
       { label: "Everyday Banking",    desc: "Redesigning retail banking for millions of customers",        href: "/projects/everyday-banking" },
       { label: "Africa Regions",      desc: "Extending digital banking across the continent",             href: "/projects/africa-regions" },
     ],

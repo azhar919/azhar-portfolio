@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, Target, Layers, Zap, TrendingUp, RefreshCw, AlertCircle, Lightbulb, Compass, CheckCircle, Hammer, BarChart2, PenTool, ArrowUpRight, type LucideIcon } from "lucide-react";
@@ -297,16 +297,155 @@ function ScatteredImages({ srcs }: { srcs: string[] }) {
   );
 }
 
+/* Count-up badge for the winner stat */
+function WinnerBadge() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    const duration = 1200;
+    const target = 45;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(ease * target));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [inView]);
+
+  return (
+    <div ref={ref} style={{
+      background: "rgba(34,197,94,0.12)",
+      border: "1px solid rgba(34,197,94,0.35)",
+      borderRadius: "9999px",
+      padding: "6px 18px",
+      display: "inline-flex", alignItems: "center", gap: "8px",
+    }}>
+      <span style={{ fontSize: "24px", fontWeight: 800, color: "#22C55E", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
+        ↓ {count}%
+      </span>
+      <span style={{ fontSize: "13px", fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>faster overall</span>
+    </div>
+  );
+}
+
+/* Annotated before/after comparison with pulsing metric callouts */
+function AnnotationPin({ x, y, label, value, side = "right" }: { x: number; y: number; label: string; value: string; side?: "left" | "right" }) {
+  return (
+    <div style={{ position: "absolute", left: `${x}%`, top: `${y}%`, transform: "translate(-50%, -50%)", zIndex: 10, pointerEvents: "none" }}>
+      {/* Pulsing ring */}
+      <motion.div
+        animate={{ scale: [1, 1.8, 1], opacity: [0.7, 0, 0.7] }}
+        transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+        style={{ position: "absolute", inset: "-10px", borderRadius: "50%", border: "2px solid #C4622D" }}
+      />
+      {/* Centre dot */}
+      <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#C4622D", boxShadow: "0 0 8px rgba(196,98,45,0.8)", position: "relative", zIndex: 1 }} />
+      {/* Callout */}
+      <div style={{
+        position: "absolute", top: "50%", transform: "translateY(-50%)",
+        [side === "right" ? "left" : "right"]: "18px",
+        background: "#C4622D", borderRadius: "8px", padding: "5px 10px",
+        whiteSpace: "nowrap", boxShadow: "0 4px 20px rgba(196,98,45,0.4)",
+      }}>
+        <div style={{ fontSize: "9px", fontWeight: 600, color: "rgba(255,255,255,0.75)", letterSpacing: "0.06em", textTransform: "uppercase" }}>{label}</div>
+        <div style={{ fontSize: "13px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>{value}</div>
+      </div>
+    </div>
+  );
+}
+
+function AnnotatedComparison({ srcs }: { srcs: string[] }) {
+  const frames = [
+    {
+      src: srcs[0],
+      label: "Iteration 1",
+      isWinner: false,
+      pins: [
+        { x: 53, y: 32, label: "Avg time", value: "17m 4.9s", side: "right" as const },
+        { x: 65, y: 60, label: "Time on task", value: "↑ Slower", side: "left" as const },
+      ],
+    },
+    {
+      src: srcs[1],
+      label: "Iteration 2",
+      isWinner: true,
+      pins: [
+        { x: 53, y: 32, label: "Avg time", value: "9m 31.7s", side: "right" as const },
+        { x: 65, y: 60, label: "Time on task", value: "↓ Faster", side: "left" as const },
+      ],
+    },
+  ];
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+      {frames.map((frame, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.6, ease: EASE, delay: i * 0.15 }}
+        >
+          {/* Label row */}
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+            <span style={{
+              fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase",
+              padding: "4px 12px", borderRadius: "9999px",
+              background: frame.isWinner ? "#C4622D" : "rgba(255,255,255,0.08)",
+              color: frame.isWinner ? "#fff" : "rgba(255,255,255,0.5)",
+            }}>
+              {frame.label}
+            </span>
+            {frame.isWinner && <WinnerBadge />}
+          </div>
+          {/* Image + pins */}
+          <div style={{ position: "relative", borderRadius: "14px", overflow: "hidden", border: `1px solid ${frame.isWinner ? "rgba(196,98,45,0.35)" : "rgba(255,255,255,0.07)"}`, boxShadow: "0 24px 60px rgba(0,0,0,0.45)" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={frame.src} alt={frame.label} style={{ display: "block", width: "100%", height: "auto" }} />
+            {frame.pins.map((pin, j) => (
+              <AnnotationPin key={j} {...pin} />
+            ))}
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+/* Landscape on top + portrait centred below */
+function LandscapePortraitStack({ srcs }: { srcs: string[] }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      <div style={{ borderRadius: "14px", overflow: "hidden", position: "relative", aspectRatio: "16/9", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
+        <Image src={srcs[0]} alt="" fill style={{ objectFit: "cover", objectPosition: "top" }} />
+      </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div style={{ position: "relative", width: "320px", borderRadius: "14px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
+          <Image src={srcs[1]} alt="" width={320} height={576} style={{ width: "100%", height: "auto", display: "block" }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SectionImages({ section }: { section: Section }) {
   const { image, imageAspect } = section;
   if (!image) return null;
   const images = Array.isArray(image) ? image : [image];
-  if (imageAspect === "page")       return <PageImage src={images[0]} />;
-  if (imageAspect === "screenshot") return <ScreenshotImage src={images[0]} />;
-  if (imageAspect === "portrait")   return <PortraitImage src={images[0]} />;
-  if (imageAspect === "scattered")  return <ScatteredImages srcs={images} />;
-  if (images.length === 1)          return <LandscapeImage src={images[0]} />;
-  if (images.length === 2)          return <DualImage srcs={[images[0], images[1]]} />;
+  if (imageAspect === "page")               return <PageImage src={images[0]} />;
+  if (imageAspect === "screenshot")         return <ScreenshotImage src={images[0]} />;
+  if (imageAspect === "portrait")           return <PortraitImage src={images[0]} />;
+  if (imageAspect === "scattered")          return <ScatteredImages srcs={images} />;
+  if (imageAspect === "landscape-portrait")    return <LandscapePortraitStack srcs={images} />;
+  if (imageAspect === "annotated-comparison")  return <AnnotatedComparison srcs={images} />;
+  if (images.length === 1)                  return <LandscapeImage src={images[0]} />;
+  if (images.length === 2)                  return <DualImage srcs={[images[0], images[1]]} />;
   return <TripleImage srcs={[images[0], images[1], images[2]]} />;
 }
 

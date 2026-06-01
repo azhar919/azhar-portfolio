@@ -8,6 +8,7 @@ import { ArrowUpRight, ChevronDown } from "lucide-react";
 
 const caseStudies = [
   { company: "African Bank", title: "Website Redesign",    href: "/projects/african-bank/website-redesign" },
+  { company: "Nedbank",      title: "Corporate Banking",   href: "/projects/business-banking" },
   { company: "Nedbank",      title: "Everyday Banking",    href: "/projects/everyday-banking" },
   { company: "African Bank", title: "Improved Onboarding", href: "/projects/african-bank/onboarding" },
   { company: "IQ Business",  title: "SharePoint Redesign", href: "/projects/corporate-banking" },

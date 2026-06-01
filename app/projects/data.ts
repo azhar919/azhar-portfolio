@@ -3,7 +3,7 @@
   heading: string;
   body: string[];
   image?: string | string[];
-  imageAspect?: "portrait" | "page" | "screenshot" | "scattered"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, default = 16:9
+  imageAspect?: "portrait" | "page" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, default = 16:9
   dark?: boolean;
 };
 
@@ -168,7 +168,10 @@ export const caseStudies: CaseStudy[] = [
           "Content was scattered, categories were unclear, and users often got lost trying to find simple information.",
           "It didn't matter if you were new or experienced — the system didn't align with how people thought.",
         ],
-        image: "/images/iq-discover.png",
+        image: [
+          "/images/iqbusiness case study/Screenshot 2026-04-01 at 15.34.20 1.png",
+          "/images/iqbusiness case study/image 1.png",
+        ],
       },
       {
         label: "Define",
@@ -177,7 +180,7 @@ export const caseStudies: CaseStudy[] = [
           "I began with a full audit and heuristic review of the SharePoint, mapping out existing structures and identifying breakdowns in navigation and content grouping.",
           "The core issue became clear: the architecture wasn't built around user mental models — it reflected how content was stored, not how it was found.",
         ],
-        image: ["/images/iq-define-1.png", "/images/iq-define-2.png"],
+        image: "/images/iqbusiness case study/Screenshot 2024-10-07 at 16.20.19 1.png",
       },
       {
         label: "Design",
@@ -187,7 +190,7 @@ export const caseStudies: CaseStudy[] = [
           "Through multiple card sorting exercises, I worked with users across different roles — from junior employees to senior stakeholders — to understand how they naturally grouped and labelled information.",
           "This allowed me to design an architecture based on real mental models, not assumptions.",
         ],
-        image: "/images/iq-design.png",
+        image: "/images/iqbusiness case study/Screenshot 2024-10-07 at 16.22.09 1.png",
       },
       {
         label: "Test & Iterate",
@@ -197,7 +200,11 @@ export const caseStudies: CaseStudy[] = [
           "The initial results highlighted gaps — areas where users still struggled to locate information.",
           "Using this feedback, I refined the structure and tested again.",
         ],
-        image: "/images/iq-test.png",
+        image: [
+          "/images/iqbusiness case study/Overview old.png",
+          "/images/iqbusiness case study/Overview new.png",
+        ],
+        imageAspect: "annotated-comparison",
       },
       {
         label: "Results",
@@ -207,7 +214,8 @@ export const caseStudies: CaseStudy[] = [
           "Users were able to find information quickly, navigate confidently, and understood the structure intuitively.",
           "What was once a frustrating experience became clear, predictable, and aligned with how people think.",
         ],
-        image: "/images/iq-results.png",
+        image: "/images/iqbusiness case study/Screenshot 2024-10-07 at 16.23.24 1.png",
+        imageAspect: "screenshot",
         dark: true,
       },
     ],
