@@ -3,7 +3,7 @@
   heading: string;
   body: string[];
   image?: string | string[];
-  imageAspect?: "portrait" | "page" | "screenshot"; // portrait = phone, page = full-height, screenshot = natural size, default = 16:9
+  imageAspect?: "portrait" | "page" | "screenshot" | "scattered"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, default = 16:9
   dark?: boolean;
 };
 
@@ -293,6 +293,7 @@ export const caseStudies: CaseStudy[] = [
           "Products and features were presented in a way that made them feel like separate, disconnected offerings — confusing users and breaking trust.",
         ],
         image: "/images/ab-website-section.png",
+        imageAspect: "screenshot",
       },
       {
         label: "Insights",
@@ -302,6 +303,12 @@ export const caseStudies: CaseStudy[] = [
           "No clear product hierarchy, no guided journey, no consistency across interactions, and no design system to support scale.",
           "Users weren't being guided — they were being left to figure things out.",
         ],
+        image: [
+          "/images/Screenshot 2025-01-08 at 13.33.22 1.png",
+          "/images/Screenshot 2025-01-08 at 13.33.22 1 (2).png",
+          "/images/image 53.png",
+        ],
+        imageAspect: "scattered",
       },
       {
         label: "Approach",
@@ -311,8 +318,8 @@ export const caseStudies: CaseStudy[] = [
           "Created a new design system and component library, redefined the information architecture, grouped products into clear logical categories, and standardised buttons, CTAs, and interaction patterns.",
           "Inspired by modern digital banks like Wio, Revolut, and other international platforms.",
         ],
-        image: "/images/ab-website-phone.png",
-        imageAspect: "portrait",
+        image: "/images/Webpage - Personal wireframe.png",
+        imageAspect: "page",
       },
       {
         label: "The Solution",
@@ -321,6 +328,8 @@ export const caseStudies: CaseStudy[] = [
           "The new website introduced clarity at every level: clean, consistent visual design, a unified component system, clear product grouping and hierarchy, and strong intentional CTAs.",
           "The experience shifted from confusing and fragmented — to clear, guided, and scalable.",
         ],
+        image: "/images/Landing page final.png",
+        imageAspect: "page",
       },
       {
         label: "Impact",

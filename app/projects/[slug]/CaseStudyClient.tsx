@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, Target, Layers, Zap, TrendingUp, RefreshCw, AlertCircle, Lightbulb, Compass, CheckCircle, Hammer, BarChart2, PenTool, type LucideIcon } from "lucide-react";
+import { Search, Target, Layers, Zap, TrendingUp, RefreshCw, AlertCircle, Lightbulb, Compass, CheckCircle, Hammer, BarChart2, PenTool, ArrowUpRight, type LucideIcon } from "lucide-react";
 import FloatingNav from "@/components/FloatingNav";
 import ContactFooter from "@/components/ContactFooter";
 import type { CaseStudy, Section } from "../data";
@@ -136,43 +136,51 @@ function PortraitImage({ src }: { src: string }) {
 
 function PageImage({ src }: { src: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [hasOverflow, setHasOverflow] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [hasOverflow, setHasOverflow] = useState(true);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
     const check = () => setHasOverflow(el.scrollHeight > el.clientHeight + 4);
-    check();
+    const img = imgRef.current;
+    if (img?.complete) check();
+    else img?.addEventListener("load", check);
     window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
+    return () => {
+      img?.removeEventListener("load", check);
+      window.removeEventListener("resize", check);
+    };
   }, []);
 
   return (
     <div style={{ width: "100%", height: hasOverflow ? "560px" : "auto", borderRadius: "16px", overflow: "hidden", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)", position: "relative" }}>
-      <div ref={scrollRef} style={{ width: "100%", height: "100%", overflowY: hasOverflow ? "scroll" : "visible", scrollbarWidth: "thin", scrollbarColor: "rgba(255,255,255,0.15) transparent" }}>
+      <div ref={scrollRef} style={{ width: "100%", height: "100%", overflowY: hasOverflow ? "scroll" : "visible", scrollbarWidth: "thin", scrollbarColor: "rgba(196,98,45,0.6) rgba(255,255,255,0.06)" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
+        <img ref={imgRef} src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
       </div>
       {hasOverflow && (
         <>
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", background: "linear-gradient(to top, rgba(20,20,20,0.95), transparent)", pointerEvents: "none", borderRadius: "0 0 16px 16px" }} />
-          <motion.div
-            animate={{ y: [0, 6, 0] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              position: "absolute", bottom: "16px", left: "50%", transform: "translateX(-50%)",
-              display: "flex", alignItems: "center", gap: "6px",
-              background: "rgba(255,255,255,0.1)", backdropFilter: "blur(8px)",
-              border: "1px solid rgba(255,255,255,0.15)",
-              borderRadius: "9999px", padding: "7px 14px",
-              pointerEvents: "none",
-            }}
-          >
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <path d="M6 2v8M3 7l3 3 3-3" stroke="rgba(255,255,255,0.7)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-            <span style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.06em", color: "rgba(255,255,255,0.7)", whiteSpace: "nowrap" }}>Scroll to explore</span>
-          </motion.div>
+          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "100px", background: "linear-gradient(to top, rgba(20,20,20,1), transparent)", pointerEvents: "none", borderRadius: "0 0 16px 16px" }} />
+          {/* Centering wrapper — keeps translateX out of framer-motion's transform */}
+          <div style={{ position: "absolute", bottom: "20px", left: 0, right: 0, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
+            <motion.div
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              style={{
+                display: "flex", alignItems: "center", gap: "8px",
+                background: "rgba(196,98,45,0.85)", backdropFilter: "blur(8px)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                borderRadius: "9999px", padding: "9px 18px",
+                boxShadow: "0 8px 32px rgba(196,98,45,0.35)",
+              }}
+            >
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2v10M3.5 8l3.5 4 3.5-4" stroke="rgba(255,255,255,0.9)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <span style={{ fontSize: "12px", fontWeight: 500, letterSpacing: "0.02em", color: "rgba(255,255,255,0.95)", whiteSpace: "nowrap" }}>Scroll to explore</span>
+            </motion.div>
+          </div>
         </>
       )}
     </div>
@@ -229,6 +237,66 @@ function TripleImage({ srcs }: { srcs: [string, string, string] }) {
   );
 }
 
+/* Scattered — desktop: rotated overlapping cards; mobile: horizontal swipe strip */
+function ScatteredImages({ srcs }: { srcs: string[] }) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const cards = [
+    { rotate: -4, x: -110, y: 6,  z: 1 },
+    { rotate:  1, x:    0, y: -6, z: 3 },
+    { rotate:  4, x:  110, y: 10, z: 2 },
+  ];
+
+  if (isMobile) {
+    return (
+      <div>
+        <div style={{ display: "flex", gap: "12px", overflowX: "auto", paddingBottom: "12px", scrollSnapType: "x mandatory", scrollbarWidth: "none" }}>
+          {srcs.slice(0, 3).map((src, i) => (
+            <div key={i} style={{ flexShrink: 0, width: "80vw", scrollSnapAlign: "start", borderRadius: "12px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.10)", boxShadow: "0 16px 40px rgba(0,0,0,0.5)" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
+            </div>
+          ))}
+        </div>
+        <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", textAlign: "center", marginTop: "8px", letterSpacing: "0.06em" }}>Swipe to compare →</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ maxWidth: "760px", margin: "0 auto", display: "grid", placeItems: "center", height: "380px", overflow: "visible" }}>
+      {srcs.slice(0, 3).map((src, i) => (
+        <motion.div
+          key={i}
+          initial={{ rotate: cards[i].rotate, x: cards[i].x, y: cards[i].y }}
+          whileHover={{ rotate: 0, x: cards[i].x, y: -16, scale: 1.06, zIndex: 10 }}
+          transition={{ type: "spring", stiffness: 260, damping: 22 }}
+          style={{
+            gridArea: "1 / 1",
+            width: "52%",
+            zIndex: cards[i].z,
+            borderRadius: "12px",
+            overflow: "hidden",
+            border: "1px solid rgba(255,255,255,0.10)",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
+            cursor: "pointer",
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 function SectionImages({ section }: { section: Section }) {
   const { image, imageAspect } = section;
   if (!image) return null;
@@ -236,6 +304,7 @@ function SectionImages({ section }: { section: Section }) {
   if (imageAspect === "page")       return <PageImage src={images[0]} />;
   if (imageAspect === "screenshot") return <ScreenshotImage src={images[0]} />;
   if (imageAspect === "portrait")   return <PortraitImage src={images[0]} />;
+  if (imageAspect === "scattered")  return <ScatteredImages srcs={images} />;
   if (images.length === 1)          return <LandscapeImage src={images[0]} />;
   if (images.length === 2)          return <DualImage srcs={[images[0], images[1]]} />;
   return <TripleImage srcs={[images[0], images[1], images[2]]} />;
@@ -363,31 +432,45 @@ function LearningsSection({ learnings, onInView, navIndex }: { learnings: string
           <h2 style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.04em", lineHeight: 1.05, marginBottom: "64px", whiteSpace: "nowrap" }}>
             What this project taught me
           </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
             {learnings.map((learning, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: -16 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.5, ease: EASE, delay: i * 0.1 }}
+                transition={{ duration: 0.6, ease: EASE, delay: i * 0.12 }}
                 style={{
-                  display: "flex", gap: "0", alignItems: "stretch",
+                  position: "relative",
                   background: "rgba(255,255,255,0.03)",
                   border: "1px solid rgba(255,255,255,0.07)",
-                  borderLeft: "3px solid #C4622D",
-                  borderRadius: "12px", overflow: "hidden",
+                  borderRadius: "20px",
+                  padding: "40px 48px 40px 52px",
+                  overflow: "hidden",
                 }}
               >
-                <div style={{ padding: "28px 32px", display: "flex", gap: "20px", alignItems: "flex-start", width: "100%" }}>
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", flexShrink: 0, marginTop: "2px" }}>
-                    <Lightbulb size={16} color="#C4622D" />
-                    <span style={{ fontWeight: 800, color: "rgba(196,98,45,0.5)", fontSize: "11px", lineHeight: 1, fontVariantNumeric: "tabular-nums", letterSpacing: "0.08em" }}>
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-                  <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.7)", lineHeight: 1.75, margin: 0 }}>{learning}</p>
+                {/* Decorative quote mark */}
+                <div aria-hidden="true" style={{
+                  position: "absolute", top: "-8px", left: "20px",
+                  fontSize: "120px", lineHeight: 1,
+                  color: "#C4622D", opacity: 0.25,
+                  fontFamily: "Georgia, 'Times New Roman', serif",
+                  userSelect: "none", pointerEvents: "none",
+                  fontWeight: 900,
+                }}>
+                  &ldquo;
                 </div>
+                {/* Number */}
+                <span style={{
+                  position: "absolute", top: "20px", right: "24px",
+                  fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em",
+                  color: "rgba(196,98,45,0.5)", fontVariantNumeric: "tabular-nums",
+                }}>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <p style={{ fontSize: "20px", fontWeight: 500, color: "rgba(255,255,255,0.85)", lineHeight: 1.7, margin: 0, position: "relative" }}>
+                  {learning}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -412,12 +495,21 @@ function MoreCaseStudies({ currentSlug }: { currentSlug: string }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.5, ease: EASE, delay: i * 0.07 }}
-                whileHover={{ y: -4, borderColor: "rgba(255,255,255,0.16)" }}
-                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "16px", padding: "28px", display: "flex", flexDirection: "column", gap: "8px", height: "100%", transition: "border-color 0.2s" }}
+                whileHover={{ y: -5, borderColor: "rgba(196,98,45,0.4)", boxShadow: "0 20px 50px rgba(0,0,0,0.4)" }}
+                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "16px", padding: "28px", display: "flex", flexDirection: "column", gap: "8px", height: "100%", cursor: "pointer" }}
               >
-                <span style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "#C4622D" }}>{cs.company}</span>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                  <span style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "#C4622D" }}>{cs.company}</span>
+                  <motion.div
+                    whileHover={{ x: 2, y: -2 }}
+                    transition={{ duration: 0.2 }}
+                    style={{ flexShrink: 0 }}
+                  >
+                    <ArrowUpRight size={16} style={{ color: "rgba(255,255,255,0.25)" }} />
+                  </motion.div>
+                </div>
                 <span style={{ fontSize: "18px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.25 }}>{cs.title}</span>
-                <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", marginTop: "4px" }}>{cs.subtitle.slice(0, 72)}…</span>
+                <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", marginTop: "4px", lineHeight: 1.6 }}>{cs.subtitle.slice(0, 72)}…</span>
               </motion.div>
             </Link>
           ))}
