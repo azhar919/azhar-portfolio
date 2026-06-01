@@ -21,7 +21,7 @@ const featured = [
     company: "Nedbank",
     title: "Everyday Banking",
     description: "Redesigning retail banking flows for millions of customers across web and mobile.",
-    image: "/images/nedbank-dashboard.png.png",
+    image: "/images/EDB_creditcard-27main Copy.jpg",
     url: "nedbank.co.za/personal",
     href: "/projects/everyday-banking",
   },

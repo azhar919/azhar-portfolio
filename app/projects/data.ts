@@ -3,7 +3,7 @@ export type Section = {
   heading: string;
   body: string[];
   image?: string | string[];
-  imageAspect?: "portrait" | "page"; // portrait = phone mockup, page = full-height page screenshot; default = 16:9 landscape
+  imageAspect?: "portrait" | "page" | "screenshot"; // portrait = phone, page = full-height, screenshot = natural size, default = 16:9
   dark?: boolean;
 };
 
@@ -13,6 +13,7 @@ export type CaseStudy = {
   title: string;
   subtitle: string;
   tools: string[];
+  heroImage?: string;
   sections: Section[];
   learnings: string[];
 };
@@ -25,6 +26,7 @@ export const caseStudies: CaseStudy[] = [
     subtitle:
       "Simplifying the onboarding journey for personal banking products — creating faster, clearer, and more human experiences.",
     tools: ["Figma", "Maze", "Sketch", "InVision"],
+    heroImage: "/images/EDB_creditcard-27main Copy.jpg",
     sections: [
       {
         label: "Discover",
@@ -34,7 +36,8 @@ export const caseStudies: CaseStudy[] = [
           "Clients faced too many screens, irrelevant upsells, and confusing cross-sells that made the process feel more transactional than human.",
           "Application times were long. Drop-offs were high. Trust was low.",
         ],
-        image: "/images/nb-discover.jpg",
+        image: "/images/Screenshot 2020-09-14 at 13.12 3.png",
+        imageAspect: "screenshot",
       },
       {
         label: "Define",
@@ -44,7 +47,7 @@ export const caseStudies: CaseStudy[] = [
           "Pain points emerged quickly: unclear steps, excessive screens, confusing product offers, and a lack of visible progress.",
           "Clients didn't feel guided — they felt pushed.",
         ],
-        image: "/images/nb-define.png",
+        image: "/images/iMac - 2.png",
       },
       {
         label: "Design",
@@ -54,7 +57,8 @@ export const caseStudies: CaseStudy[] = [
           "Each screen had to earn its place.",
           "Using low-fidelity wireframes, I restructured the process around user intent, not business convenience.",
         ],
-        image: ["/images/nb-design-1.png", "/images/nb-design-2.png"],
+        image: "/images/PL standalon choice- PL standalone selected.png",
+        imageAspect: "page",
       },
       {
         label: "Deliver",
@@ -64,7 +68,8 @@ export const caseStudies: CaseStudy[] = [
           "Value-added offers were repositioned to appear after key tasks, ensuring clients felt supported — not sold to.",
           "The UI adopted Nedbank's growing design system, creating consistency across products and platforms.",
         ],
-        image: ["/images/nb-deliver-1.png", "/images/nb-deliver-2.png"],
+        image: "/images/EDB_creditcard-27main Copy.jpg",
+        imageAspect: "page",
       },
       {
         label: "Results",
@@ -73,6 +78,7 @@ export const caseStudies: CaseStudy[] = [
           "The redesigned onboarding process helped bring focus back to what mattered: the client's goal.",
           "The new experience reduced friction, improved task clarity, and established reusable patterns for future product flows.",
         ],
+        image: "/images/iMac - 1.png",
         dark: true,
       },
     ],
