@@ -4,6 +4,15 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
+
+const caseStudies = [
+  { company: "African Bank", title: "Website Redesign",    href: "/projects/african-bank/website-redesign" },
+  { company: "Nedbank",      title: "Everyday Banking",    href: "/projects/everyday-banking" },
+  { company: "African Bank", title: "Improved Onboarding", href: "/projects/african-bank/onboarding" },
+  { company: "IQ Business",  title: "SharePoint Redesign", href: "/projects/corporate-banking" },
+  { company: "Nedbank",      title: "Africa Regions",      href: "/projects/africa-regions" },
+];
 
 const navLinks = [
   { label: "My Profile",  href: "/" },
@@ -13,7 +22,10 @@ const navLinks = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [projectsOpen, setProjectsOpen] = useState(false);
   const pathname = usePathname();
+
+  const closeAll = () => { setMenuOpen(false); setProjectsOpen(false); };
 
   return (
     <>
@@ -70,11 +82,64 @@ export default function Navbar() {
           >
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
+              const isProjects = link.href === "/projects";
+
+              if (isProjects) {
+                return (
+                  <div key={link.label} className="border-b border-white/10">
+                    <button
+                      onClick={() => setProjectsOpen((v) => !v)}
+                      className="w-full flex items-center justify-between font-medium text-white text-body py-3"
+                    >
+                      {link.label}
+                      <motion.span animate={{ rotate: projectsOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                        <ChevronDown size={16} className="opacity-50" />
+                      </motion.span>
+                    </button>
+                    <AnimatePresence>
+                      {projectsOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.22 }}
+                          style={{ overflow: "hidden" }}
+                        >
+                          <div className="flex flex-col pb-2">
+                            {caseStudies.map((cs) => (
+                              <Link
+                                key={cs.href}
+                                href={cs.href}
+                                onClick={closeAll}
+                                className="flex items-center justify-between py-2.5 pl-2 pr-1 rounded-lg"
+                                style={{ transition: "background 0.15s" }}
+                                onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+                                onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                              >
+                                <div className="flex flex-col gap-0.5">
+                                  <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)" }}>
+                                    {cs.company}
+                                  </span>
+                                  <span style={{ fontSize: "14px", fontWeight: 500, color: "#FFFFFF" }}>
+                                    {cs.title}
+                                  </span>
+                                </div>
+                                <ArrowUpRight size={14} style={{ color: "#C4622D", flexShrink: 0 }} />
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={link.label}
                   href={link.href}
-                  onClick={() => setMenuOpen(false)}
+                  onClick={closeAll}
                   className={`font-medium text-white text-body py-3 border-b border-white/10 last:border-0 ${isActive ? "underline underline-offset-4" : ""}`}
                 >
                   {link.label}
