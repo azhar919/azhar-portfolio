@@ -14,6 +14,7 @@ const inter = Inter({
   weight: ["400", "500"],
 });
 
+
 export const metadata: Metadata = {
   title: "Azhar Mohamed — Product Designer",
   description:

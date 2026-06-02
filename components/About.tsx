@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, useInView } from "framer-motion";
 import Image from "next/image";
-import { MapPin, Building2, Camera, Clock } from "lucide-react";
+import { MapPin, Building2, Camera, Clock, type LucideIcon } from "lucide-react";
 import { useReveal } from "./useReveal";
 import Button from "./Button";
+
+const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
 function LinkedinIcon() {
   return (
@@ -25,10 +27,112 @@ const tags = [
 ];
 
 const paragraphs = [
-  "I design digital experiences that bring clarity to complexity. With a background in UX and UI design, I've worked in environments where trust, usability, and detail matter most.",
+  "Bringing clarity to complexity. With a background in UX and UI design, I've worked in environments where trust, usability, and detail matter most.",
   "My approach is simple: create systems that feel intuitive, reliable, and effortless for the people who use them.",
   "Beyond design, I explore creativity through photography and videography — always observing how people interact with the world and the stories hidden in small details.",
 ];
+
+const ROLES = ["onboarding flows", "design systems", "banking experiences", "user research"];
+
+const STATS = [
+  { value: 6, suffix: "+", label: "Years experience" },
+  { value: 6, suffix: "",  label: "Case studies" },
+  { value: 3, suffix: "",  label: "Clients" },
+];
+
+/* ── Count-up stat ── */
+function Stat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { margin: "-80px" });
+  const [n, setN] = useState(0);
+
+  useEffect(() => {
+    if (!inView) { setN(0); return; }
+    const duration = 1600;
+    const start = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setN(Math.round(eased * value));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, value]);
+
+  return (
+    <div ref={ref} className="flex flex-col">
+      <span style={{ fontSize: "34px", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
+        {n}{suffix}
+      </span>
+      <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.45)", marginTop: "8px", letterSpacing: "0.02em" }}>{label}</span>
+    </div>
+  );
+}
+
+/* ── Rotating role word ── */
+function RotatingRole() {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setI(v => (v + 1) % ROLES.length), 2400);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <div style={{ fontSize: "18px", color: "rgba(255,255,255,0.6)", display: "flex", gap: "9px", alignItems: "baseline", flexWrap: "wrap" }}>
+      <span>I design</span>
+      <span style={{ position: "relative", display: "inline-flex", overflow: "hidden" }}>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={i}
+            initial={{ y: 16, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -16, opacity: 0 }}
+            transition={{ duration: 0.35, ease: EASE }}
+            style={{ display: "inline-block", color: "#C4622D", fontWeight: 600 }}
+          >
+            {ROLES[i]}
+          </motion.span>
+        </AnimatePresence>
+      </span>
+    </div>
+  );
+}
+
+/* ── Interactive tag chip ── */
+function TagChip({ label, Icon }: { label: string; Icon: LucideIcon }) {
+  const [h, setH] = useState(false);
+  return (
+    <motion.span
+      onMouseEnter={() => setH(true)}
+      onMouseLeave={() => setH(false)}
+      animate={{ y: h ? -3 : 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className="inline-flex items-center"
+      style={{
+        gap: "6px",
+        background: h ? "rgba(196,98,45,0.1)" : "rgba(255,255,255,0.05)",
+        border: `1px solid ${h ? "rgba(196,98,45,0.35)" : "rgba(255,255,255,0.09)"}`,
+        borderRadius: "9999px",
+        padding: "7px 16px",
+        fontSize: "13px",
+        fontWeight: 500,
+        color: h ? "#fff" : "rgba(255,255,255,0.5)",
+        transition: "background 0.2s, border-color 0.2s, color 0.2s",
+        cursor: "default",
+      }}
+    >
+      <motion.span
+        animate={{ rotate: h ? -12 : 0, scale: h ? 1.18 : 1 }}
+        transition={{ type: "spring", stiffness: 300, damping: 14 }}
+        style={{ display: "inline-flex" }}
+      >
+        <Icon size={12} color={h ? "#C4622D" : "rgba(255,255,255,0.3)"} />
+      </motion.span>
+      {label}
+    </motion.span>
+  );
+}
 
 function PhotoCard() {
   const mouseX  = useMotionValue(0);
@@ -131,15 +235,28 @@ function AboutText() {
         About Me
       </p>
 
-      <h2 style={{ fontSize: "42px", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#FFFFFF" }}>
-        Hi, I&apos;m Azhar
-      </h2>
+      <div className="flex flex-col gap-3">
+        <h2 style={{ fontSize: "42px", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#FFFFFF" }}>
+          Hi, I&apos;m Azhar
+        </h2>
+        <RotatingRole />
+      </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         {paragraphs.map((para, i) => (
           <p key={i} style={{ fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.55)" }}>
             {para}
           </p>
+        ))}
+      </div>
+
+      {/* Stats */}
+      <div
+        className="grid grid-cols-3"
+        style={{ gap: "16px", padding: "24px 0", borderTop: "1px solid rgba(255,255,255,0.08)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+      >
+        {STATS.map((s) => (
+          <Stat key={s.label} value={s.value} suffix={s.suffix} label={s.label} />
         ))}
       </div>
 
@@ -157,23 +274,7 @@ function AboutText() {
 
       <div className="flex flex-wrap gap-2">
         {tags.map(({ label, icon: Icon }) => (
-          <span
-            key={label}
-            className="inline-flex items-center"
-            style={{
-              gap: "6px",
-              background: "rgba(255,255,255,0.05)",
-              border: "1px solid rgba(255,255,255,0.09)",
-              borderRadius: "9999px",
-              padding: "7px 16px",
-              fontSize: "13px",
-              fontWeight: 500,
-              color: "rgba(255,255,255,0.5)",
-            }}
-          >
-            <Icon size={12} color="rgba(255,255,255,0.3)" />
-            {label}
-          </span>
+          <TagChip key={label} label={label} Icon={Icon} />
         ))}
       </div>
 
