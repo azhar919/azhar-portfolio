@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
+import { useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import { MapPin, Building2, Camera, Clock } from "lucide-react";
+import { useReveal } from "./useReveal";
 
 function LinkedinIcon() {
   return (
@@ -29,14 +30,6 @@ const paragraphs = [
 ];
 
 function PhotoCard() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
-  const scrollOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
-  const scrollScale   = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.82, 1, 1, 0.9]);
-  const scrollBlur    = useTransform(scrollYProgress, [0, 0.15], ["blur(14px)", "blur(0px)"]);
-  const scrollY       = useTransform(scrollYProgress, [0, 0.18, 1], [60, 0, -30]);
-
   const mouseX  = useMotionValue(0);
   const mouseY  = useMotionValue(0);
   const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [12, -12]), { stiffness: 200, damping: 25 });
@@ -61,8 +54,10 @@ function PhotoCard() {
     setHovered(false);
   };
 
+  const { ref, style } = useReveal({ x: -120, scale: 0.85, blur: 16 });
+
   return (
-    <motion.div ref={containerRef} style={{ opacity: scrollOpacity, scale: scrollScale, filter: scrollBlur, y: scrollY }}>
+    <motion.div ref={ref} style={style}>
       <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
         <div style={{ perspective: "900px" }}>
           <motion.div
@@ -126,39 +121,69 @@ function PhotoCard() {
   );
 }
 
+function AboutText() {
+  const { ref, style } = useReveal({ y: 90, scale: 0.94, blur: 12 });
+  return (
+    <motion.div ref={ref} style={style} className="flex flex-col gap-8 md:pt-6">
+
+      <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D" }}>
+        About Me
+      </p>
+
+      <h2 style={{ fontSize: "42px", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#FFFFFF" }}>
+        Hi, I&apos;m Azhar
+      </h2>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        {paragraphs.map((para, i) => (
+          <p key={i} style={{ fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.55)" }}>
+            {para}
+          </p>
+        ))}
+      </div>
+
+      <div>
+        <a
+          href="https://www.linkedin.com/in/azhar-mohamed-3624491a3"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center font-medium transition-all duration-200"
+          style={{ background: "#C4622D", color: "#FFFFFF", fontSize: "14px", fontWeight: 500, padding: "11px 24px", borderRadius: "9999px", gap: "8px" }}
+          onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.background = "#A8521F")}
+          onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.background = "#C4622D")}
+        >
+          <LinkedinIcon />
+          LinkedIn profile
+        </a>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        {tags.map(({ label, icon: Icon }) => (
+          <span
+            key={label}
+            className="inline-flex items-center"
+            style={{
+              gap: "6px",
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.09)",
+              borderRadius: "9999px",
+              padding: "7px 16px",
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "rgba(255,255,255,0.5)",
+            }}
+          >
+            <Icon size={12} color="rgba(255,255,255,0.3)" />
+            {label}
+          </span>
+        ))}
+      </div>
+
+    </motion.div>
+  );
+}
+
 export default function About() {
-  const textRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: textRef, offset: ["start end", "end start"] });
-
-  // Staggered entry — each element has its own input range, 0.05 apart
-  const eyebrowO    = useTransform(scrollYProgress, [0.04, 0.14, 0.76, 1], [0, 1, 1, 0]);
-  const eyebrowY    = useTransform(scrollYProgress, [0.04, 0.14, 1],        [48, 0, -28]);
-  const eyebrowBlur = useTransform(scrollYProgress, [0.04, 0.16],            ["blur(10px)", "blur(0px)"]);
-
-  const headingO    = useTransform(scrollYProgress, [0.09, 0.19, 0.76, 1], [0, 1, 1, 0]);
-  const headingY    = useTransform(scrollYProgress, [0.09, 0.19, 1],        [48, 0, -28]);
-  const headingBlur = useTransform(scrollYProgress, [0.09, 0.21],            ["blur(10px)", "blur(0px)"]);
-
-  const p1O         = useTransform(scrollYProgress, [0.14, 0.24, 0.76, 1], [0, 1, 1, 0]);
-  const p1Y         = useTransform(scrollYProgress, [0.14, 0.24, 1],        [48, 0, -28]);
-  const p1Blur      = useTransform(scrollYProgress, [0.14, 0.26],            ["blur(10px)", "blur(0px)"]);
-
-  const p2O         = useTransform(scrollYProgress, [0.19, 0.29, 0.76, 1], [0, 1, 1, 0]);
-  const p2Y         = useTransform(scrollYProgress, [0.19, 0.29, 1],        [48, 0, -28]);
-  const p2Blur      = useTransform(scrollYProgress, [0.19, 0.31],            ["blur(10px)", "blur(0px)"]);
-
-  const p3O         = useTransform(scrollYProgress, [0.24, 0.34, 0.76, 1], [0, 1, 1, 0]);
-  const p3Y         = useTransform(scrollYProgress, [0.24, 0.34, 1],        [48, 0, -28]);
-  const p3Blur      = useTransform(scrollYProgress, [0.24, 0.36],            ["blur(10px)", "blur(0px)"]);
-
-  const btnO        = useTransform(scrollYProgress, [0.29, 0.39, 0.76, 1], [0, 1, 1, 0]);
-  const btnY        = useTransform(scrollYProgress, [0.29, 0.39, 1],        [48, 0, -28]);
-  const btnBlur     = useTransform(scrollYProgress, [0.29, 0.41],            ["blur(10px)", "blur(0px)"]);
-
-  const tagsO       = useTransform(scrollYProgress, [0.34, 0.44, 0.76, 1], [0, 1, 1, 0]);
-  const tagsY       = useTransform(scrollYProgress, [0.34, 0.44, 1],        [48, 0, -28]);
-  const tagsBlur    = useTransform(scrollYProgress, [0.34, 0.46],            ["blur(10px)", "blur(0px)"]);
-
   return (
     <section id="about" className="relative overflow-hidden" style={{ background: "#111111", paddingTop: "120px", paddingBottom: "120px" }}>
 
@@ -170,69 +195,8 @@ export default function About() {
 
       <div className="page-container">
         <div className="grid grid-cols-1 md:grid-cols-[420px_1fr] gap-12 lg:gap-20 items-start">
-
           <PhotoCard />
-
-          <div ref={textRef} className="flex flex-col gap-8 md:pt-6">
-
-            <motion.p style={{ opacity: eyebrowO, y: eyebrowY, filter: eyebrowBlur, fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D" }}>
-              About Me
-            </motion.p>
-
-            <motion.h2 style={{ opacity: headingO, y: headingY, filter: headingBlur, fontSize: "42px", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#FFFFFF" }}>
-              Hi, I&apos;m Azhar
-            </motion.h2>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              <motion.p style={{ opacity: p1O, y: p1Y, filter: p1Blur, fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.55)" }}>
-                {paragraphs[0]}
-              </motion.p>
-              <motion.p style={{ opacity: p2O, y: p2Y, filter: p2Blur, fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.55)" }}>
-                {paragraphs[1]}
-              </motion.p>
-              <motion.p style={{ opacity: p3O, y: p3Y, filter: p3Blur, fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.55)" }}>
-                {paragraphs[2]}
-              </motion.p>
-            </div>
-
-            <motion.div style={{ opacity: btnO, y: btnY, filter: btnBlur }}>
-              <a
-                href="https://www.linkedin.com/in/azhar-mohamed-3624491a3"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center font-medium transition-all duration-200"
-                style={{ background: "#C4622D", color: "#FFFFFF", fontSize: "14px", fontWeight: 500, padding: "11px 24px", borderRadius: "9999px", gap: "8px" }}
-                onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.background = "#A8521F")}
-                onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.background = "#C4622D")}
-              >
-                <LinkedinIcon />
-                LinkedIn profile
-              </a>
-            </motion.div>
-
-            <motion.div style={{ opacity: tagsO, y: tagsY, filter: tagsBlur }} className="flex flex-wrap gap-2">
-              {tags.map(({ label, icon: Icon }) => (
-                <span
-                  key={label}
-                  className="inline-flex items-center"
-                  style={{
-                    gap: "6px",
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.09)",
-                    borderRadius: "9999px",
-                    padding: "7px 16px",
-                    fontSize: "13px",
-                    fontWeight: 500,
-                    color: "rgba(255,255,255,0.5)",
-                  }}
-                >
-                  <Icon size={12} color="rgba(255,255,255,0.3)" />
-                  {label}
-                </span>
-              ))}
-            </motion.div>
-
-          </div>
+          <AboutText />
         </div>
       </div>
     </section>

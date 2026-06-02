@@ -1,12 +1,10 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-
-const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
+import { useReveal } from "./useReveal";
 
 const featured = [
   {
@@ -72,20 +70,13 @@ function BrowserFrame({ image, url, title }: { image: string; url: string; title
   );
 }
 
-function FeaturedCard({ project }: { project: typeof featured[0] }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-
-  const opacity = useTransform(scrollYProgress, [0, 0.14, 0.78, 1], [0, 1, 1, 0]);
-  const scale   = useTransform(scrollYProgress, [0, 0.16, 0.78, 1], [0.78, 1, 1, 0.88]);
-  const y       = useTransform(scrollYProgress, [0, 0.18, 1],        [100, 0, -60]);
-  const blur    = useTransform(scrollYProgress, [0, 0.16],           ["blur(12px)", "blur(0px)"]);
-
+function FeaturedCard({ project, index }: { project: typeof featured[0]; index: number }) {
+  const { ref, style } = useReveal({ x: index % 2 === 0 ? -120 : 120, y: 60, scale: 0.86, blur: 14 });
   return (
-    <motion.div ref={ref} style={{ opacity, scale, y, filter: blur }}>
+    <motion.div ref={ref} style={{ ...style, height: "100%" }}>
       <Link
         href={project.href}
-        className="group flex flex-col transition-all duration-300"
+        className="group flex flex-col h-full transition-all duration-300"
         style={{
           background: "rgba(255,255,255,0.04)",
           border: "1px solid rgba(255,255,255,0.08)",
@@ -106,7 +97,7 @@ function FeaturedCard({ project }: { project: typeof featured[0] }) {
         }}
       >
         <BrowserFrame image={project.image} url={project.url} title={project.title} />
-        <div className="flex flex-col gap-3" style={{ padding: "28px" }}>
+        <div className="flex flex-col gap-3 flex-1" style={{ padding: "28px" }}>
           <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)" }}>
             {project.company}
           </p>
@@ -116,7 +107,7 @@ function FeaturedCard({ project }: { project: typeof featured[0] }) {
           <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
             {project.description}
           </p>
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "#C4622D", marginTop: "4px" }}>
+          <span style={{ fontSize: "14px", fontWeight: 500, color: "#C4622D", marginTop: "auto", paddingTop: "8px" }}>
             View project →
           </span>
         </div>
@@ -126,16 +117,9 @@ function FeaturedCard({ project }: { project: typeof featured[0] }) {
 }
 
 function SecondaryCard({ project }: { project: typeof secondary[0] }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-
-  const opacity = useTransform(scrollYProgress, [0, 0.18, 0.82, 1], [0, 1, 1, 0]);
-  const y       = useTransform(scrollYProgress, [0, 0.2, 1],         [50, 0, -30]);
-  const scale   = useTransform(scrollYProgress, [0, 0.18, 0.82, 1],  [0.85, 1, 1, 0.9]);
-  const blur    = useTransform(scrollYProgress, [0, 0.18],            ["blur(8px)", "blur(0px)"]);
-
+  const { ref, style } = useReveal({ y: 90, scale: 0.86, blur: 12 });
   return (
-    <motion.div ref={ref} style={{ opacity, y, scale, filter: blur }}>
+    <motion.div ref={ref} style={style}>
       <Link
         href={project.href}
         className="group flex items-start justify-between transition-all duration-200"
@@ -170,12 +154,21 @@ function SecondaryCard({ project }: { project: typeof secondary[0] }) {
   );
 }
 
-export default function SelectedWork() {
-  const headingRef = useRef(null);
-  const { scrollYProgress: headingProgress } = useScroll({ target: headingRef, offset: ["start end", "end start"] });
-  const headingOpacity = useTransform(headingProgress, [0, 0.1, 0.75, 1], [0, 1, 1, 0]);
-  const headingY       = useTransform(headingProgress, [0, 0.12, 1],       [60, 0, -40]);
+function WorkHeading() {
+  const { ref, style } = useReveal({ y: 70, scale: 0.92, blur: 10 });
+  return (
+    <motion.div ref={ref} style={style} className="flex flex-col gap-4 mb-16">
+      <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D" }}>
+        Selected Work
+      </p>
+      <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#FFFFFF" }}>
+        Case studies
+      </h2>
+    </motion.div>
+  );
+}
 
+export default function SelectedWork() {
   return (
     <section id="work" className="relative overflow-hidden" style={{ background: "#111111", paddingTop: "120px", paddingBottom: "120px" }}>
 
@@ -187,22 +180,11 @@ export default function SelectedWork() {
 
       <div className="page-container">
 
-        <motion.div
-          ref={headingRef}
-          style={{ opacity: headingOpacity, y: headingY }}
-          className="flex flex-col gap-4 mb-16"
-        >
-          <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D" }}>
-            Selected Work
-          </p>
-          <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#FFFFFF" }}>
-            Case studies
-          </h2>
-        </motion.div>
+        <WorkHeading />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
-          {featured.map((project) => (
-            <FeaturedCard key={project.href} project={project} />
+          {featured.map((project, i) => (
+            <FeaturedCard key={project.href} project={project} index={i} />
           ))}
         </div>
 
