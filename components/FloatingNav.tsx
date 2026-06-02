@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ChevronDown, ArrowRight, Briefcase } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight, Briefcase, Mail } from "lucide-react";
 import Button from "./Button";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
@@ -12,7 +12,7 @@ const NAV_H = 72;
 
 function LogoMark() {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Home">
+    <svg width="26" height="26" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Home">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -27,33 +27,40 @@ const workItems = [
   {
     company: "African Bank",
     links: [
-      { label: "Website Redesign",    desc: "Rebuilding the digital banking platform",                   href: "/projects/african-bank/website-redesign" },
-      { label: "Improved Onboarding", desc: "Reducing friction in customer sign-up",                      href: "/projects/african-bank/onboarding" },
+      { label: "Website Redesign",    desc: "Rebuilding the digital banking platform",              href: "/projects/african-bank/website-redesign" },
+      { label: "Improved Onboarding", desc: "Reducing friction in customer sign-up",                 href: "/projects/african-bank/onboarding" },
     ],
   },
   {
     company: "IQ Business",
     links: [
-      { label: "SharePoint Redesign", desc: "Restructuring internal information architecture",             href: "/projects/corporate-banking" },
+      { label: "SharePoint Redesign", desc: "Restructuring internal information architecture",        href: "/projects/corporate-banking" },
     ],
   },
   {
     company: "Nedbank",
     links: [
-      { label: "Corporate Banking",   desc: "Designing for scale, precision, and trust",                  href: "/projects/business-banking" },
-      { label: "Everyday Banking",    desc: "Redesigning retail banking for millions of customers",        href: "/projects/everyday-banking" },
-      { label: "Africa Regions",      desc: "Extending digital banking across the continent",             href: "/projects/africa-regions" },
+      { label: "Corporate Banking",   desc: "Designing for scale, precision, and trust",             href: "/projects/business-banking" },
+      { label: "Everyday Banking",    desc: "Retail banking for millions of customers",              href: "/projects/everyday-banking" },
+      { label: "Africa Regions",      desc: "Extending digital banking across the continent",        href: "/projects/africa-regions" },
     ],
   },
 ];
 
-const dim  = "rgba(255,255,255,0.5)";
-const full = "#ffffff";
+type NavItem = { key: string; label: string; href?: string; dropdown?: boolean };
+const NAV_ITEMS: NavItem[] = [
+  { key: "home",     label: "Home",     href: "/" },
+  { key: "projects", label: "Projects", dropdown: true },
+  { key: "about",    label: "About",    href: "/#about" },
+  { key: "cv",       label: "CV",       href: "/cv" },
+];
 
 export default function FloatingNav() {
   const [dropdownOpen, setDropdownOpen]     = useState(false);
   const [menuOpen, setMenuOpen]             = useState(false);
   const [mobileWorkOpen, setMobileWorkOpen] = useState(false);
+  const [hoveredKey, setHoveredKey]         = useState<string | null>(null);
+  const [scrolled, setScrolled]             = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
 
@@ -62,114 +69,131 @@ export default function FloatingNav() {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 16);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const openDropdown  = () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); setDropdownOpen(true); };
   const closeDropdown = () => { timeoutRef.current = setTimeout(() => setDropdownOpen(false), 200); };
 
+  const activeKey =
+    pathname === "/" ? "home"
+    : pathname === "/cv" ? "cv"
+    : pathname.startsWith("/projects") ? "projects"
+    : null;
+
   return (
     <>
-      {/* ── Navbar ── */}
-      <header
-        className="fixed top-0 left-0 right-0 z-50 flex items-center"
-        style={{ height: `${NAV_H}px`, background: "rgba(10,10,10,0.72)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}
-      >
-        <div className="page-container flex items-center justify-between">
-
-          {/* Left — logo with more gap from centre */}
-          <Link href="/" className="text-ghost hover:opacity-60 transition-opacity duration-200 shrink-0 mr-16" aria-label="Home">
+      {/* ── Floating pill nav ── */}
+      <div className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-3 pointer-events-none">
+        <motion.header
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: EASE }}
+          className="pointer-events-auto flex items-center gap-1 w-full md:w-auto justify-between md:justify-start"
+          style={{
+            background: scrolled ? "rgba(10,10,10,0.85)" : "rgba(10,10,10,0.55)",
+            backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: "9999px",
+            boxShadow: scrolled
+              ? "0 12px 40px rgba(0,0,0,0.5)"
+              : "0 8px 32px rgba(0,0,0,0.35)",
+            padding: "7px 7px 7px 18px",
+            transition: "background 0.3s, box-shadow 0.3s",
+          }}
+        >
+          {/* Logo */}
+          <Link href="/" className="text-ghost hover:opacity-60 transition-opacity duration-200 shrink-0 md:mr-4" aria-label="Home">
             <LogoMark />
           </Link>
 
-          {/* Centre — desktop */}
-          <nav className="hidden md:flex items-center" style={{ gap: "40px" }}>
-
-            <Link
-              href="/"
-              className="transition-colors duration-200"
-              style={{ fontSize: "16px", fontWeight: 500, color: full }}
-            >
-              Home
-            </Link>
-
-            {/* Projects + dropdown trigger */}
-            <div className="relative" onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
-              <button
-                className="flex items-center gap-1.5 transition-colors duration-200"
-                style={{ fontSize: "16px", fontWeight: 500, color: full }}
-              >
-                Projects
-                <motion.span
-                  animate={{ rotate: dropdownOpen ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  style={{ display: "flex", alignItems: "center" }}
+          {/* Centre — desktop links with sliding indicator */}
+          <nav
+            className="hidden md:flex items-center gap-1 relative"
+            onMouseLeave={() => { setHoveredKey(null); closeDropdown(); }}
+          >
+            {NAV_ITEMS.map((item) => {
+              const lit = (hoveredKey ?? activeKey) === item.key;
+              const inner = (
+                <span
+                  className="relative z-10 inline-flex items-center gap-1.5"
+                  style={{ fontSize: "15px", fontWeight: 500, color: lit ? "#fff" : "rgba(255,255,255,0.62)", transition: "color 0.2s" }}
                 >
-                  <ChevronDown size={14} color={full} />
-                </motion.span>
-              </button>
-            </div>
-
-            <Link
-              href="/#about"
-              className="transition-colors duration-200"
-              style={{ fontSize: "16px", fontWeight: 500, color: full }}
-              onMouseEnter={e => (e.currentTarget.style.color = full)}
-              onMouseLeave={e => (e.currentTarget.style.color = full)}
-            >
-              About
-            </Link>
-
-            <Link
-              href="/cv"
-              className="transition-colors duration-200"
-              style={{ fontSize: "16px", fontWeight: 500, color: full }}
-              onMouseEnter={e => (e.currentTarget.style.color = full)}
-              onMouseLeave={e => (e.currentTarget.style.color = full)}
-            >
-              CV
-            </Link>
+                  {item.label}
+                  {item.dropdown && (
+                    <motion.span animate={{ rotate: dropdownOpen ? 180 : 0 }} transition={{ duration: 0.2 }} style={{ display: "flex" }}>
+                      <ChevronDown size={14} />
+                    </motion.span>
+                  )}
+                </span>
+              );
+              return (
+                <div
+                  key={item.key}
+                  className="relative"
+                  onMouseEnter={() => { setHoveredKey(item.key); item.dropdown ? openDropdown() : closeDropdown(); }}
+                >
+                  {lit && (
+                    <motion.div
+                      layoutId="navPill"
+                      transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                      style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.09)", borderRadius: "9999px" }}
+                    />
+                  )}
+                  {item.dropdown ? (
+                    <button className="flex items-center px-4 py-2 rounded-full">{inner}</button>
+                  ) : (
+                    <Link href={item.href!} className="flex items-center px-4 py-2 rounded-full">{inner}</Link>
+                  )}
+                </div>
+              );
+            })}
           </nav>
 
-          {/* Right */}
-          <div className="flex items-center gap-4 shrink-0 ml-auto">
-            <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" className="hidden md:inline-flex">
+          {/* Contact + mobile toggle */}
+          <span className="hidden md:inline-flex md:ml-3">
+            <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" icon={<Mail size={14} />} iconPosition="left">
               Contact
             </Button>
-            <button className="flex md:hidden" onClick={() => setMenuOpen(v => !v)} aria-label="Toggle menu">
-              <Menu size={20} color="white" />
-            </button>
-          </div>
-        </div>
-      </header>
+          </span>
+          <button className="flex md:hidden items-center justify-center w-10 h-10 rounded-full" onClick={() => setMenuOpen(v => !v)} aria-label="Toggle menu">
+            <Menu size={20} color="white" />
+          </button>
+        </motion.header>
+      </div>
 
-      {/* ── Full-width dropdown ── */}
+      {/* ── Floating dropdown card ── */}
       <AnimatePresence>
         {dropdownOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            onMouseEnter={openDropdown}
-            onMouseLeave={closeDropdown}
-            className="fixed left-0 right-0 z-40"
-            style={{ top: `${NAV_H}px`, background: "#0F0F0F", borderTop: "1px solid rgba(255,255,255,0.07)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}
-          >
-            <div className="page-container py-[56px]">
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
-                {workItems.map((col, colIdx) => (
-                  <div
-                    key={col.company}
-                    className="flex flex-col"
-                    style={{
-                      paddingLeft:  colIdx > 0 ? "40px" : "0",
-                      paddingRight: colIdx < workItems.length - 1 ? "40px" : "0",
-                      borderRight:  colIdx < workItems.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
-                    }}
-                  >
-                    {/* Company label */}
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "20px" }}>
-                      <Briefcase size={14} color="rgba(255,255,255,0.3)" />
-                      <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)" }}>
+          <div className="fixed inset-x-0 z-40 hidden md:flex justify-center px-4 pointer-events-none" style={{ top: "76px" }}>
+            <motion.div
+              initial={{ opacity: 0, y: -10, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.97 }}
+              transition={{ duration: 0.22, ease: EASE }}
+              onMouseEnter={openDropdown}
+              onMouseLeave={closeDropdown}
+              className="pointer-events-auto"
+              style={{
+                width: "min(900px, calc(100vw - 32px))",
+                background: "rgba(14,14,14,0.92)",
+                backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "22px",
+                boxShadow: "0 30px 80px rgba(0,0,0,0.55)",
+                overflow: "hidden",
+              }}
+            >
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", padding: "24px" }}>
+                {workItems.map((col) => (
+                  <div key={col.company} className="flex flex-col">
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "0 12px", marginBottom: "10px" }}>
+                      <Briefcase size={13} color="#C4622D" />
+                      <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.35)" }}>
                         {col.company}
                       </p>
                     </div>
@@ -178,38 +202,29 @@ export default function FloatingNav() {
                         <Link
                           key={link.href + link.label}
                           href={link.href}
-                          className="flex items-center justify-between py-2 transition-colors duration-150 group"
-                          style={{ marginBottom: "12px" }}
+                          onClick={() => setDropdownOpen(false)}
+                          className="group flex items-center justify-between rounded-xl transition-colors duration-150"
+                          style={{ padding: "10px 12px" }}
+                          onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+                          onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                         >
-                          <div className="flex flex-col gap-1">
-                            <span
-                              className="transition-colors duration-150 group-hover:text-[#C4622D]"
-                              style={{ fontSize: "16px", fontWeight: 500, color: "#FFFFFF" }}
-                            >
+                          <div className="flex flex-col gap-0.5">
+                            <span className="transition-colors duration-150 group-hover:text-[#C4622D]" style={{ fontSize: "15px", fontWeight: 500, color: "#FFFFFF" }}>
                               {link.label}
                             </span>
-                            <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)" }}>{link.desc}</span>
+                            <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.4)", lineHeight: 1.4 }}>{link.desc}</span>
                           </div>
-                          <motion.span
-                            className="shrink-0 ml-3"
-                            initial={{ x: 0 }}
-                            whileHover={{ x: 4 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <ArrowRight
-                              size={14}
-                              className="transition-colors duration-200 group-hover:text-[#C4622D]"
-                              style={{ color: "rgba(255,255,255,0.3)" }}
-                            />
-                          </motion.span>
+                          <span className="shrink-0 ml-3 transition-transform duration-200 group-hover:translate-x-1">
+                            <ArrowRight size={14} className="transition-colors duration-200 group-hover:text-[#C4622D]" style={{ color: "rgba(255,255,255,0.3)" }} />
+                          </span>
                         </Link>
                       ))}
                     </div>
                   </div>
                 ))}
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
@@ -275,23 +290,15 @@ export default function FloatingNav() {
                       <div className="pb-5 flex flex-col">
                         {workItems.map((col, colIdx) => (
                           <div key={col.company}>
-                            {/* Divider between client groups */}
                             {colIdx > 0 && (
                               <div style={{ height: "1px", background: "rgba(255,255,255,0.08)", margin: "4px 0 0" }} />
                             )}
-                            {/* Client label */}
                             <p style={{
-                              fontSize: "11px",
-                              fontWeight: 600,
-                              textTransform: "uppercase",
-                              letterSpacing: "0.1em",
-                              color: "rgba(255,255,255,0.4)",
-                              marginTop: "24px",
-                              marginBottom: "12px",
+                              fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em",
+                              color: "rgba(255,255,255,0.4)", marginTop: "24px", marginBottom: "12px",
                             }}>
                               {col.company}
                             </p>
-                            {/* Case study links */}
                             <div className="flex flex-col" style={{ paddingLeft: "16px" }}>
                               {col.links.map(link => (
                                 <Link
@@ -342,7 +349,7 @@ export default function FloatingNav() {
                 transition={{ delay: 0.24, duration: 0.3 }}
                 className="pt-10 mt-auto"
               >
-                <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="md" fullWidth onClick={() => setMenuOpen(false)}>
+                <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="md" fullWidth icon={<Mail size={16} />} iconPosition="left" onClick={() => setMenuOpen(false)}>
                   Contact
                 </Button>
               </motion.div>
