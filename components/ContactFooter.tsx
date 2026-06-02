@@ -97,7 +97,7 @@ function FooterLinkCol({ label, links }: { label: string; links: { label: string
 export default function ContactFooter() {
   const { handlers, overlay } = useSpotlight({ radius: 600, color: "rgba(196,98,45,0.1)" });
   return (
-    <footer style={{ background: "#0D0B09", position: "relative", overflow: "hidden" }} {...handlers}>
+    <footer className="no-print" style={{ background: "#0D0B09", position: "relative", overflow: "hidden" }} {...handlers}>
       {overlay}
       <div className="page-container relative z-10" style={{ paddingTop: "100px", paddingBottom: "72px" }}>
 

@@ -130,7 +130,7 @@ export default function FloatingNav() {
   return (
     <>
       {/* ── Floating pill nav ── */}
-      <div className="fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-3 pointer-events-none">
+      <div className="no-print fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-3 pointer-events-none">
         <motion.header
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}

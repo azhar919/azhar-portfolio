@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { ChevronDown, Mail } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { motion, useInView, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from "framer-motion";
+import { ChevronDown, Mail, Building2, PenTool, Sparkles, Layers, GraduationCap, Award, BookOpen, TrendingUp, Users, AtSign, Download, type LucideIcon } from "lucide-react";
 
 function LinkedinIcon({ size = 14 }: { size?: number }) {
   return (
@@ -17,6 +17,7 @@ import Image from "next/image";
 import FloatingNav from "@/components/FloatingNav";
 import ContactFooter from "@/components/ContactFooter";
 import Button from "@/components/Button";
+import { useSpotlight } from "@/components/useSpotlight";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -97,6 +98,8 @@ type TimelineGroup = {
   company: string;
   dateRange: string;
   role: string;
+  logo: string;
+  logoBg: string;
   projects: TimelineProject[];
 };
 
@@ -105,6 +108,8 @@ const experienceTimeline: TimelineGroup[] = [
     company: "African Bank",
     dateRange: "2024 — Feb 2026",
     role: "Design Lead",
+    logo: "/images/African Bank logo black.png",
+    logoBg: "#F5F1EC",
     projects: [
       {
         title: "Re-imagined Onboarding",
@@ -172,6 +177,8 @@ const experienceTimeline: TimelineGroup[] = [
     company: "IQ Business",
     dateRange: "2023 — 2024",
     role: "Senior Principal Consultant",
+    logo: "/images/iqbusiness logo (FC) black.png",
+    logoBg: "#F5F1EC",
     projects: [
       {
         title: "IQ Business SharePoint",
@@ -189,6 +196,8 @@ const experienceTimeline: TimelineGroup[] = [
     company: "Nedbank",
     dateRange: "2018 — 2023",
     role: "Product Designer",
+    logo: "/images/Nedbank Logo.png",
+    logoBg: "#005944",
     projects: [
       {
         title: "Corporate Investment Banking / Core Banking",
@@ -264,49 +273,56 @@ function AccordionItem({
   project,
   isOpen,
   onToggle,
+  forceOpen = false,
 }: {
   project: TimelineProject;
   isOpen: boolean;
   onToggle: () => void;
+  forceOpen?: boolean;
 }) {
+  const { handlers, overlay } = useSpotlight({ radius: 360, color: "rgba(196,98,45,0.08)" });
+  const open = isOpen || forceOpen;
   return (
-    <div style={{ marginBottom: 6 }}>
+    <div style={{ marginBottom: 10 }}>
       <button
         onClick={onToggle}
+        {...handlers}
         className="w-full flex justify-between items-center border-0 text-left transition-colors duration-200"
         style={{
-          background: isOpen ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)",
-          borderRadius: isOpen ? "10px 10px 0 0" : 10,
-          padding: "15px 20px",
+          position: "relative",
+          overflow: "hidden",
+          gap: 16,
+          background: open ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)",
+          borderRadius: open ? "12px 12px 0 0" : 12,
+          borderLeft: `2px solid ${open ? "#C4622D" : "transparent"}`,
+          padding: "20px 24px",
           cursor: "pointer",
-        }}
-        onMouseEnter={e => {
-          if (!isOpen) (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.07)";
-        }}
-        onMouseLeave={e => {
-          if (!isOpen) (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.04)";
+          transition: "background 0.2s, border-color 0.2s",
         }}
       >
-        <span style={{ fontSize: 14, fontWeight: 500, color: "#FFFFFF" }}>{project.title}</span>
+        {overlay}
+        <span className="relative z-10" style={{ flex: 1, minWidth: 0, fontSize: 15, fontWeight: 600, color: open ? "#F5F1EC" : "#FFFFFF", letterSpacing: "-0.01em" }}>{project.title}</span>
         <ChevronDown
-          size={15}
-          color="rgba(255,255,255,0.35)"
-          style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0 }}
+          size={16}
+          color={open ? "#C4622D" : "rgba(255,255,255,0.35)"}
+          className="relative z-10"
+          style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s, color 0.2s", flexShrink: 0 }}
         />
       </button>
 
       <AnimatePresence>
-        {isOpen && (
+        {open && (
           <motion.div
-            initial={{ height: 0 }}
+            initial={forceOpen ? false : { height: 0 }}
             animate={{ height: "auto" }}
             exit={{ height: 0 }}
             transition={{ duration: 0.28, ease: "easeInOut" }}
             style={{
               overflow: "hidden",
               background: "rgba(255,255,255,0.04)",
-              borderRadius: "0 0 10px 10px",
+              borderRadius: "0 0 12px 12px",
               borderTop: "1px solid rgba(255,255,255,0.05)",
+              borderLeft: "2px solid #C4622D",
             }}
           >
             <motion.div
@@ -314,22 +330,22 @@ function AccordionItem({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18, ease: "easeOut" }}
-              style={{ padding: "0 20px 20px" }}
+              style={{ padding: "4px 28px 26px" }}
             >
-              <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", fontWeight: 600, marginTop: 16, marginBottom: 8 }}>
+              <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", fontWeight: 600, marginTop: 20, marginBottom: 10 }}>
                 Project Overview
               </p>
-              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.75, margin: 0 }}>
+              <p style={{ fontSize: 13.5, color: "rgba(255,255,255,0.58)", lineHeight: 1.8, margin: 0 }}>
                 {project.overview}
               </p>
-              <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", fontWeight: 600, marginTop: 16, marginBottom: 8 }}>
+              <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", fontWeight: 600, marginTop: 22, marginBottom: 12 }}>
                 Key Contributions
               </p>
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                 {project.bullets.map((bullet, i) => (
-                  <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: i < project.bullets.length - 1 ? 6 : 0 }}>
-                    <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#C4622D", marginTop: "0.55em", flexShrink: 0 }} />
-                    <span style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 1.8 }}>{bullet}</span>
+                  <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: i < project.bullets.length - 1 ? 10 : 0 }}>
+                    <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#C4622D", marginTop: "0.6em", flexShrink: 0 }} />
+                    <span style={{ fontSize: 13.5, color: "rgba(255,255,255,0.58)", lineHeight: 1.8 }}>{bullet}</span>
                   </li>
                 ))}
               </ul>
@@ -342,19 +358,28 @@ function AccordionItem({
 }
 
 /* ── Company group ─────────────────────────────────────────── */
-function CompanyGroup({ group }: { group: TimelineGroup }) {
+function CompanyGroup({ group, forceOpen = false }: { group: TimelineGroup; forceOpen?: boolean }) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
     <div>
-      <div style={{ marginBottom: 14 }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
-          <h3 style={{ fontSize: 18, fontWeight: 700, color: "#FFFFFF", margin: 0, letterSpacing: "-0.01em" }}>
+      <div style={{ marginBottom: 16, minHeight: 48, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+          <h3 style={{ fontSize: 20, fontWeight: 700, color: "#F5F1EC", margin: 0, letterSpacing: "-0.02em" }}>
             {group.company}
           </h3>
-          <span style={{ fontSize: 13, color: "rgba(255,255,255,0.35)" }}>{group.dateRange}</span>
+          <span style={{
+            fontSize: 11, fontWeight: 600, color: "#C4622D", letterSpacing: "0.02em",
+            border: "1px solid rgba(196,98,45,0.3)", background: "rgba(196,98,45,0.1)",
+            borderRadius: 9999, padding: "3px 11px", whiteSpace: "nowrap",
+          }}>
+            {group.dateRange}
+          </span>
         </div>
-        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", marginTop: 3, marginBottom: 0 }}>{group.role}</p>
+        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginTop: 5, marginBottom: 0 }}>
+          {group.role}
+          <span style={{ color: "rgba(255,255,255,0.3)" }}> · {group.projects.length} project{group.projects.length > 1 ? "s" : ""}</span>
+        </p>
       </div>
       <div>
         {group.projects.map((project, index) => (
@@ -363,6 +388,7 @@ function CompanyGroup({ group }: { group: TimelineGroup }) {
             project={project}
             isOpen={openIndex === index}
             onToggle={() => setOpenIndex(openIndex === index ? null : index)}
+            forceOpen={forceOpen}
           />
         ))}
       </div>
@@ -370,22 +396,66 @@ function CompanyGroup({ group }: { group: TimelineGroup }) {
   );
 }
 
-/* ── Sidebar section ───────────────────────────────────────── */
-function SidebarSection({ title, children }: { title: string; children: React.ReactNode }) {
+/* ── Experience timeline with scroll-filled rail ───────────── */
+function ExperienceTimeline({ forceOpen = false }: { forceOpen?: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 75%", "end 55%"] });
+  const fill = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
   return (
-    <div>
+    <div ref={ref} style={{ position: "relative" }}>
+      {/* rail track */}
+      <div aria-hidden="true" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "rgba(255,255,255,0.08)" }} />
+      {/* rail fill — grows with scroll */}
+      <motion.div aria-hidden="true" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "linear-gradient(to bottom, #E8A06A, #C4622D, #A8521F)", transformOrigin: "top", scaleY: fill, boxShadow: "0 0 8px rgba(196,98,45,0.5)" }} />
+
+      {experienceTimeline.map((group, gi) => (
+        <AnimatedBlock key={`${group.company}-${gi}`} delay={gi * 0.05}>
+          <div style={{ position: "relative", paddingLeft: "88px", paddingBottom: gi < experienceTimeline.length - 1 ? "48px" : "0" }}>
+            {/* logo node on the rail */}
+            <div style={{
+              position: "absolute", left: 0, top: 0,
+              width: "64px", height: "48px", borderRadius: "13px",
+              background: group.logoBg, display: "grid", placeItems: "center",
+              border: "1px solid rgba(255,255,255,0.14)", overflow: "hidden",
+              zIndex: 1, boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+            }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={group.logo} alt={group.company} style={{ maxWidth: "76%", maxHeight: "60%", objectFit: "contain", display: "block" }} />
+            </div>
+            <CompanyGroup group={group} forceOpen={forceOpen} />
+          </div>
+        </AnimatedBlock>
+      ))}
+    </div>
+  );
+}
+
+/* ── Sidebar section ───────────────────────────────────────── */
+function SidebarSection({ title, icon: Icon, children }: { title: string; icon: LucideIcon; children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        background: "rgba(255,255,255,0.02)",
+        border: "1px solid rgba(255,255,255,0.06)",
+        borderRadius: 16,
+        padding: "20px 22px",
+      }}
+    >
       <h2
+        className="flex items-center gap-2"
         style={{
           fontSize: 11,
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "0.1em",
-          color: "rgba(255,255,255,0.3)",
-          marginBottom: 14,
-          paddingBottom: 10,
+          color: "rgba(255,255,255,0.4)",
+          marginBottom: 16,
+          paddingBottom: 12,
           borderBottom: "1px solid rgba(255,255,255,0.08)",
         }}
       >
+        <Icon size={13} color="#C4622D" />
         {title}
       </h2>
       {children}
@@ -393,15 +463,104 @@ function SidebarSection({ title, children }: { title: string; children: React.Re
   );
 }
 
+/* ── Count-up stat ─────────────────────────────────────────── */
+function HeroStat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { margin: "-40px" });
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!inView) { setN(0); return; }
+    const duration = 1300;
+    const start = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setN(Math.round(eased * value));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, value]);
+  return (
+    <div ref={ref} className="flex flex-col">
+      <span style={{ fontSize: 30, fontWeight: 800, color: "#F5F1EC", lineHeight: 1, letterSpacing: "-0.02em", fontVariantNumeric: "tabular-nums" }}>
+        {n}{suffix}
+      </span>
+      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 6 }}>{label}</span>
+    </div>
+  );
+}
+
+const totalProjects = experienceTimeline.reduce((a, g) => a + g.projects.length, 0);
+const heroStats = [
+  { value: 6, suffix: "+", label: "Years experience" },
+  { value: experienceTimeline.length, suffix: "", label: "Companies" },
+  { value: totalProjects, suffix: "", label: "Projects shipped" },
+];
+
+/* ── Hero photo: rotating arc + 3D tilt ────────────────────── */
+function CVPhoto() {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), { stiffness: 200, damping: 25 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), { stiffness: 200, damping: 25 });
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    mouseX.set((e.clientX - r.left) / r.width - 0.5);
+    mouseY.set((e.clientY - r.top) / r.height - 0.5);
+  };
+  const reset = () => { mouseX.set(0); mouseY.set(0); };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.7, ease: EASE }}
+      className="shrink-0"
+      style={{ perspective: "900px" }}
+    >
+      <motion.div style={{ rotateX, rotateY, transformStyle: "preserve-3d" }} onMouseMove={onMove} onMouseLeave={reset}>
+        <div style={{ position: "relative", borderRadius: 22, padding: 2 }}>
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            aria-hidden="true"
+            style={{
+              position: "absolute", inset: 0, borderRadius: 22,
+              background: "conic-gradient(rgba(196,98,45,0.75) 0deg, rgba(196,98,45,0.12) 55deg, transparent 95deg, transparent 360deg)",
+            }}
+          />
+          <div className="relative overflow-hidden" style={{ width: 200, height: 200, borderRadius: 20, border: "1px solid rgba(255,255,255,0.1)" }}>
+            <Image src="/images/profile.jpg" alt="Azhar Mohamed" fill className="object-cover" priority />
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 /* ── Page ──────────────────────────────────────────────────── */
 export default function CVPage() {
+  const heroSpot = useSpotlight({ radius: 520, color: "rgba(196,98,45,0.08)" });
+  const [printing, setPrinting] = useState(false);
+
+  useEffect(() => {
+    if (!printing) return;
+    const t = setTimeout(() => { window.print(); setPrinting(false); }, 120);
+    return () => clearTimeout(t);
+  }, [printing]);
+
   return (
     <main style={{ background: "#0B0A09", minHeight: "100vh" }}>
       <FloatingNav />
       <div className="pt-[72px]">
 
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "72px", paddingBottom: "72px" }}>
+        <section className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "72px", paddingBottom: "72px" }} {...heroSpot.handlers}>
+
+          {heroSpot.overlay}
 
           {/* Ambient orb */}
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
@@ -413,16 +572,8 @@ export default function CVPage() {
           <div className="page-container">
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start relative z-10">
 
-              {/* Profile photo */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.7, ease: EASE }}
-                className="shrink-0 relative overflow-hidden"
-                style={{ width: 200, height: 200, borderRadius: 20, border: "1px solid rgba(255,255,255,0.1)" }}
-              >
-                <Image src="/images/profile.jpg" alt="Azhar Mohamed" fill className="object-cover" priority />
-              </motion.div>
+              {/* Profile photo — rotating arc + 3D tilt */}
+              <CVPhoto />
 
               {/* Text */}
               <div className="flex flex-col gap-4">
@@ -466,7 +617,7 @@ export default function CVPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.28, ease: EASE }}
-                  className="flex gap-3 flex-wrap pt-1"
+                  className="no-print flex gap-3 flex-wrap pt-1"
                 >
                   <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" icon={<Mail size={14} />} iconPosition="left">
                     Get in touch
@@ -474,6 +625,21 @@ export default function CVPage() {
                   <Button href="https://www.linkedin.com/in/azhar-mohamed-3624491a3" external variant="secondary" size="sm" icon={<LinkedinIcon size={14} />} iconPosition="left">
                     LinkedIn
                   </Button>
+                  <Button variant="secondary" size="sm" icon={<Download size={14} />} iconPosition="left" onClick={() => setPrinting(true)}>
+                    Download PDF
+                  </Button>
+                </motion.div>
+
+                {/* Stats */}
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.34, ease: EASE }}
+                  className="flex gap-10 pt-4"
+                >
+                  {heroStats.map((s) => (
+                    <HeroStat key={s.label} value={s.value} suffix={s.suffix} label={s.label} />
+                  ))}
                 </motion.div>
               </div>
             </div>
@@ -494,23 +660,14 @@ export default function CVPage() {
                   </h2>
                 </AnimatedBlock>
 
-                {experienceTimeline.map((group, gi) => (
-                  <div key={`${group.company}-${gi}`}>
-                    {gi > 0 && (
-                      <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", margin: "28px 0" }} />
-                    )}
-                    <AnimatedBlock delay={gi * 0.05}>
-                      <CompanyGroup group={group} />
-                    </AnimatedBlock>
-                  </div>
-                ))}
+                <ExperienceTimeline forceOpen={printing} />
               </div>
 
               {/* ── Right — Sidebar ── */}
               <div className="w-full md:w-[300px] shrink-0 flex flex-col gap-8">
 
                 <AnimatedBlock delay={0.08}>
-                  <SidebarSection title="Industries">
+                  <SidebarSection title="Industries" icon={Building2}>
                     <ul className="flex flex-col gap-2">
                       {industries.map(item => (
                         <li key={item} style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{item}</li>
@@ -520,7 +677,7 @@ export default function CVPage() {
                 </AnimatedBlock>
 
                 <AnimatedBlock delay={0.1}>
-                  <SidebarSection title="Toolkit">
+                  <SidebarSection title="Toolkit" icon={PenTool}>
                     <div className="flex flex-wrap gap-2">
                       {toolkit.map(tool => (
                         <span
@@ -543,7 +700,7 @@ export default function CVPage() {
                 </AnimatedBlock>
 
                 <AnimatedBlock delay={0.11}>
-                  <SidebarSection title="AI Tools">
+                  <SidebarSection title="AI Tools" icon={Sparkles}>
                     <div className="flex flex-wrap gap-2">
                       {aiTools.map(tool => (
                         <span
@@ -566,17 +723,30 @@ export default function CVPage() {
                 </AnimatedBlock>
 
                 <AnimatedBlock delay={0.12}>
-                  <SidebarSection title="Skills">
-                    <ul className="flex flex-col gap-2">
+                  <SidebarSection title="Skills" icon={Layers}>
+                    <div className="flex flex-wrap gap-2">
                       {skills.map(skill => (
-                        <li key={skill} style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{skill}</li>
+                        <span
+                          key={skill}
+                          style={{
+                            fontSize: 12,
+                            fontWeight: 500,
+                            color: "rgba(255,255,255,0.55)",
+                            border: "1px solid rgba(255,255,255,0.1)",
+                            background: "rgba(255,255,255,0.04)",
+                            borderRadius: 9999,
+                            padding: "4px 12px",
+                          }}
+                        >
+                          {skill}
+                        </span>
                       ))}
-                    </ul>
+                    </div>
                   </SidebarSection>
                 </AnimatedBlock>
 
                 <AnimatedBlock delay={0.14}>
-                  <SidebarSection title="Education">
+                  <SidebarSection title="Education" icon={GraduationCap}>
                     {education.map(edu => (
                       <div key={edu.institution} className="flex flex-col gap-1">
                         <p style={{ fontSize: 13, fontWeight: 600, color: "#FFFFFF", margin: 0 }}>{edu.institution}</p>
@@ -588,7 +758,7 @@ export default function CVPage() {
                 </AnimatedBlock>
 
                 <AnimatedBlock delay={0.16}>
-                  <SidebarSection title="Certifications">
+                  <SidebarSection title="Certifications" icon={Award}>
                     <ul className="flex flex-col gap-3">
                       {certifications.map(cert => (
                         <li key={cert.name} className="flex flex-col gap-0.5">
@@ -601,7 +771,7 @@ export default function CVPage() {
                 </AnimatedBlock>
 
                 <AnimatedBlock delay={0.18}>
-                  <SidebarSection title="Training">
+                  <SidebarSection title="Training" icon={BookOpen}>
                     <ul className="flex flex-col gap-3">
                       {training.map(item => (
                         <li key={item.name} className="flex flex-col gap-0.5">
@@ -614,7 +784,7 @@ export default function CVPage() {
                 </AnimatedBlock>
 
                 <AnimatedBlock delay={0.2}>
-                  <SidebarSection title="Current Development">
+                  <SidebarSection title="Current Development" icon={TrendingUp}>
                     <ul className="flex flex-col gap-2">
                       {currentDevelopment.map(item => (
                         <li key={item} style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{item}</li>
@@ -624,7 +794,7 @@ export default function CVPage() {
                 </AnimatedBlock>
 
                 <AnimatedBlock delay={0.22}>
-                  <SidebarSection title="Roles">
+                  <SidebarSection title="Roles" icon={Users}>
                     <ul className="flex flex-col gap-2">
                       {roles.map(role => (
                         <li key={role} style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{role}</li>
@@ -634,7 +804,7 @@ export default function CVPage() {
                 </AnimatedBlock>
 
                 <AnimatedBlock delay={0.24}>
-                  <SidebarSection title="Online Profile">
+                  <SidebarSection title="Online Profile" icon={AtSign}>
                     <div className="flex flex-col gap-2">
                       <a
                         href="mailto:Azhar919@gmail.com"
