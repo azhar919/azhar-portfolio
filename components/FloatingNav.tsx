@@ -3,23 +3,62 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring, useMotionValue } from "framer-motion";
 import { Menu, X, ChevronDown, ArrowRight, Briefcase, Mail } from "lucide-react";
 import Button from "./Button";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const NAV_H = 72;
+const LOGO_PATH = "M14 2L27 26H22.5L19 17H9L5.5 26H1L14 2ZM14 6L11 16H17L14 6Z";
 
+/* Interactive logo — terracotta outline redraws + glow on hover */
 function LogoMark() {
   return (
-    <svg width="26" height="26" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Home">
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M14 2L27 26H22.5L19 17H9L5.5 26H1L14 2ZM14 6L11 16H17L14 6Z"
-        fill="currentColor"
-      />
-    </svg>
+    <motion.div
+      initial="rest"
+      whileHover="hover"
+      animate="rest"
+      style={{ width: 26, height: 26, position: "relative", display: "inline-flex" }}
+    >
+      <motion.div variants={{ rest: { scale: 1, rotate: 0 }, hover: { scale: 1.1, rotate: -4 } }} transition={{ type: "spring", stiffness: 300, damping: 15 }} style={{ width: "100%", height: "100%" }}>
+        <svg width="26" height="26" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Home" style={{ overflow: "visible" }}>
+          <path fillRule="evenodd" clipRule="evenodd" d={LOGO_PATH} fill="currentColor" />
+          <motion.path
+            d={LOGO_PATH}
+            fill="none"
+            stroke="#C4622D"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+            style={{ filter: "drop-shadow(0 0 4px rgba(196,98,45,0.8))" }}
+            variants={{ rest: { pathLength: 0, opacity: 0 }, hover: { pathLength: 1, opacity: 1 } }}
+            transition={{ duration: 0.6, ease: EASE }}
+          />
+        </svg>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* Magnetic wrapper — child eases toward the cursor */
+function Magnetic({ children, strength = 0.4 }: { children: React.ReactNode; strength?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const sx = useSpring(x, { stiffness: 220, damping: 15 });
+  const sy = useSpring(y, { stiffness: 220, damping: 15 });
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = ref.current?.getBoundingClientRect();
+    if (!r) return;
+    x.set((e.clientX - (r.left + r.width / 2)) * strength);
+    y.set((e.clientY - (r.top + r.height / 2)) * strength);
+  };
+  const reset = () => { x.set(0); y.set(0); };
+
+  return (
+    <motion.div ref={ref} onMouseMove={onMove} onMouseLeave={reset} style={{ x: sx, y: sy, display: "inline-flex" }}>
+      {children}
+    </motion.div>
   );
 }
 
@@ -76,6 +115,9 @@ export default function FloatingNav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const { scrollYProgress } = useScroll();
+  const progressX = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
+
   const openDropdown  = () => { if (timeoutRef.current) clearTimeout(timeoutRef.current); setDropdownOpen(true); };
   const closeDropdown = () => { timeoutRef.current = setTimeout(() => setDropdownOpen(false), 200); };
 
@@ -93,7 +135,7 @@ export default function FloatingNav() {
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: EASE }}
-          className="pointer-events-auto flex items-center gap-1 w-full md:w-auto justify-between md:justify-start"
+          className="pointer-events-auto flex items-center gap-2 w-full md:w-auto justify-between md:justify-start"
           style={{
             background: scrolled ? "rgba(10,10,10,0.85)" : "rgba(10,10,10,0.55)",
             backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
@@ -102,12 +144,18 @@ export default function FloatingNav() {
             boxShadow: scrolled
               ? "0 12px 40px rgba(0,0,0,0.5)"
               : "0 8px 32px rgba(0,0,0,0.35)",
-            padding: "7px 7px 7px 18px",
+            padding: "10px 10px 10px 26px",
             transition: "background 0.3s, box-shadow 0.3s",
+            position: "relative",
           }}
         >
+          {/* Reading progress bar — hugs the bottom of the pill */}
+          <div aria-hidden="true" style={{ position: "absolute", left: "26px", right: "26px", bottom: "6px", height: "2px", borderRadius: "9999px", background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
+            <motion.div style={{ height: "100%", borderRadius: "9999px", background: "#C4622D", transformOrigin: "0% 50%", scaleX: progressX, boxShadow: "0 0 8px rgba(196,98,45,0.6)" }} />
+          </div>
+
           {/* Logo */}
-          <Link href="/" className="text-ghost hover:opacity-60 transition-opacity duration-200 shrink-0 md:mr-4" aria-label="Home">
+          <Link href="/" className="text-ghost transition-opacity duration-200 shrink-0 md:mr-6" aria-label="Home">
             <LogoMark />
           </Link>
 
@@ -145,9 +193,9 @@ export default function FloatingNav() {
                     />
                   )}
                   {item.dropdown ? (
-                    <button className="flex items-center px-4 py-2 rounded-full">{inner}</button>
+                    <button className="flex items-center px-5 py-2.5 rounded-full">{inner}</button>
                   ) : (
-                    <Link href={item.href!} className="flex items-center px-4 py-2 rounded-full">{inner}</Link>
+                    <Link href={item.href!} className="flex items-center px-5 py-2.5 rounded-full">{inner}</Link>
                   )}
                 </div>
               );
@@ -155,10 +203,12 @@ export default function FloatingNav() {
           </nav>
 
           {/* Contact + mobile toggle */}
-          <span className="hidden md:inline-flex md:ml-3">
-            <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" icon={<Mail size={14} />} iconPosition="left">
-              Contact
-            </Button>
+          <span className="hidden md:inline-flex md:ml-5">
+            <Magnetic strength={0.5}>
+              <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" icon={<Mail size={14} />} iconPosition="left">
+                Contact
+              </Button>
+            </Magnetic>
           </span>
           <button className="flex md:hidden items-center justify-center w-10 h-10 rounded-full" onClick={() => setMenuOpen(v => !v)} aria-label="Toggle menu">
             <Menu size={20} color="white" />
