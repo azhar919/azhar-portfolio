@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Mail } from "lucide-react";
 import { useReveal } from "./useReveal";
+import { useSpotlight } from "./useSpotlight";
 import Button from "./Button";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
@@ -16,11 +17,13 @@ const faqs = [
 ];
 
 function FAQItem({ faq, isOpen, onToggle }: { faq: typeof faqs[0]; isOpen: boolean; onToggle: () => void }) {
+  const { handlers, overlay } = useSpotlight({ radius: 260, color: "rgba(196,98,45,0.08)" });
   return (
-    <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+    <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", position: "relative", overflow: "hidden" }} {...handlers}>
+      {overlay}
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between text-left group"
+        className="w-full flex items-center justify-between text-left group relative z-10"
         style={{ padding: "22px 0", gap: "16px" }}
         aria-expanded={isOpen}
       >
@@ -52,7 +55,7 @@ function FAQItem({ faq, isOpen, onToggle }: { faq: typeof faqs[0]; isOpen: boole
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: EASE }}
-            style={{ overflow: "hidden" }}
+            style={{ overflow: "hidden", position: "relative", zIndex: 1 }}
           >
             <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.5)", lineHeight: 1.8, paddingBottom: "24px", paddingRight: "40px" }}>
               {faq.a}

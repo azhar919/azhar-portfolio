@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useSpotlight } from "./useSpotlight";
 
 function LogoMark() {
   return (
@@ -79,9 +80,11 @@ function FooterLinkCol({ label, links }: { label: string; links: { label: string
 }
 
 export default function ContactFooter() {
+  const { handlers, overlay } = useSpotlight({ radius: 600, color: "rgba(196,98,45,0.1)" });
   return (
-    <footer style={{ background: "#0C0C0C" }}>
-      <div className="page-container py-[80px]">
+    <footer style={{ background: "#0C0C0C", position: "relative", overflow: "hidden" }} {...handlers}>
+      {overlay}
+      <div className="page-container py-[80px] relative z-10">
         {/* Top row */}
         <div className="flex flex-col md:flex-row md:justify-between gap-12 md:gap-0">
 
