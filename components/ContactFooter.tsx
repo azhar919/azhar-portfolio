@@ -119,7 +119,7 @@ export default function ContactFooter() {
             Available for new projects
           </span>
 
-          <h2 style={{ fontSize: "clamp(36px, 6vw, 72px)", fontWeight: 800, letterSpacing: "-0.04em", lineHeight: 1.04, color: "#FFFFFF", maxWidth: "820px" }}>
+          <h2 style={{ fontSize: "clamp(36px, 6vw, 72px)", fontWeight: 800, letterSpacing: "-0.04em", lineHeight: 1.04, color: "#F5F1EC", maxWidth: "820px" }}>
             Let&apos;s create something <span style={{ color: "#C4622D" }}>effortless</span>.
           </h2>
 

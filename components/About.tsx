@@ -63,7 +63,7 @@ function Stat({ value, suffix, label }: { value: number; suffix: string; label: 
 
   return (
     <div ref={ref} className="flex flex-col">
-      <span style={{ fontSize: "34px", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
+      <span style={{ fontSize: "34px", fontWeight: 800, color: "#F5F1EC", letterSpacing: "-0.02em", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
         {n}{suffix}
       </span>
       <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.45)", marginTop: "8px", letterSpacing: "0.02em" }}>{label}</span>
@@ -236,7 +236,7 @@ function AboutText() {
       </p>
 
       <div className="flex flex-col gap-3">
-        <h2 style={{ fontSize: "42px", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#FFFFFF" }}>
+        <h2 style={{ fontSize: "42px", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F5F1EC" }}>
           Hi, I&apos;m Azhar
         </h2>
         <RotatingRole />

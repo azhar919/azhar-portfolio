@@ -439,7 +439,7 @@ export default function CVPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.06, ease: EASE }}
-                  style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 800, lineHeight: 1.06, letterSpacing: "-0.03em", color: "#FFFFFF", margin: 0 }}
+                  style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 800, lineHeight: 1.06, letterSpacing: "-0.03em", color: "#F5F1EC", margin: 0 }}
                 >
                   Azhar Mohamed
                 </motion.h1>

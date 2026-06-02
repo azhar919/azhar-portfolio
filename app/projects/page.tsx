@@ -127,7 +127,7 @@ export default function ProjectsPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: EASE }}
-              style={{ fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 800, color: "#FFFFFF", lineHeight: 1.08, letterSpacing: "-0.04em" }}
+              style={{ fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 800, color: "#F5F1EC", lineHeight: 1.08, letterSpacing: "-0.04em" }}
             >
               Where complexity<br className="hidden md:block" /> becomes clarity
             </motion.h1>

@@ -230,7 +230,7 @@ export default function Hero() {
                 fontWeight: 800,
                 lineHeight: 1.04,
                 letterSpacing: "-0.04em",
-                color: "#FFFFFF",
+                color: "#F5F1EC",
                 maxWidth: "720px",
               }}
             >

@@ -66,8 +66,8 @@ const workItems = [
   {
     company: "African Bank",
     links: [
-      { label: "Website Redesign",    desc: "Rebuilding the digital banking platform",              href: "/projects/african-bank/website-redesign" },
       { label: "Improved Onboarding", desc: "Reducing friction in customer sign-up",                 href: "/projects/african-bank/onboarding" },
+      { label: "Website Redesign",    desc: "Rebuilding the digital banking platform",              href: "/projects/african-bank/website-redesign" },
     ],
   },
   {

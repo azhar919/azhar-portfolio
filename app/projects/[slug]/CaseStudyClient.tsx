@@ -629,7 +629,7 @@ function LearningsSection({ learnings, onInView, navIndex }: { learnings: string
       <div className="page-container" style={{ position: "relative" }}>
         <motion.div style={{ opacity, y, filter: blur }}>
           <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#C4622D", marginBottom: "16px" }}>Key Learnings</p>
-          <h2 style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.04em", lineHeight: 1.05, marginBottom: "64px", whiteSpace: "nowrap" }}>
+          <h2 style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 800, color: "#F5F1EC", letterSpacing: "-0.04em", lineHeight: 1.05, marginBottom: "64px", whiteSpace: "nowrap" }}>
             What this project taught me
           </h2>
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -760,7 +760,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
                 </motion.p>
 
                 {/* Word-by-word title */}
-                <h1 style={{ fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 800, color: "#FFFFFF", lineHeight: 1.08, letterSpacing: "-0.04em" }}>
+                <h1 style={{ fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 800, color: "#F5F1EC", lineHeight: 1.08, letterSpacing: "-0.04em" }}>
                   {words.map((word, i) => (
                     <motion.span
                       key={i}
