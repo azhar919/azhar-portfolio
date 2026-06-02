@@ -1,189 +1,143 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import Link from "next/link";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { ArrowRight, FileText } from "lucide-react";
+import Button from "./Button";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
-const AM_PATH =
-  "M 185 305 L 185 45 L 40 305 L 99 200 L 185 200 L 185 45 L 245 185 L 305 45 L 305 305";
-
-const CX = 173;
-const CY = 175;
-const CR = 160;
-
 const HEADLINE = "Every interaction is a chance to be effortless";
 
-const PARTICLE_ANGLES = [0, 45, 90, 135, 180, 225, 270, 315];
+// Interlocked AM monogram — A and M share the bottom-right vertex, drawn as one laser sweep.
+// Main path: A left leg → apex → shared vertex → M left stem → valley → peak → right stem.
+const AM_MAIN = "M 30 195 L 95 40 L 160 195 L 160 55 L 210 130 L 260 55 L 260 195";
+const AM_BAR  = "M 63 128 L 127 128"; // A's crossbar
+const DRAW_DUR  = 2.4;  // laser draw time before the glow settles into a pulse
+const BAR_DELAY = 0.55; // crossbar draws as the laser descends the A
+const BAR_DUR   = 0.35;
 
 function AMMonogram() {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [14, -14]), { stiffness: 150, damping: 18 });
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-14, 14]), { stiffness: 150, damping: 18 });
+
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
+  const reset = () => { mouseX.set(0); mouseY.set(0); };
+
   return (
-    <div style={{ width: 350, height: 350, position: "relative" }}>
-      <style>{`
-        @keyframes am-trace {
-          0%    { stroke-dashoffset: 1; opacity: 1; }
-          44.4% { stroke-dashoffset: 0; opacity: 1; }
-          52%   { stroke-dashoffset: 0; opacity: 0.4; }
-          60%   { stroke-dashoffset: 0; opacity: 1; }
-          66.7% { stroke-dashoffset: 0; opacity: 1; }
-          77.8% { stroke-dashoffset: 0; opacity: 0; }
-          99%   { stroke-dashoffset: 1; opacity: 0; }
-          100%  { stroke-dashoffset: 1; opacity: 0; }
-        }
-        @keyframes am-circle {
-          0%    { stroke-dashoffset: 1; opacity: 0; }
-          43%   { stroke-dashoffset: 1; opacity: 0; }
-          44.4% { stroke-dashoffset: 1; opacity: 1; }
-          66.7% { stroke-dashoffset: 0; opacity: 1; }
-          72%   { stroke-dashoffset: 0; opacity: 0.4; }
-          77%   { stroke-dashoffset: 0; opacity: 1; }
-          77.8% { stroke-dashoffset: 0; opacity: 0; }
-          99%   { stroke-dashoffset: 1; opacity: 0; }
-          100%  { stroke-dashoffset: 1; opacity: 0; }
-        }
-      `}</style>
+    <div
+      style={{ perspective: "1100px", position: "relative" }}
+      onMouseMove={handleMove}
+      onMouseLeave={reset}
+    >
+      {/* Pulsing halo behind the mark */}
+      <motion.div
+        aria-hidden="true"
+        animate={{ opacity: [0.4, 0.7, 0.4], scale: [0.9, 1.04, 0.9] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          position: "absolute", top: "50%", left: "50%", translateX: "-50%", translateY: "-50%",
+          width: 380, height: 380, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(196,98,45,0.26) 0%, transparent 62%)",
+          pointerEvents: "none",
+        }}
+      />
 
-      <svg width="350" height="350" viewBox="0 0 350 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <motion.div style={{ rotateX, rotateY, transformStyle: "preserve-3d", width: 360, height: 280, position: "relative" }}>
 
-        {/* Background static reference path — also the motion path anchor */}
-        <path
-          id="am-motion-path"
-          d={AM_PATH}
-          stroke="rgba(255,255,255,0.05)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        {/* ── Back layer: orbit ring (pushed back in Z for parallax depth) ── */}
+        <div style={{ position: "absolute", inset: 0, transform: "translateZ(-90px)", display: "grid", placeItems: "center", pointerEvents: "none" }}>
+          <svg width="330" height="280" viewBox="0 0 330 280" fill="none" style={{ overflow: "visible" }}>
+            <motion.circle
+              cx="165" cy="115" r="150"
+              stroke="rgba(255,255,255,0.10)" strokeWidth="1.5" fill="none"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 1.8, delay: 0.2, ease: EASE }}
+            />
+            <motion.circle
+              cx="165" cy="115" r="150"
+              stroke="#C4622D" strokeWidth="2" fill="none" style={{ filter: "blur(6px)" }}
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 0.25 }}
+              transition={{ duration: 1.8, delay: 0.2, ease: EASE }}
+            />
+          </svg>
+        </div>
 
-        {/* Orange glow trace */}
-        <path
-          d={AM_PATH}
-          stroke="#C4622D"
-          strokeWidth="8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          pathLength="1"
-          style={{
-            strokeDasharray: "1",
-            strokeDashoffset: "1",
-            filter: "blur(8px)",
-            opacity: 0.5,
-            animation: "am-trace 9s ease-in-out infinite",
-          }}
-        />
+        {/* ── Mid layer: soft depth shadow of the mark ── */}
+        <div style={{ position: "absolute", inset: 0, transform: "translateZ(-30px)", display: "grid", placeItems: "center", pointerEvents: "none" }}>
+          <svg width="330" height="267" viewBox="0 0 290 235" fill="none" style={{ overflow: "visible" }}>
+            <path d={AM_MAIN} stroke="rgba(0,0,0,0.5)" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none" style={{ filter: "blur(5px)" }} />
+            <path d={AM_BAR}  stroke="rgba(0,0,0,0.5)" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" fill="none" style={{ filter: "blur(5px)" }} />
+          </svg>
+        </div>
 
-        {/* White main trace */}
-        <path
-          d={AM_PATH}
-          stroke="#ffffff"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          pathLength="1"
-          style={{
-            strokeDasharray: "1",
-            strokeDashoffset: "1",
-            animation: "am-trace 9s ease-in-out infinite",
-          }}
-        />
+        {/* ── Front layer: the interlocked AM mark (pulled forward in Z) ── */}
+        <div style={{ position: "absolute", inset: 0, transform: "translateZ(55px)", display: "grid", placeItems: "center" }}>
+          <svg width="330" height="267" viewBox="0 0 290 235" fill="none" style={{ overflow: "visible" }}>
+            <defs>
+              <linearGradient id="amStroke" x1="0" y1="0" x2="1" y2="0.4">
+                <stop offset="0" stopColor="#C4622D" />
+                <stop offset="0.55" stopColor="#E8A06A" />
+                <stop offset="1" stopColor="#F4E7DA" />
+              </linearGradient>
+            </defs>
 
-        {/* ── A: Comet head — travels at the leading edge of the trace ── */}
-        <g>
-          {/* glow aura */}
-          <circle r="13" fill="#C4622D" style={{ filter: "blur(10px)" }} opacity={0.9} />
-          {/* hot white point */}
-          <circle r="3" fill="#FFFFFF" />
-          <animateMotion
-            dur="9s"
-            repeatCount="indefinite"
-            {...{ calcMode: "spline", keyTimes: "0;0.444;1", keyPoints: "0;1;1", keySplines: "0.42 0 0.58 1;0 0 1 1" }}
-          >
-            <mpath href="#am-motion-path" />
-          </animateMotion>
-          <animate
-            attributeName="opacity"
-            values="0;1;1;0;0"
-            keyTimes="0;0.015;0.43;0.50;1"
-            dur="9s"
-            repeatCount="indefinite"
-          />
-        </g>
+            {/* glow trail — draws with the laser */}
+            <motion.path
+              d={AM_MAIN} stroke="#C4622D" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" fill="none"
+              style={{ filter: "blur(9px)" }} opacity={0.5}
+              initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+              transition={{ duration: DRAW_DUR, ease: "easeInOut" }}
+            />
+            <motion.path
+              d={AM_BAR} stroke="#C4622D" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" fill="none"
+              style={{ filter: "blur(9px)" }} opacity={0.5}
+              initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+              transition={{ duration: BAR_DUR, delay: BAR_DELAY, ease: "easeInOut" }}
+            />
 
-        {/* Background dim circle */}
-        <circle
-          cx={CX} cy={CY} r={CR}
-          stroke="rgba(255,255,255,0.04)"
-          strokeWidth="1.5"
-          fill="none"
-          transform={`rotate(-45 ${CX} ${CY})`}
-        />
+            {/* the mark — warm gradient, stays lit once drawn */}
+            <motion.path
+              d={AM_MAIN} stroke="url(#amStroke)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" fill="none"
+              initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+              transition={{ duration: DRAW_DUR, ease: "easeInOut" }}
+            />
+            <motion.path
+              d={AM_BAR} stroke="url(#amStroke)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" fill="none"
+              initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+              transition={{ duration: BAR_DUR, delay: BAR_DELAY, ease: "easeInOut" }}
+            />
 
-        {/* Orange circle glow trace */}
-        <circle
-          cx={CX} cy={CY} r={CR}
-          stroke="#C4622D"
-          strokeWidth="5"
-          fill="none"
-          pathLength="1"
-          transform={`rotate(-45 ${CX} ${CY})`}
-          style={{
-            strokeDasharray: "1",
-            strokeDashoffset: "1",
-            filter: "blur(8px)",
-            opacity: 0.5,
-            animation: "am-circle 9s ease-in-out infinite",
-          }}
-        />
+            {/* laser head — travels the main path as it draws, then fades */}
+            <g>
+              <circle r="9" fill="#C4622D" style={{ filter: "blur(7px)" }} opacity={0.95} />
+              <circle r="3" fill="#FFF6EF" />
+              <animateMotion dur={`${DRAW_DUR}s`} fill="freeze" calcMode="spline" keyTimes="0;1" keyPoints="0;1" keySplines="0.42 0 0.58 1">
+                <mpath href="#amMainPath" />
+              </animateMotion>
+              <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.9;1" dur={`${DRAW_DUR}s`} fill="freeze" />
+            </g>
+            <path id="amMainPath" d={AM_MAIN} fill="none" stroke="none" />
 
-        {/* White circle trace */}
-        <circle
-          cx={CX} cy={CY} r={CR}
-          stroke="#ffffff"
-          strokeWidth="1.5"
-          fill="none"
-          pathLength="1"
-          transform={`rotate(-45 ${CX} ${CY})`}
-          style={{
-            strokeDasharray: "1",
-            strokeDashoffset: "1",
-            animation: "am-circle 9s ease-in-out infinite",
-          }}
-        />
+            {/* breathing glow — fades in after the draw, then pulses forever */}
+            <motion.path
+              d={AM_MAIN} stroke="#C4622D" strokeWidth="11" strokeLinecap="round" strokeLinejoin="round" fill="none"
+              style={{ filter: "blur(13px)" }} pathLength={1}
+              initial={{ opacity: 0 }} animate={{ opacity: [0, 0.5, 0.18, 0.5] }}
+              transition={{ duration: 4.5, delay: DRAW_DUR, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </svg>
+        </div>
 
-        {/* ── C: Particle burst at trace completion ── */}
-        {PARTICLE_ANGLES.map((angle, i) => {
-          const rad = (angle * Math.PI) / 180;
-          const tx = Math.round(Math.cos(rad) * 72);
-          const ty = Math.round(Math.sin(rad) * 72);
-          const tx2 = Math.round(tx * 1.55);
-          const ty2 = Math.round(ty * 1.55);
-          const r = i % 3 === 0 ? 3 : i % 2 === 0 ? 2 : 1.5;
-          const fill = i % 2 === 0 ? "#C4622D" : "#FFFFFF";
-          return (
-            <circle key={i} cx={CX} cy={CY} r={r} fill={fill}>
-              <animate
-                attributeName="opacity"
-                values="0;0;0.9;0;0"
-                keyTimes="0;0.44;0.47;0.62;1"
-                dur="9s"
-                repeatCount="indefinite"
-                calcMode="linear"
-              />
-              <animateTransform
-                attributeName="transform"
-                type="translate"
-                values={`0 0;0 0;${tx} ${ty};${tx2} ${ty2};${tx2} ${ty2}`}
-                keyTimes="0;0.44;0.52;0.62;1"
-                dur="9s"
-                repeatCount="indefinite"
-                {...{ calcMode: "spline", keySplines: "0 0 1 1;0.1 0 0.25 1;0.8 0 1 1;0 0 1 1" }}
-              />
-            </circle>
-          );
-        })}
-
-      </svg>
+      </motion.div>
     </div>
   );
 }
@@ -245,6 +199,13 @@ export default function Hero() {
 
       <div className="absolute inset-0 noise-texture opacity-[0.025] pointer-events-none select-none" />
 
+      {/* Vignette — darkens edges for depth and focus */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none select-none"
+        style={{ background: "radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,0.55) 100%)" }}
+      />
+
       <div className="relative z-10 page-container pt-[96px] pb-24 flex flex-col justify-center min-h-screen">
         <div className="flex flex-col lg:flex-row lg:items-center">
 
@@ -301,33 +262,12 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.8, ease: EASE }}
               className="flex flex-wrap gap-4 pt-2"
             >
-              <a
-                href="#work"
-                className="inline-flex items-center font-semibold transition-all duration-200"
-                style={{
-                  height: "52px", padding: "0 32px",
-                  background: "#C4622D", color: "#FFFFFF",
-                  borderRadius: "9999px", fontSize: "15px",
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#A8521F"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#C4622D"; }}
-              >
+              <Button href="#work" variant="primary" icon={<ArrowRight size={16} />}>
                 View my work
-              </a>
-              <Link
-                href="/cv"
-                className="inline-flex items-center font-medium transition-all duration-200"
-                style={{
-                  height: "52px", padding: "0 32px",
-                  border: "1px solid rgba(255,255,255,0.15)", color: "#FFFFFF",
-                  borderRadius: "9999px", fontSize: "15px",
-                  background: "rgba(255,255,255,0.04)",
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.08)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.25)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.04)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,255,255,0.15)"; }}
-              >
+              </Button>
+              <Button href="/cv" variant="secondary" icon={<FileText size={15} style={{ opacity: 0.7 }} />} iconPosition="left">
                 View CV
-              </Link>
+              </Button>
             </motion.div>
           </motion.div>
 
@@ -355,14 +295,18 @@ export default function Hero() {
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
         <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>Scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <path d="M4 7l6 6 6-6" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </motion.div>
+        {/* Mouse-style cue with travelling dot */}
+        <div style={{
+          width: "22px", height: "34px", borderRadius: "9999px",
+          border: "1.5px solid rgba(255,255,255,0.2)",
+          display: "flex", justifyContent: "center", paddingTop: "6px",
+        }}>
+          <motion.div
+            animate={{ y: [0, 10, 0], opacity: [1, 0.3, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            style={{ width: "4px", height: "8px", borderRadius: "9999px", background: "#C4622D" }}
+          />
+        </div>
       </motion.div>
     </section>
   );

@@ -5,6 +5,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import { MapPin, Building2, Camera, Clock } from "lucide-react";
 import { useReveal } from "./useReveal";
+import Button from "./Button";
 
 function LinkedinIcon() {
   return (
@@ -143,18 +144,15 @@ function AboutText() {
       </div>
 
       <div>
-        <a
+        <Button
           href="https://www.linkedin.com/in/azhar-mohamed-3624491a3"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center font-medium transition-all duration-200"
-          style={{ background: "#C4622D", color: "#FFFFFF", fontSize: "14px", fontWeight: 500, padding: "11px 24px", borderRadius: "9999px", gap: "8px" }}
-          onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.background = "#A8521F")}
-          onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.background = "#C4622D")}
+          external
+          variant="primary"
+          icon={<LinkedinIcon />}
+          iconPosition="left"
         >
-          <LinkedinIcon />
           LinkedIn profile
-        </a>
+        </Button>
       </div>
 
       <div className="flex flex-wrap gap-2">

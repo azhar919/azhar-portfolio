@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import FloatingNav from "@/components/FloatingNav";
 import ContactFooter from "@/components/ContactFooter";
+import Button from "@/components/Button";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -457,26 +458,12 @@ export default function CVPage() {
                   transition={{ duration: 0.5, delay: 0.28, ease: EASE }}
                   className="flex gap-3 flex-wrap pt-1"
                 >
-                  <a
-                    href="mailto:Azhar919@gmail.com"
-                    className="inline-flex items-center font-medium transition-all duration-200"
-                    style={{ background: "#C4622D", color: "#FFFFFF", fontSize: 13, padding: "9px 22px", borderRadius: 9999 }}
-                    onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.background = "#A8521F")}
-                    onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.background = "#C4622D")}
-                  >
+                  <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm">
                     Get in touch
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/azhar-mohamed-3624491a3"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center font-medium transition-all duration-200"
-                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)", fontSize: 13, padding: "9px 22px", borderRadius: 9999 }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.1)"; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.06)"; }}
-                  >
+                  </Button>
+                  <Button href="https://www.linkedin.com/in/azhar-mohamed-3624491a3" external variant="secondary" size="sm">
                     LinkedIn
-                  </a>
+                  </Button>
                 </motion.div>
               </div>
             </div>

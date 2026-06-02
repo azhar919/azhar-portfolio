@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown, ArrowRight, Briefcase } from "lucide-react";
+import Button from "./Button";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const NAV_H = 72;
@@ -130,15 +131,9 @@ export default function FloatingNav() {
 
           {/* Right */}
           <div className="flex items-center gap-4 shrink-0 ml-auto">
-            <a
-              href="mailto:Azhar919@gmail.com"
-              className="hidden md:inline-flex items-center font-medium transition-colors duration-200"
-              style={{ background: "#C4622D", color: "#FFFFFF", fontSize: "13px", fontWeight: 500, padding: "10px 20px", borderRadius: "9999px" }}
-              onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.background = "#A8521F")}
-              onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.background = "#C4622D")}
-            >
+            <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" className="hidden md:inline-flex">
               Contact
-            </a>
+            </Button>
             <button className="flex md:hidden" onClick={() => setMenuOpen(v => !v)} aria-label="Toggle menu">
               <Menu size={20} color="white" />
             </button>
@@ -347,15 +342,9 @@ export default function FloatingNav() {
                 transition={{ delay: 0.24, duration: 0.3 }}
                 className="pt-10 mt-auto"
               >
-                <a
-                  href="mailto:Azhar919@gmail.com"
-                  className="flex items-center justify-center w-full font-medium transition-colors duration-200"
-                  style={{ background: "#C4622D", color: "#FFFFFF", fontSize: "15px", fontWeight: 500, padding: "16px 24px", borderRadius: "9999px" }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.background = "#A8521F")}
-                  onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.background = "#C4622D")}
-                >
+                <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="md" fullWidth onClick={() => setMenuOpen(false)}>
                   Contact
-                </a>
+                </Button>
               </motion.div>
 
             </nav>
