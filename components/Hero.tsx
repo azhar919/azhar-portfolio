@@ -234,17 +234,24 @@ export default function Hero() {
                 maxWidth: "720px",
               }}
             >
-              {words.map((word, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0, y: 26 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.55, delay: 0.08 + i * 0.075, ease: EASE }}
-                  style={{ display: "inline-block", marginRight: "0.28em" }}
-                >
-                  {word}
-                </motion.span>
-              ))}
+              {words.map((word, i) => {
+                // Deterministic scatter so SSR and client match (no hydration mismatch)
+                const rand = (n: number) => { const r = Math.sin(n * 99.73) * 43758.55; return r - Math.floor(r); };
+                const sx = (rand(i + 1) - 0.5) * 220;
+                const sy = (rand(i + 7) - 0.5) * 130;
+                const sr = (rand(i + 13) - 0.5) * 50;
+                return (
+                  <motion.span
+                    key={i}
+                    initial={{ opacity: 0, x: sx, y: sy, rotate: sr, filter: "blur(6px)" }}
+                    animate={{ opacity: 1, x: 0, y: 0, rotate: 0, filter: "blur(0px)" }}
+                    transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.1 + i * 0.06 }}
+                    style={{ display: "inline-block", marginRight: "0.28em" }}
+                  >
+                    {word}
+                  </motion.span>
+                );
+              })}
             </h1>
 
             <motion.p
