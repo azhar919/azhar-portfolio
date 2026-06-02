@@ -396,12 +396,12 @@ function SidebarSection({ title, children }: { title: string; children: React.Re
 /* ── Page ──────────────────────────────────────────────────── */
 export default function CVPage() {
   return (
-    <main style={{ background: "#0A0A0A", minHeight: "100vh" }}>
+    <main style={{ background: "#0B0A09", minHeight: "100vh" }}>
       <FloatingNav />
       <div className="pt-[72px]">
 
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden" style={{ background: "#0A0A0A", paddingTop: "72px", paddingBottom: "72px" }}>
+        <section className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "72px", paddingBottom: "72px" }}>
 
           {/* Ambient orb */}
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
@@ -481,7 +481,7 @@ export default function CVPage() {
         </section>
 
         {/* ── Main grid ── */}
-        <section style={{ background: "#0A0A0A", paddingTop: "64px", paddingBottom: "96px" }}>
+        <section style={{ background: "#0B0A09", paddingTop: "64px", paddingBottom: "96px" }}>
           <div className="page-container">
             <div className="flex flex-col md:flex-row gap-y-14 md:gap-x-16 items-start">
 

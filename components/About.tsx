@@ -284,7 +284,7 @@ function AboutText() {
 
 export default function About() {
   return (
-    <section id="about" className="relative overflow-hidden" style={{ background: "#111111", paddingTop: "120px", paddingBottom: "120px" }}>
+    <section id="about" className="relative overflow-hidden" style={{ background: "#110E0B", paddingTop: "120px", paddingBottom: "120px" }}>
 
       <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
         top: "10%", left: "-5%",

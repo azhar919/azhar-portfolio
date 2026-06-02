@@ -108,7 +108,7 @@ function FAQList() {
 
 export default function FAQ() {
   return (
-    <section id="faq" className="relative overflow-hidden" style={{ background: "#0A0A0A", paddingTop: "120px", paddingBottom: "120px" }}>
+    <section id="faq" className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "120px", paddingBottom: "120px" }}>
 
       <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
         top: "20%", right: "-10%",

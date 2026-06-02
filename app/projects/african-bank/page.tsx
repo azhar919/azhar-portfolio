@@ -62,7 +62,7 @@ function CaseCard({ project, index }: { project: typeof subProjects[0]; index: n
         }}
       >
         {/* Image */}
-        <div className="w-full relative overflow-hidden" style={{ aspectRatio: "16/9", background: "#1A1A1A" }}>
+        <div className="w-full relative overflow-hidden" style={{ aspectRatio: "16/9", background: "#1C1813" }}>
           <Image src={project.image} alt={project.title} fill style={{ objectFit: "cover" }} />
         </div>
 
@@ -93,7 +93,7 @@ export default function AfricanBankPage() {
       <div className="pt-[72px]">
 
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden flex flex-col justify-center" style={{ background: "#0A0A0A", paddingTop: "100px", paddingBottom: "100px", minHeight: "320px" }}>
+        <section className="relative overflow-hidden flex flex-col justify-center" style={{ background: "#0B0A09", paddingTop: "100px", paddingBottom: "100px", minHeight: "320px" }}>
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
             top: "-20%", right: "-8%",
             width: "600px", height: "600px", borderRadius: "50%",
@@ -129,7 +129,7 @@ export default function AfricanBankPage() {
         </section>
 
         {/* ── Case studies ── */}
-        <section className="relative overflow-hidden" style={{ background: "#111111", paddingTop: "80px", paddingBottom: "120px" }}>
+        <section className="relative overflow-hidden" style={{ background: "#110E0B", paddingTop: "80px", paddingBottom: "120px" }}>
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
             bottom: "5%", left: "20%",
             width: "500px", height: "400px", borderRadius: "50%",

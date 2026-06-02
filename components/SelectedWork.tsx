@@ -41,7 +41,7 @@ function BrowserFrame({ image, url, title }: { image: string; url: string; title
       <div
         style={{
           height: "36px",
-          background: "#1A1A1A",
+          background: "#1C1813",
           borderBottom: "1px solid rgba(255,255,255,0.06)",
           display: "flex",
           alignItems: "center",
@@ -67,7 +67,7 @@ function BrowserFrame({ image, url, title }: { image: string; url: string; title
           </div>
         </div>
       </div>
-      <div className="w-full relative overflow-hidden h-[180px] md:h-[220px] lg:h-[300px]" style={{ background: "#1A1A1A" }}>
+      <div className="w-full relative overflow-hidden h-[180px] md:h-[220px] lg:h-[300px]" style={{ background: "#1C1813" }}>
         <Image src={image} alt={title} fill style={{ objectFit: "cover", objectPosition: "top left" }} />
       </div>
     </div>
@@ -203,7 +203,7 @@ function WorkHeading() {
 
 export default function SelectedWork() {
   return (
-    <section id="work" className="relative overflow-hidden" style={{ background: "#111111", paddingTop: "120px", paddingBottom: "120px" }}>
+    <section id="work" className="relative overflow-hidden" style={{ background: "#110E0B", paddingTop: "120px", paddingBottom: "120px" }}>
 
       <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
         bottom: "-10%", left: "30%",

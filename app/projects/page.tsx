@@ -107,7 +107,7 @@ export default function ProjectsPage() {
       <div className="pt-[72px]">
 
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden flex flex-col justify-center" style={{ background: "#0A0A0A", paddingTop: "100px", paddingBottom: "100px", minHeight: "340px" }}>
+        <section className="relative overflow-hidden flex flex-col justify-center" style={{ background: "#0B0A09", paddingTop: "100px", paddingBottom: "100px", minHeight: "340px" }}>
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
             top: "-20%", right: "-8%",
             width: "650px", height: "650px", borderRadius: "50%",
@@ -143,7 +143,7 @@ export default function ProjectsPage() {
         </section>
 
         {/* ── Projects list ── */}
-        <section className="relative overflow-hidden" style={{ background: "#111111", paddingTop: "80px", paddingBottom: "120px" }}>
+        <section className="relative overflow-hidden" style={{ background: "#110E0B", paddingTop: "80px", paddingBottom: "120px" }}>
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
             bottom: "5%", left: "15%",
             width: "500px", height: "400px", borderRadius: "50%",

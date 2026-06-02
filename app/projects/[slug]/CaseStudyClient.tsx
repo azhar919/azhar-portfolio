@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
-import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Search, Target, Layers, Zap, TrendingUp, RefreshCw, AlertCircle, Lightbulb, Compass, CheckCircle, Hammer, BarChart2, PenTool, ArrowUpRight, type LucideIcon } from "lucide-react";
@@ -53,21 +53,6 @@ function getHref(slug: string): string {
   if (slug === "african-bank-website-redesign") return "/projects/african-bank/website-redesign";
   if (slug === "african-bank-onboarding") return "/projects/african-bank/onboarding";
   return `/projects/${slug}`;
-}
-
-/* ── B: Reading progress bar ── */
-function ProgressBar() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
-  return (
-    <motion.div
-      style={{
-        position: "fixed", top: "80px", left: 0, right: 0, height: "3px",
-        background: "#C4622D", transformOrigin: "0%", scaleX, zIndex: 200,
-        boxShadow: "0 0 10px rgba(196,98,45,0.8), 0 0 20px rgba(196,98,45,0.4)",
-      }}
-    />
-  );
 }
 
 /* ── C: Sticky section dot nav ── */
@@ -130,7 +115,7 @@ function LandscapeImage({ src }: { src: string }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [-20, 20]);
   return (
-    <div ref={ref} style={{ width: "100%", borderRadius: "16px", overflow: "hidden", position: "relative", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)" }}>
+    <div ref={ref} style={{ width: "100%", borderRadius: "16px", overflow: "hidden", position: "relative", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)" }}>
       <motion.div style={{ y }}>
         <div style={{ position: "relative", width: "100%", aspectRatio: "16/9" }}>
           <Image src={src} alt="" fill style={{ objectFit: "cover", objectPosition: "top" }} />
@@ -176,7 +161,7 @@ function PageImage({ src }: { src: string }) {
   }, []);
 
   return (
-    <div style={{ width: "100%", height: hasOverflow ? "clamp(320px, 50vw, 560px)" : "auto", borderRadius: "16px", overflow: "hidden", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)", position: "relative" }}>
+    <div style={{ width: "100%", height: hasOverflow ? "clamp(320px, 50vw, 560px)" : "auto", borderRadius: "16px", overflow: "hidden", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)", position: "relative" }}>
       <div ref={scrollRef} style={{ width: "100%", height: "100%", overflowY: hasOverflow ? "scroll" : "visible", scrollbarWidth: "thin", scrollbarColor: "rgba(196,98,45,0.6) rgba(255,255,255,0.06)" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img ref={imgRef} src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
@@ -211,7 +196,7 @@ function PageImage({ src }: { src: string }) {
 
 function ScreenshotImage({ src }: { src: string }) {
   return (
-    <div style={{ borderRadius: "16px", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)", padding: "24px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ borderRadius: "16px", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)", padding: "24px", display: "flex", alignItems: "center", justifyContent: "center" }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt="" style={{ display: "block", maxWidth: "100%", height: "auto", borderRadius: "8px" }} />
     </div>
@@ -229,7 +214,7 @@ function DualImage({ srcs }: { srcs: [string, string] }) {
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.6, ease: EASE, delay: i * 0.12 }}
         >
-          <div style={{ borderRadius: "14px", overflow: "hidden", position: "relative", aspectRatio: "16/9", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
+          <div style={{ borderRadius: "14px", overflow: "hidden", position: "relative", aspectRatio: "16/9", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
             <Image src={src} alt="" fill style={{ objectFit: "cover", objectPosition: "top" }} />
           </div>
         </motion.div>
@@ -242,14 +227,14 @@ function TripleImage({ srcs }: { srcs: [string, string, string] }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: EASE }}>
-        <div style={{ borderRadius: "14px", overflow: "hidden", position: "relative", aspectRatio: "16/7", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
+        <div style={{ borderRadius: "14px", overflow: "hidden", position: "relative", aspectRatio: "16/7", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
           <Image src={srcs[0]} alt="" fill style={{ objectFit: "cover", objectPosition: "top" }} />
         </div>
       </motion.div>
       <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "16px" }}>
         {srcs.slice(1).map((src, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: EASE, delay: 0.1 + i * 0.1 }}>
-            <div style={{ borderRadius: "14px", overflow: "hidden", position: "relative", aspectRatio: "4/3", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 20px 50px rgba(0,0,0,0.4)" }}>
+            <div style={{ borderRadius: "14px", overflow: "hidden", position: "relative", aspectRatio: "4/3", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 20px 50px rgba(0,0,0,0.4)" }}>
               <Image src={src} alt="" fill style={{ objectFit: "cover", objectPosition: "top" }} />
             </div>
           </motion.div>
@@ -379,7 +364,7 @@ function FeaturePanorama({ srcs }: { srcs: string[] }) {
           style={{
             borderRadius: "14px",
             overflow: "hidden",
-            background: "#141414",
+            background: "#17130E",
             border: "1px solid rgba(255,255,255,0.07)",
             boxShadow: "0 24px 60px rgba(0,0,0,0.4)",
             padding: i === 0 ? "20px" : "0",
@@ -488,7 +473,7 @@ function StackedScreenshots({ srcs }: { srcs: string[] }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.55, ease: EASE, delay: i * 0.1 }}
-          style={{ borderRadius: "14px", overflow: "hidden", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}
+          style={{ borderRadius: "14px", overflow: "hidden", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
@@ -502,7 +487,7 @@ function StackedScreenshots({ srcs }: { srcs: string[] }) {
 function LandscapePortraitStack({ srcs }: { srcs: string[] }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-      <div style={{ borderRadius: "14px", overflow: "hidden", position: "relative", aspectRatio: "16/9", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
+      <div style={{ borderRadius: "14px", overflow: "hidden", position: "relative", aspectRatio: "16/9", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
         <Image src={srcs[0]} alt="" fill style={{ objectFit: "cover", objectPosition: "top" }} />
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -554,7 +539,7 @@ function CaseSection({ section, index, onInView }: { section: Section; index: nu
     return () => observer.disconnect();
   }, [index, onInView]);
 
-  const bg = index % 2 === 0 ? "#0A0A0A" : "#111111";
+  const bg = index % 2 === 0 ? "#0B0A09" : "#110E0B";
   const isSideBySide = section.image && section.imageAspect === "screenshot";
   const orbPos = index % 2 === 0
     ? { left: "-8%", top: "10%" }
@@ -634,7 +619,7 @@ function LearningsSection({ learnings, onInView, navIndex }: { learnings: string
   }, [navIndex, onInView]);
 
   return (
-    <motion.section id="section-learnings" ref={ref} style={{ background: "#0A0A0A", paddingTop: "clamp(64px, 7vw, 140px)", paddingBottom: "clamp(64px, 7vw, 140px)", position: "relative", overflow: "hidden" }}>
+    <motion.section id="section-learnings" ref={ref} style={{ background: "#0B0A09", paddingTop: "clamp(64px, 7vw, 140px)", paddingBottom: "clamp(64px, 7vw, 140px)", position: "relative", overflow: "hidden" }}>
       <div aria-hidden="true" style={{
         position: "absolute", top: "0%", right: "-10%",
         width: "600px", height: "600px", borderRadius: "50%",
@@ -699,7 +684,7 @@ function LearningsSection({ learnings, onInView, navIndex }: { learnings: string
 function MoreCaseStudies({ currentSlug }: { currentSlug: string }) {
   const others = caseStudies.filter(cs => cs.slug !== currentSlug);
   return (
-    <section style={{ background: "#111111", paddingTop: "80px", paddingBottom: "80px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+    <section style={{ background: "#110E0B", paddingTop: "80px", paddingBottom: "80px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
       <div className="page-container">
         <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", marginBottom: "32px" }}>More case studies</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -749,13 +734,12 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
   return (
     <main>
       <FloatingNav />
-      <ProgressBar />
       <SectionNav items={navItems} activeIndex={activeSection} />
 
       <div className="pt-[72px]">
 
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden flex flex-col justify-center" style={{ background: "#0A0A0A", paddingTop: "100px", paddingBottom: "100px", minHeight: "420px" }}>
+        <section className="relative overflow-hidden flex flex-col justify-center" style={{ background: "#0B0A09", paddingTop: "100px", paddingBottom: "100px", minHeight: "420px" }}>
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
             top: "-20%", right: "-8%",
             width: "700px", height: "700px", borderRadius: "50%",

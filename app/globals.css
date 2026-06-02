@@ -9,15 +9,18 @@
   --breakpoint-xl3: 2560px;
 
   /* ── Brand ──────────────────────────────────────────────── */
-  --color-dark:        #0A0A0A;
-  /* ── Accent ─────────────────────────────────────────────── */
-  --color-accent:      #C4622D;
-  --color-accent-dark: #A8521F;
-  /* ── Backgrounds ────────────────────────────────────────── */
-  --color-surface:     #0A0A0A;
-  --color-raised:      #141414;
+  --color-dark:        #0B0A09;
+  /* ── Accent (tonal scale) ───────────────────────────────── */
+  --color-accent-light: #E8A06A;
+  --color-accent:       #C4622D;
+  --color-accent-dark:  #A8521F;
+  /* ── Backgrounds (warm dark) ────────────────────────────── */
+  --color-surface:     #0B0A09;
+  --color-raised:      #17130E;
+  --color-alt:         #110E0B;
   /* ── Text ───────────────────────────────────────────────── */
   --color-ink:         #FFFFFF;
+  --color-cream:       #F5F1EC;
   --color-dim:         #ABABAB;
   --color-quiet:       #6B6B6B;
   --color-ghost:       #FFFFFF;
@@ -38,8 +41,8 @@
 }
 
 :root {
-  --gradient-hero:        radial-gradient(ellipse at 70% 10%, #1A1A1A 0%, #0A0A0A 60%);
-  --gradient-hero-subtle: radial-gradient(ellipse at 60% 0%,  #161616 0%, #0A0A0A 50%);
+  --gradient-hero:        radial-gradient(ellipse at 70% 10%, #1C1813 0%, #0B0A09 60%);
+  --gradient-hero-subtle: radial-gradient(ellipse at 60% 0%,  #161616 0%, #0B0A09 50%);
 }
 
 /* ─── Grid Container ────────────────────────────────────────
@@ -92,7 +95,7 @@ html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  background-color: #0A0A0A;
+  background-color: #0B0A09;
   color: #FFFFFF;
 }
 

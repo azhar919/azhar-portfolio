@@ -163,7 +163,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       className="relative min-h-screen flex flex-col justify-center overflow-hidden"
-      style={{ background: "#0A0A0A" }}
+      style={{ background: "#0B0A09" }}
     >
       {/* ── F: Animated dot grid ── */}
       <style>{`

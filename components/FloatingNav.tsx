@@ -287,7 +287,7 @@ export default function FloatingNav() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-[49] flex flex-col md:hidden"
-            style={{ background: "#0A0A0A" }}
+            style={{ background: "#0B0A09" }}
           >
             {/* Mobile header — logo left, X right */}
             <div
