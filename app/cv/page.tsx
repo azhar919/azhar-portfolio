@@ -359,7 +359,7 @@ function AccordionItem({
 
 /* ── Company group ─────────────────────────────────────────── */
 function CompanyGroup({ group, forceOpen = false }: { group: TimelineGroup; forceOpen?: boolean }) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <div>
@@ -405,15 +405,15 @@ function ExperienceTimeline({ forceOpen = false }: { forceOpen?: boolean }) {
   return (
     <div ref={ref} style={{ position: "relative" }}>
       {/* rail track */}
-      <div aria-hidden="true" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "rgba(255,255,255,0.08)" }} />
+      <div aria-hidden="true" className="cv-rail" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "rgba(255,255,255,0.08)" }} />
       {/* rail fill — grows with scroll */}
-      <motion.div aria-hidden="true" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "linear-gradient(to bottom, #E8A06A, #C4622D, #A8521F)", transformOrigin: "top", scaleY: fill, boxShadow: "0 0 8px rgba(196,98,45,0.5)" }} />
+      <motion.div aria-hidden="true" className="cv-rail" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "linear-gradient(to bottom, #E8A06A, #C4622D, #A8521F)", transformOrigin: "top", scaleY: fill, boxShadow: "0 0 8px rgba(196,98,45,0.5)" }} />
 
       {experienceTimeline.map((group, gi) => (
         <AnimatedBlock key={`${group.company}-${gi}`} delay={gi * 0.05}>
-          <div style={{ position: "relative", paddingLeft: "88px", paddingBottom: gi < experienceTimeline.length - 1 ? "48px" : "0" }}>
+          <div className="cv-tl-item" style={{ position: "relative", paddingLeft: "88px", paddingBottom: gi < experienceTimeline.length - 1 ? "48px" : "0" }}>
             {/* logo node on the rail */}
-            <div style={{
+            <div className="cv-tl-node" style={{
               position: "absolute", left: 0, top: 0,
               width: "64px", height: "48px", borderRadius: "13px",
               background: group.logoBg, display: "grid", placeItems: "center",
@@ -433,13 +433,17 @@ function ExperienceTimeline({ forceOpen = false }: { forceOpen?: boolean }) {
 
 /* ── Sidebar section ───────────────────────────────────────── */
 function SidebarSection({ title, icon: Icon, children }: { title: string; icon: LucideIcon; children: React.ReactNode }) {
+  const [hovered, setHovered] = useState(false);
   return (
     <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
-        background: "rgba(255,255,255,0.02)",
-        border: "1px solid rgba(255,255,255,0.06)",
+        background: hovered ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.02)",
+        border: `1px solid ${hovered ? "rgba(196,98,45,0.25)" : "rgba(255,255,255,0.06)"}`,
         borderRadius: 16,
         padding: "20px 22px",
+        transition: "background 0.25s, border-color 0.25s",
       }}
     >
       <h2
@@ -495,7 +499,7 @@ function HeroStat({ value, suffix, label }: { value: number; suffix: string; lab
 const totalProjects = experienceTimeline.reduce((a, g) => a + g.projects.length, 0);
 const heroStats = [
   { value: 6, suffix: "+", label: "Years experience" },
-  { value: experienceTimeline.length, suffix: "", label: "Companies" },
+  { value: experienceTimeline.length, suffix: "", label: "Clients" },
   { value: totalProjects, suffix: "", label: "Projects shipped" },
 ];
 
@@ -544,18 +548,39 @@ function CVPhoto() {
 /* ── Page ──────────────────────────────────────────────────── */
 export default function CVPage() {
   const heroSpot = useSpotlight({ radius: 520, color: "rgba(196,98,45,0.08)" });
-  const [printing, setPrinting] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!printing) return;
-    const t = setTimeout(() => { window.print(); setPrinting(false); }, 120);
-    return () => clearTimeout(t);
-  }, [printing]);
+  const handleDownload = async () => {
+    if (exporting) return;
+    setExporting(true);
+    // Let accordions expand and the export styles apply before capturing.
+    await new Promise(r => setTimeout(r, 250));
+    try {
+      const el = contentRef.current;
+      if (!el) return;
+      const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
+        import("html2canvas-pro"),
+        import("jspdf"),
+      ]);
+      const canvas = await html2canvas(el, { scale: 2, backgroundColor: "#0B0A09", useCORS: true });
+      const w = canvas.width / 2;
+      const h = canvas.height / 2;
+      const pdf = new jsPDF({ orientation: w > h ? "landscape" : "portrait", unit: "px", format: [w, h] });
+      pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, w, h);
+      pdf.save("Azhar-Mohamed-CV.pdf");
+    } catch (err) {
+      console.error("PDF export failed", err);
+    } finally {
+      setExporting(false);
+    }
+  };
 
   return (
     <main style={{ background: "#0B0A09", minHeight: "100vh" }}>
       <FloatingNav />
       <div className="pt-[72px]">
+       <div ref={contentRef} className={exporting ? "cv-exporting" : undefined}>
 
         {/* ── Hero ── */}
         <section className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "72px", paddingBottom: "72px" }} {...heroSpot.handlers}>
@@ -613,22 +638,24 @@ export default function CVPage() {
                   {bio}
                 </motion.p>
 
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.28, ease: EASE }}
-                  className="no-print flex gap-3 flex-wrap pt-1"
-                >
-                  <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" icon={<Mail size={14} />} iconPosition="left">
-                    Get in touch
-                  </Button>
-                  <Button href="https://www.linkedin.com/in/azhar-mohamed-3624491a3" external variant="secondary" size="sm" icon={<LinkedinIcon size={14} />} iconPosition="left">
-                    LinkedIn
-                  </Button>
-                  <Button variant="secondary" size="sm" icon={<Download size={14} />} iconPosition="left" onClick={() => setPrinting(true)}>
-                    Download PDF
-                  </Button>
-                </motion.div>
+                {!exporting && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.28, ease: EASE }}
+                    className="flex gap-3 flex-wrap pt-1"
+                  >
+                    <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" icon={<Mail size={14} />} iconPosition="left">
+                      Get in touch
+                    </Button>
+                    <Button href="https://www.linkedin.com/in/azhar-mohamed-3624491a3" external variant="secondary" size="sm" icon={<LinkedinIcon size={14} />} iconPosition="left">
+                      LinkedIn
+                    </Button>
+                    <Button variant="secondary" size="sm" icon={<Download size={14} />} iconPosition="left" onClick={handleDownload}>
+                      Download PDF
+                    </Button>
+                  </motion.div>
+                )}
 
                 {/* Stats */}
                 <motion.div
@@ -660,11 +687,11 @@ export default function CVPage() {
                   </h2>
                 </AnimatedBlock>
 
-                <ExperienceTimeline forceOpen={printing} />
+                <ExperienceTimeline forceOpen={exporting} />
               </div>
 
               {/* ── Right — Sidebar ── */}
-              <div className="w-full md:w-[300px] shrink-0 flex flex-col gap-8">
+              <div className="w-full md:w-[340px] shrink-0 flex flex-col gap-5">
 
                 <AnimatedBlock delay={0.08}>
                   <SidebarSection title="Industries" icon={Building2}>
@@ -835,6 +862,7 @@ export default function CVPage() {
           </div>
         </section>
 
+       </div>
         <ContactFooter />
       </div>
     </main>

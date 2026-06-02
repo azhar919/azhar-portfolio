@@ -36,6 +36,7 @@ const ROLES = ["onboarding flows", "design systems", "banking experiences", "use
 
 const STATS = [
   { value: 6, suffix: "+", label: "Years experience" },
+  { value: 14, suffix: "", label: "Projects shipped" },
   { value: 6, suffix: "",  label: "Case studies" },
   { value: 3, suffix: "",  label: "Clients" },
 ];
@@ -252,8 +253,8 @@ function AboutText() {
 
       {/* Stats */}
       <div
-        className="grid grid-cols-3"
-        style={{ gap: "16px", padding: "24px 0", borderTop: "1px solid rgba(255,255,255,0.08)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+        className="flex flex-wrap gap-x-10 gap-y-6"
+        style={{ padding: "24px 0", borderTop: "1px solid rgba(255,255,255,0.08)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}
       >
         {STATS.map((s) => (
           <Stat key={s.label} value={s.value} suffix={s.suffix} label={s.label} />

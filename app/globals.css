@@ -94,6 +94,20 @@ html { scroll-behavior: smooth; }
   outline-offset: 3px;
 }
 
+/* ── CV PDF export: force all content visible while capturing ── */
+.cv-exporting * {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}
+
+/* ── CV timeline: tighten on small screens ─────────────────── */
+@media (max-width: 640px) {
+  .cv-tl-item { padding-left: 58px !important; padding-bottom: 36px !important; }
+  .cv-tl-node { width: 46px !important; height: 38px !important; }
+  .cv-rail { left: 22px !important; }
+}
+
 /* ── Print / Save-as-PDF (CV page) ─────────────────────────── */
 @media print {
   .no-print { display: none !important; }
