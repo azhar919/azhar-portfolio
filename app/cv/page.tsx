@@ -554,20 +554,31 @@ export default function CVPage() {
   const handleDownload = async () => {
     if (exporting) return;
     setExporting(true);
-    // Let accordions expand and the export styles apply before capturing.
-    await new Promise(r => setTimeout(r, 250));
+    const SCALE = 3;
     try {
+      // Make sure the web fonts are loaded before capture, otherwise html2canvas
+      // falls back to a default font and the text renders squished/mismeasured.
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+      // Let accordions expand and the export styles apply before capturing.
+      await new Promise(r => setTimeout(r, 300));
+
       const el = contentRef.current;
       if (!el) return;
       const [{ default: html2canvas }, { jsPDF }] = await Promise.all([
         import("html2canvas-pro"),
         import("jspdf"),
       ]);
-      const canvas = await html2canvas(el, { scale: 2, backgroundColor: "#0B0A09", useCORS: true });
-      const w = canvas.width / 2;
-      const h = canvas.height / 2;
-      const pdf = new jsPDF({ orientation: w > h ? "landscape" : "portrait", unit: "px", format: [w, h] });
-      pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, w, h);
+      const canvas = await html2canvas(el, {
+        scale: SCALE,
+        backgroundColor: "#0B0A09",
+        useCORS: true,
+        windowWidth: el.scrollWidth,
+        windowHeight: el.scrollHeight,
+      });
+      const w = canvas.width / SCALE;
+      const h = canvas.height / SCALE;
+      const pdf = new jsPDF({ orientation: w > h ? "landscape" : "portrait", unit: "px", format: [w, h], compress: true });
+      pdf.addImage(canvas.toDataURL("image/png"), "PNG", 0, 0, w, h, undefined, "FAST");
       pdf.save("Azhar-Mohamed-CV.pdf");
     } catch (err) {
       console.error("PDF export failed", err);
