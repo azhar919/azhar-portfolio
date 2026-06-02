@@ -72,7 +72,7 @@ export default function FloatingNav() {
         className="fixed top-0 left-0 right-0 z-50 flex items-center"
         style={{ height: `${NAV_H}px`, background: "rgba(10,10,10,0.72)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}
       >
-        <div className="w-full max-w-[1440px] mx-auto px-5 md:px-10 lg:px-[72px] flex items-center justify-between">
+        <div className="page-container flex items-center justify-between">
 
           {/* Left — logo with more gap from centre */}
           <Link href="/" className="text-ghost hover:opacity-60 transition-opacity duration-200 shrink-0 mr-16" aria-label="Home">
@@ -159,7 +159,7 @@ export default function FloatingNav() {
             className="fixed left-0 right-0 z-40"
             style={{ top: `${NAV_H}px`, background: "#0F0F0F", borderTop: "1px solid rgba(255,255,255,0.07)", borderBottom: "1px solid rgba(255,255,255,0.07)" }}
           >
-            <div className="w-full max-w-[1440px] mx-auto" style={{ padding: "56px 72px" }}>
+            <div className="page-container py-[56px]">
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
                 {workItems.map((col, colIdx) => (
                   <div

@@ -11,26 +11,26 @@ const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const featured = [
   {
     company: "African Bank",
+    title: "Improved Onboarding",
+    description: "Redesigning a high-friction onboarding journey into a streamlined, intuitive experience that guides users with clarity.",
+    image: "/images/Step 3 - Personal details.png",
+    url: "africanbank.co.za/apply",
+    href: "/projects/african-bank/onboarding",
+  },
+  {
+    company: "African Bank",
     title: "Website Redesign",
     description: "Rebuilding a fragmented digital banking platform into a cohesive, scalable experience.",
     image: "/images/african-bank-landing.png.png",
     url: "africanbank.co.za/digital",
     href: "/projects/african-bank/website-redesign",
   },
-  {
-    company: "Nedbank",
-    title: "Everyday Banking",
-    description: "Redesigning retail banking flows for millions of customers across web and mobile.",
-    image: "/images/EDB_creditcard-27main Copy.jpg",
-    url: "nedbank.co.za/personal",
-    href: "/projects/everyday-banking",
-  },
 ];
 
 const secondary = [
-  { company: "African Bank", title: "Improved Onboarding",  href: "/projects/african-bank/onboarding" },
-  { company: "IQ Business",  title: "SharePoint Redesign",  href: "/projects/corporate-banking" },
-  { company: "Nedbank",      title: "Africa Regions",       href: "/projects/africa-regions" },
+  { company: "Nedbank",      title: "Everyday Banking",    href: "/projects/everyday-banking" },
+  { company: "IQ Business",  title: "SharePoint Redesign", href: "/projects/corporate-banking" },
+  { company: "Nedbank",      title: "Africa Regions",      href: "/projects/africa-regions" },
 ];
 
 function BrowserFrame({ image, url, title }: { image: string; url: string; title: string }) {
@@ -182,7 +182,7 @@ export default function SelectedWork() {
       <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
         bottom: "-10%", left: "30%",
         width: "600px", height: "400px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(196,98,45,0.06) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(196,98,45,0.12) 0%, transparent 70%)",
       }} />
 
       <div className="page-container">

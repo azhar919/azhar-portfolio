@@ -222,10 +222,10 @@ export default function Hero() {
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none select-none"
         style={{
-          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.22) 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.9) 1.5px, transparent 1.5px)",
           backgroundSize: "40px 40px",
-          opacity: 0.045,
-          animation: "grid-drift 28s linear infinite",
+          opacity: 0.10,
+          animation: "grid-drift 14s linear infinite",
         }}
       />
 
@@ -234,12 +234,12 @@ export default function Hero() {
         <div style={{
           position: "absolute", top: "-20%", right: "-8%",
           width: "750px", height: "750px", borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(196,98,45,0.18) 0%, transparent 65%)",
+          background: "radial-gradient(circle, rgba(196,98,45,0.22) 0%, transparent 65%)",
         }} />
         <div style={{
           position: "absolute", bottom: "0%", left: "-20%",
           width: "600px", height: "600px", borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(242,169,0,0.05) 0%, transparent 65%)",
+          background: "radial-gradient(circle, rgba(242,169,0,0.08) 0%, transparent 65%)",
         }} />
       </div>
 

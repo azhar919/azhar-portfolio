@@ -81,10 +81,7 @@ function FooterLinkCol({ label, links }: { label: string; links: { label: string
 export default function ContactFooter() {
   return (
     <footer style={{ background: "#0C0C0C" }}>
-      <div
-        className="w-full max-w-[1440px] mx-auto"
-        style={{ padding: "80px 72px" }}
-      >
+      <div className="page-container py-[80px]">
         {/* Top row */}
         <div className="flex flex-col md:flex-row md:justify-between gap-12 md:gap-0">
 

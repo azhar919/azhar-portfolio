@@ -7,11 +7,32 @@ import Link from "next/link";
 import { Search, Target, Layers, Zap, TrendingUp, RefreshCw, AlertCircle, Lightbulb, Compass, CheckCircle, Hammer, BarChart2, PenTool, ArrowUpRight, type LucideIcon } from "lucide-react";
 import FloatingNav from "@/components/FloatingNav";
 import SouthernAfricaMap from "@/components/SouthernAfricaMap";
+import PhoneMockup from "@/components/PhoneMockup";
 import ContactFooter from "@/components/ContactFooter";
 import type { CaseStudy, Section } from "../data";
 import { caseStudies } from "../data";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
+
+function SectionBody({ section }: { section: Section }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      {section.body.map((para, i) => (
+        <p key={i} style={{ fontSize: "17px", color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}>{para}</p>
+      ))}
+      {section.bullets && (
+        <ul style={{ display: "flex", flexDirection: "column", gap: "10px", paddingLeft: 0, listStyle: "none", margin: 0 }}>
+          {section.bullets.map((bullet, i) => (
+            <li key={i} style={{ display: "flex", gap: "10px", alignItems: "flex-start", fontSize: "17px", color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}>
+              <span style={{ color: "#C4622D", flexShrink: 0, marginTop: "4px", fontSize: "12px" }}>→</span>
+              {bullet}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 const SECTION_ICONS: Record<string, LucideIcon> = {
   "Discover":       Search,
@@ -125,7 +146,7 @@ function PortraitImage({ src }: { src: string }) {
       <div style={{
         position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
         width: "400px", height: "400px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(196,98,45,0.12) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(196,98,45,0.15) 0%, transparent 70%)",
         pointerEvents: "none",
       }} />
       <div style={{ position: "relative", width: "min(300px, 100%)", borderRadius: "20px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.10)", boxShadow: "0 40px 100px rgba(0,0,0,0.6)", zIndex: 1 }}>
@@ -272,16 +293,16 @@ function ScatteredImages({ srcs }: { srcs: string[] }) {
   }
 
   return (
-    <div style={{ display: "grid", placeItems: "center", height: "clamp(280px, 40vw, 520px)", overflow: "visible" }}>
+    <div style={{ display: "grid", placeItems: "center", height: "clamp(280px, 40vw, 560px)", overflow: "visible", paddingTop: "24px", paddingBottom: "24px" }}>
       {srcs.slice(0, 3).map((src, i) => (
         <motion.div
           key={i}
           initial={{ rotate: cards[i].rotate, x: cards[i].x, y: cards[i].y }}
-          whileHover={{ rotate: 0, x: cards[i].x, y: -16, scale: 1.06, zIndex: 10 }}
+          whileHover={{ rotate: 0, x: cards[i].x, y: -36, scale: 1.85, zIndex: 10 }}
           transition={{ type: "spring", stiffness: 260, damping: 22 }}
           style={{
             gridArea: "1 / 1",
-            width: "58%",
+            width: "min(58%, 500px)",
             zIndex: cards[i].z,
             borderRadius: "12px",
             overflow: "hidden",
@@ -331,6 +352,43 @@ function WinnerBadge() {
         ↓ {count}%
       </span>
       <span style={{ fontSize: "13px", fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>faster overall</span>
+    </div>
+  );
+}
+
+function PhoneTrio({ srcs }: { srcs: string[] }) {
+  return (
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", gap: "24px", flexWrap: "wrap" }}>
+      {srcs.slice(0, 3).map((src, i) => (
+        <PhoneMockup key={i} src={src} delay={0.1 + i * 0.15} showStatusBar={false} />
+      ))}
+    </div>
+  );
+}
+
+function FeaturePanorama({ srcs }: { srcs: string[] }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      {srcs.map((src, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.55, ease: EASE, delay: i * 0.12 }}
+          style={{
+            borderRadius: "14px",
+            overflow: "hidden",
+            background: "#141414",
+            border: "1px solid rgba(255,255,255,0.07)",
+            boxShadow: "0 24px 60px rgba(0,0,0,0.4)",
+            padding: i === 0 ? "20px" : "0",
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt="" style={{ display: "block", width: "100%", height: "auto", borderRadius: i === 0 ? "8px" : "0" }} />
+        </motion.div>
+      ))}
     </div>
   );
 }
@@ -468,6 +526,8 @@ function SectionImages({ section }: { section: Section }) {
   if (imageAspect === "screenshots")           return <StackedScreenshots srcs={images} />;
   if (imageAspect === "map")                   return <SouthernAfricaMap />;
   if (imageAspect === "annotated-comparison")  return <AnnotatedComparison srcs={images} />;
+  if (imageAspect === "feature-panorama")      return <FeaturePanorama srcs={images} />;
+  if (imageAspect === "phone-trio")            return <PhoneTrio srcs={images} />;
   if (images.length === 1)                  return <LandscapeImage src={images[0]} />;
   if (images.length === 2)                  return <DualImage srcs={[images[0], images[1]]} />;
   return <TripleImage srcs={[images[0], images[1], images[2]]} />;
@@ -504,13 +564,13 @@ function CaseSection({ section, index, onInView }: { section: Section; index: nu
     <motion.section
       id={`section-${index}`}
       ref={ref}
-      style={{ background: bg, paddingTop: "96px", paddingBottom: "96px", position: "relative", overflow: "hidden" }}
+      style={{ background: bg, paddingTop: "clamp(64px, 7vw, 140px)", paddingBottom: "clamp(64px, 7vw, 140px)", position: "relative", overflow: "hidden" }}
     >
       {/* E: Ambient orb */}
       <div aria-hidden="true" style={{
         position: "absolute", ...orbPos,
         width: "500px", height: "500px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(196,98,45,0.055) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(196,98,45,0.10) 0%, transparent 70%)",
         pointerEvents: "none",
       }} />
 
@@ -528,11 +588,7 @@ function CaseSection({ section, index, onInView }: { section: Section; index: nu
                   </span>
                 ); })()}
                 <h2 style={{ fontSize: "clamp(24px, 3vw, 32px)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.25, letterSpacing: "-0.02em" }}>{section.heading}</h2>
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  {section.body.map((para, i) => (
-                    <p key={i} style={{ fontSize: "17px", color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}>{para}</p>
-                  ))}
-                </div>
+                <SectionBody section={section} />
               </div>
               <div className="lg:flex-1 mt-10 lg:mt-0">
                 <SectionImages section={section} />
@@ -547,11 +603,7 @@ function CaseSection({ section, index, onInView }: { section: Section; index: nu
                   </span>
                 ); })()}
                 <h2 style={{ fontSize: "clamp(24px, 3vw, 32px)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.25, letterSpacing: "-0.02em" }}>{section.heading}</h2>
-                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                  {section.body.map((para, i) => (
-                    <p key={i} style={{ fontSize: "17px", color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}>{para}</p>
-                  ))}
-                </div>
+                <SectionBody section={section} />
               </div>
               {section.image && <SectionImages section={section} />}
             </div>
@@ -582,11 +634,11 @@ function LearningsSection({ learnings, onInView, navIndex }: { learnings: string
   }, [navIndex, onInView]);
 
   return (
-    <motion.section id="section-learnings" ref={ref} style={{ background: "#0A0A0A", paddingTop: "96px", paddingBottom: "96px", position: "relative", overflow: "hidden" }}>
+    <motion.section id="section-learnings" ref={ref} style={{ background: "#0A0A0A", paddingTop: "clamp(64px, 7vw, 140px)", paddingBottom: "clamp(64px, 7vw, 140px)", position: "relative", overflow: "hidden" }}>
       <div aria-hidden="true" style={{
         position: "absolute", top: "0%", right: "-10%",
         width: "600px", height: "600px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(196,98,45,0.07) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(196,98,45,0.13) 0%, transparent 70%)",
         pointerEvents: "none",
       }} />
       <div className="page-container" style={{ position: "relative" }}>
@@ -707,7 +759,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
             top: "-20%", right: "-8%",
             width: "700px", height: "700px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(196,98,45,0.14) 0%, transparent 65%)",
+            background: "radial-gradient(circle, rgba(196,98,45,0.18) 0%, transparent 65%)",
           }} />
           <div className="absolute inset-0 noise-texture opacity-[0.02] pointer-events-none" />
 
@@ -763,16 +815,22 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
               </div>
 
               {study.heroImage && (
-                <motion.div
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.9, delay: 0.25, ease: EASE }}
-                  className="lg:w-[45%] mt-12 lg:mt-0"
-                >
-                  <div style={{ position: "relative", width: "100%", aspectRatio: "16/10", borderRadius: "14px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 32px 80px rgba(0,0,0,0.5)" }}>
-                    <Image src={study.heroImage} alt="" fill style={{ objectFit: "cover", objectPosition: "top left" }} />
-                  </div>
-                </motion.div>
+                <div className="lg:w-[45%] mt-12 lg:mt-0 flex justify-center">
+                  {study.heroImageStyle === "phone" ? (
+                    <PhoneMockup src={study.heroImage} />
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0, x: 30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.9, delay: 0.25, ease: EASE }}
+                      style={{ width: "100%" }}
+                    >
+                      <div style={{ position: "relative", width: "100%", aspectRatio: "16/10", borderRadius: "14px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 32px 80px rgba(0,0,0,0.5)" }}>
+                        <Image src={study.heroImage} alt="" fill style={{ objectFit: "cover", objectPosition: "top left" }} />
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
               )}
             </div>
           </div>

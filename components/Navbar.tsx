@@ -31,7 +31,8 @@ export default function Navbar() {
   return (
     <>
       {/* Desktop navbar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-dark h-[80px] flex items-center justify-between px-5 md:px-10 lg:px-[72px]">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-dark h-[80px] flex items-center">
+        <div className="page-container flex items-center justify-between">
         <Link
           href="/"
           className="font-grotesk font-bold text-white text-body whitespace-nowrap"
@@ -69,6 +70,7 @@ export default function Navbar() {
           <motion.span animate={menuOpen ? { opacity: 0 } : { opacity: 1 }} className="block w-5 h-0.5 bg-white rounded-full" />
           <motion.span animate={menuOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }} className="block w-5 h-0.5 bg-white rounded-full" />
         </button>
+        </div>
       </header>
 
       {/* Mobile menu */}

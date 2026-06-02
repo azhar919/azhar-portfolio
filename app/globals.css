@@ -4,6 +4,10 @@
   --font-heading: var(--font-heading);   /* Plus Jakarta Sans */
   --font-body:    var(--font-body);      /* Inter             */
 
+  /* ── Extra-large breakpoints ────────────────────────────── */
+  --breakpoint-xl2: 1920px;
+  --breakpoint-xl3: 2560px;
+
   /* ── Brand ──────────────────────────────────────────────── */
   --color-dark:        #0A0A0A;
   /* ── Accent ─────────────────────────────────────────────── */
@@ -39,6 +43,8 @@
 }
 
 /* ─── Grid Container ────────────────────────────────────────
+   XL2      2560px 160px margins  12 cols  32px gutters
+   XL       1920px 120px margins  12 cols  28px gutters
    Desktop  1440px  72px margins  12 cols  24px gutters
    Tablet    768px  40px margins   8 cols  20px gutters
    Mobile    390px  20px margins   4 cols  16px gutters
@@ -56,6 +62,12 @@
 }
 @media (min-width: 1024px) {
   .page-container { padding-left: 72px; padding-right: 72px; }
+}
+@media (min-width: 1920px) {
+  .page-container { max-width: 1600px; padding-left: 120px; padding-right: 120px; }
+}
+@media (min-width: 2560px) {
+  .page-container { max-width: 2000px; padding-left: 160px; padding-right: 160px; }
 }
 
 /* 12 / 8 / 4 column grid */

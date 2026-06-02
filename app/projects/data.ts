@@ -2,8 +2,9 @@
   label: string;
   heading: string;
   body: string[];
+  bullets?: string[];
   image?: string | string[];
-  imageAspect?: "portrait" | "page" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, default = 16:9
+  imageAspect?: "portrait" | "page" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map" | "feature-panorama" | "phone-trio"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, default = 16:9
   dark?: boolean;
 };
 
@@ -14,6 +15,7 @@ export type CaseStudy = {
   subtitle: string;
   tools: string[];
   heroImage?: string;
+  heroImageStyle?: "phone";
   sections: Section[];
   learnings: string[];
 };
@@ -378,50 +380,80 @@ export const caseStudies: CaseStudy[] = [
     title: "Reimagining Digital Onboarding for Simplicity and Conversion",
     subtitle:
       "Redesigning a fragmented, high-friction onboarding journey into a streamlined, intuitive experience — reducing complexity and guiding users with clarity.",
-    tools: ["Figma", "UI Design", "User Research", "Prototyping", "Human Centred Design"],
+    tools: ["Figma", "UX Design", "UI Design", "Design System"],
+    heroImage: "/images/Initial landing.png",
+    heroImageStyle: "phone",
     sections: [
       {
         label: "The Challenge",
         heading: "Too long. Too complex. Easy to abandon.",
-        body: [
-          "The existing onboarding experience was fundamentally broken: over 30+ screens to complete, heavy manual input required, a 90% drop-off rate, and inconsistent UI and interaction patterns.",
-          "Users weren't completing the journey — they were abandoning it.",
+        body: ["The existing onboarding experience was fundamentally broken:"],
+        bullets: [
+          "Over 30+ screens to complete",
+          "Heavy manual input required",
+          "90% drop-off rate",
+          "Inconsistent UI and interaction patterns",
+          "Confusing button placement and navigation",
         ],
+        image: ["/images/Mpho.png", "/images/PB - Web - NTB.png"],
+        imageAspect: "feature-panorama",
       },
       {
         label: "Insights",
         heading: "Friction was everywhere",
-        body: [
-          "The experience created unnecessary effort at every step: users repeatedly asked for information, unclear instructions, unpredictable navigation, and no clear sense of progress or direction.",
-          "The process didn't feel guided — it felt like work.",
+        body: ["The experience created unnecessary effort at every step:"],
+        bullets: [
+          "Users were repeatedly asked for information",
+          "Instructions were long and unclear",
+          "UI inconsistencies made navigation unpredictable",
+          "No clear sense of progress or direction",
         ],
+        image: "/images/Onboarding.png",
+        imageAspect: "page",
       },
       {
         label: "Approach",
         heading: "Reduce effort. Increase clarity.",
-        body: [
-          "We focused on simplifying the journey at every level: reducing screens, introducing a consistent design system, standardising buttons and layouts, and using API integrations to prepopulate user data where possible.",
-          "Every decision was driven by one principle: make it easier to move forward.",
+        body: ["We focused on simplifying the journey at every level:"],
+        bullets: [
+          "Reduced the number of steps and screens",
+          "Introduced a clear, consistent design system",
+          "Standardised buttons, layouts, and interaction patterns",
+          "Simplified instructions into short, actionable text",
+          "Used API integrations to prepopulate user data where possible",
         ],
+        image: ["/images/OTP.png", "/images/Facial Biometrics.png"],
+        imageAspect: "scattered",
       },
       {
-        label: "The Build",
+        label: "The Solution",
         heading: "A faster, clearer, more human onboarding experience",
-        body: [
-          "The redesigned flow introduced streamlined step-by-step progression, clear and consistent CTAs, reduced cognitive load through better layout and hierarchy, and pre-filled data to minimise manual input.",
-          "The experience shifted from overwhelming and fragmented — to guided, predictable, and efficient.",
+        body: ["The redesigned flow introduced:"],
+        bullets: [
+          "Streamlined step-by-step progression",
+          "Clear and consistent CTAs",
+          "Reduced cognitive load through better layout and hierarchy",
+          "Pre-filled data to minimise manual input",
+          "A modern, clean UI aligned with the new design system",
         ],
-        image: "/images/ab-onboarding-phone.png",
-        imageAspect: "portrait",
+        image: [
+          "/images/Step 1.3 - Getting started.png",
+          "/images/Step 4 - Product selection.png",
+        ],
+        imageAspect: "phone-trio",
       },
       {
         label: "Impact",
         heading: "From drop-offs to completion",
-        body: [
-          "Significant reduction in friction across the journey.",
-          "Improved completion rates and a faster onboarding experience.",
-          "More consistent and scalable design foundation.",
+        body: [],
+        bullets: [
+          "Significant reduction in friction across the journey",
+          "Improved completion rates",
+          "Faster onboarding experience",
+          "More consistent and scalable design foundation",
         ],
+        image: "/images/Completed.png",
+        imageAspect: "phone-trio",
         dark: true,
       },
     ],

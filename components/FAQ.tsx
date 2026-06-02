@@ -67,7 +67,7 @@ export default function FAQ() {
       <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
         top: "20%", right: "-10%",
         width: "500px", height: "500px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(196,98,45,0.07) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(196,98,45,0.13) 0%, transparent 70%)",
       }} />
 
       <div className="page-container">
