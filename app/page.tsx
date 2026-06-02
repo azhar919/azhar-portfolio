@@ -1,5 +1,6 @@
 import FloatingNav from "@/components/FloatingNav";
 import Hero from "@/components/Hero";
+import TrustStrip from "@/components/TrustStrip";
 import About from "@/components/About";
 import Skills from "@/components/Skills";
 import SelectedWork from "@/components/SelectedWork";
@@ -13,6 +14,7 @@ export default function Home() {
       <Hero />
       <About />
       <Skills />
+      <TrustStrip />
       <SelectedWork />
       <FAQ />
       <Contact />

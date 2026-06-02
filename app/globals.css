@@ -88,6 +88,22 @@
 
 html { scroll-behavior: smooth; }
 
+/* ── Keyboard focus ring ───────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* ── Respect reduced-motion for CSS animations (dot grid, marquee, etc.) ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
 /* ── Font shorthand utilities ──────────────────────────────── */
 .font-grotesk  { font-family: var(--font-heading), system-ui, sans-serif; }
 .font-alegreya { font-family: var(--font-body),    system-ui, sans-serif; }
