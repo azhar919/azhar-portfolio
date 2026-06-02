@@ -4,7 +4,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import MotionProvider from "@/components/MotionProvider";
 
-const SITE_URL = "https://azharmohamed.co.za"; // update to your live domain
+const SITE_URL = "https://azhar-portfolio-gold.vercel.app";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-heading",
