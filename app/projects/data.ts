@@ -3,7 +3,7 @@
   heading: string;
   body: string[];
   image?: string | string[];
-  imageAspect?: "portrait" | "page" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, default = 16:9
+  imageAspect?: "portrait" | "page" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, default = 16:9
   dark?: boolean;
 };
 
@@ -92,6 +92,7 @@ export const caseStudies: CaseStudy[] = [
     slug: "business-banking",
     company: "Nedbank",
     title: "Designing for Scale, Precision, and Trust",
+    heroImage: "/images/nedbank-dashboard.png.png",
     subtitle:
       "Reimagining key corporate banking features within Nedbank's NetBank Business Hub — optimising usability for high-stakes users managing global accounts and trade operations.",
     tools: ["Figma", "Sketch", "InVision"],
@@ -104,6 +105,8 @@ export const caseStudies: CaseStudy[] = [
           "They manage complex portfolios, global transactions, and trade documentation daily — any inefficiency costs time and trust.",
           "Our challenge was to redesign critical banking features in the NetBank Business Hub to simplify workflows, improve visibility, and enhance control for enterprise users handling millions in movement.",
         ],
+        image: "/images/process map 2.png",
+        imageAspect: "page",
       },
       {
         label: "Define",
@@ -112,6 +115,8 @@ export const caseStudies: CaseStudy[] = [
           "We conducted stakeholder interviews and user feedback sessions with treasury managers, finance officers, and global trade specialists.",
           "They didn't want flashy design — they wanted clarity, reliability, and control. From these sessions, three core needs emerged: Visibility: Quick access to balances, rates, and documentation. Efficiency: Streamlined, step-light processes for recurring tasks. Confidence: Every action should feel precise and traceable.",
         ],
+        image: "/images/Screenshot 2026-04-01 at 14.23.39 1.png",
+        imageAspect: "screenshot",
       },
       {
         label: "Design",
@@ -121,6 +126,8 @@ export const caseStudies: CaseStudy[] = [
           "The solution was to design with hierarchical clarity — guiding users through complexity without oversimplifying their power.",
           "I structured information into clear, digestible views that let users complete tasks faster and with confidence.",
         ],
+        image: "/images/image 4 prototpye.png",
+        imageAspect: "screenshot",
       },
       {
         label: "Deliver",
@@ -131,6 +138,8 @@ export const caseStudies: CaseStudy[] = [
           "Global Documentary Trade: Streamlined document uploads and status tracking, reducing confusion and processing delays.",
           "Call & Term Investment Accounts: Interactive comparison tables for rates and durations, helping corporate users make quick, informed decisions.",
         ],
+        image: ["/images/image 6.png", "/images/image 7.png", "/images/image 8.png"],
+        imageAspect: "scattered",
       },
       {
         label: "Results",
@@ -240,6 +249,8 @@ export const caseStudies: CaseStudy[] = [
           "The Everyday Banking onboarding experience needed to scale beyond South Africa — into six African regions, each with its own regulatory rules, infrastructure constraints, and user expectations.",
           "The challenge: how do we maintain a unified onboarding experience while respecting local requirements and ensuring each flow feels natural and familiar to its region?",
         ],
+        image: "map",
+        imageAspect: "map",
       },
       {
         label: "Define",
@@ -249,6 +260,7 @@ export const caseStudies: CaseStudy[] = [
           "Beyond regulatory needs, we explored subtle UX differences: connection speeds, device usage patterns, and language tone preferences.",
           "Each discovery reshaped our design decisions.",
         ],
+        image: "/images/unsplash_PUd6C90Isp0.png",
       },
       {
         label: "Design",
@@ -257,6 +269,8 @@ export const caseStudies: CaseStudy[] = [
           "Using the design foundation built during Everyday Banking, I adapted the core onboarding flow to align with each region's unique conditions.",
           "The goal wasn't to copy — it was to translate.",
         ],
+        image: "/images/image 9.png",
+        imageAspect: "screenshot",
       },
       {
         label: "Deliver",
@@ -266,6 +280,8 @@ export const caseStudies: CaseStudy[] = [
           "Value-added offers were repositioned to appear after key tasks, ensuring clients felt supported — not sold to.",
           "The UI adopted Nedbank's growing design system, creating consistency across products and platforms.",
         ],
+        image: "/images/image 10.png",
+        imageAspect: "screenshot",
       },
       {
         label: "Results",

@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Search, Target, Layers, Zap, TrendingUp, RefreshCw, AlertCircle, Lightbulb, Compass, CheckCircle, Hammer, BarChart2, PenTool, ArrowUpRight, type LucideIcon } from "lucide-react";
 import FloatingNav from "@/components/FloatingNav";
+import SouthernAfricaMap from "@/components/SouthernAfricaMap";
 import ContactFooter from "@/components/ContactFooter";
 import type { CaseStudy, Section } from "../data";
 import { caseStudies } from "../data";
@@ -127,7 +128,7 @@ function PortraitImage({ src }: { src: string }) {
         background: "radial-gradient(circle, rgba(196,98,45,0.12) 0%, transparent 70%)",
         pointerEvents: "none",
       }} />
-      <div style={{ position: "relative", width: "300px", borderRadius: "20px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.10)", boxShadow: "0 40px 100px rgba(0,0,0,0.6)", zIndex: 1 }}>
+      <div style={{ position: "relative", width: "min(300px, 100%)", borderRadius: "20px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.10)", boxShadow: "0 40px 100px rgba(0,0,0,0.6)", zIndex: 1 }}>
         <Image src={src} alt="" width={300} height={600} style={{ width: "100%", height: "auto", display: "block" }} />
       </div>
     </div>
@@ -154,7 +155,7 @@ function PageImage({ src }: { src: string }) {
   }, []);
 
   return (
-    <div style={{ width: "100%", height: hasOverflow ? "560px" : "auto", borderRadius: "16px", overflow: "hidden", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)", position: "relative" }}>
+    <div style={{ width: "100%", height: hasOverflow ? "clamp(320px, 50vw, 560px)" : "auto", borderRadius: "16px", overflow: "hidden", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)", position: "relative" }}>
       <div ref={scrollRef} style={{ width: "100%", height: "100%", overflowY: hasOverflow ? "scroll" : "visible", scrollbarWidth: "thin", scrollbarColor: "rgba(196,98,45,0.6) rgba(255,255,255,0.06)" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img ref={imgRef} src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
@@ -198,7 +199,7 @@ function ScreenshotImage({ src }: { src: string }) {
 
 function DualImage({ srcs }: { srcs: [string, string] }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+    <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "16px" }}>
       {srcs.map((src, i) => (
         <motion.div
           key={i}
@@ -224,7 +225,7 @@ function TripleImage({ srcs }: { srcs: [string, string, string] }) {
           <Image src={srcs[0]} alt="" fill style={{ objectFit: "cover", objectPosition: "top" }} />
         </div>
       </motion.div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+      <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "16px" }}>
         {srcs.slice(1).map((src, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, ease: EASE, delay: 0.1 + i * 0.1 }}>
             <div style={{ borderRadius: "14px", overflow: "hidden", position: "relative", aspectRatio: "4/3", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 20px 50px rgba(0,0,0,0.4)" }}>
@@ -249,9 +250,9 @@ function ScatteredImages({ srcs }: { srcs: string[] }) {
   }, []);
 
   const cards = [
-    { rotate: -4, x: -110, y: 6,  z: 1 },
-    { rotate:  1, x:    0, y: -6, z: 3 },
-    { rotate:  4, x:  110, y: 10, z: 2 },
+    { rotate: -4, x: -160, y: 8,  z: 1 },
+    { rotate:  1, x:    0, y: -8, z: 3 },
+    { rotate:  4, x:  160, y: 12, z: 2 },
   ];
 
   if (isMobile) {
@@ -271,7 +272,7 @@ function ScatteredImages({ srcs }: { srcs: string[] }) {
   }
 
   return (
-    <div style={{ maxWidth: "760px", margin: "0 auto", display: "grid", placeItems: "center", height: "380px", overflow: "visible" }}>
+    <div style={{ display: "grid", placeItems: "center", height: "clamp(280px, 40vw, 520px)", overflow: "visible" }}>
       {srcs.slice(0, 3).map((src, i) => (
         <motion.div
           key={i}
@@ -280,7 +281,7 @@ function ScatteredImages({ srcs }: { srcs: string[] }) {
           transition={{ type: "spring", stiffness: 260, damping: 22 }}
           style={{
             gridArea: "1 / 1",
-            width: "52%",
+            width: "58%",
             zIndex: cards[i].z,
             borderRadius: "12px",
             overflow: "hidden",
@@ -326,7 +327,7 @@ function WinnerBadge() {
       padding: "6px 18px",
       display: "inline-flex", alignItems: "center", gap: "8px",
     }}>
-      <span style={{ fontSize: "24px", fontWeight: 800, color: "#22C55E", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
+      <span style={{ fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 800, color: "#22C55E", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
         ↓ {count}%
       </span>
       <span style={{ fontSize: "13px", fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>faster overall</span>
@@ -346,8 +347,8 @@ function AnnotationPin({ x, y, label, value, side = "right" }: { x: number; y: n
       />
       {/* Centre dot */}
       <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#C4622D", boxShadow: "0 0 8px rgba(196,98,45,0.8)", position: "relative", zIndex: 1 }} />
-      {/* Callout */}
-      <div style={{
+      {/* Callout — hidden on mobile */}
+      <div className="hidden md:block" style={{
         position: "absolute", top: "50%", transform: "translateY(-50%)",
         [side === "right" ? "left" : "right"]: "18px",
         background: "#C4622D", borderRadius: "8px", padding: "5px 10px",
@@ -418,6 +419,27 @@ function AnnotatedComparison({ srcs }: { srcs: string[] }) {
   );
 }
 
+/* Multiple screenshots stacked vertically at natural proportions */
+function StackedScreenshots({ srcs }: { srcs: string[] }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+      {srcs.map((src, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.55, ease: EASE, delay: i * 0.1 }}
+          style={{ borderRadius: "14px", overflow: "hidden", background: "#141414", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 /* Landscape on top + portrait centred below */
 function LandscapePortraitStack({ srcs }: { srcs: string[] }) {
   return (
@@ -443,6 +465,8 @@ function SectionImages({ section }: { section: Section }) {
   if (imageAspect === "portrait")           return <PortraitImage src={images[0]} />;
   if (imageAspect === "scattered")          return <ScatteredImages srcs={images} />;
   if (imageAspect === "landscape-portrait")    return <LandscapePortraitStack srcs={images} />;
+  if (imageAspect === "screenshots")           return <StackedScreenshots srcs={images} />;
+  if (imageAspect === "map")                   return <SouthernAfricaMap />;
   if (imageAspect === "annotated-comparison")  return <AnnotatedComparison srcs={images} />;
   if (images.length === 1)                  return <LandscapeImage src={images[0]} />;
   if (images.length === 2)                  return <DualImage srcs={[images[0], images[1]]} />;
