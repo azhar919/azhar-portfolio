@@ -88,6 +88,20 @@
 
 html { scroll-behavior: smooth; }
 
+/* ── Case study hero: roomy on desktop, compact on mobile ──── */
+.case-hero {
+  padding-top: 120px;
+  padding-bottom: 120px;
+  min-height: 68vh;
+}
+@media (max-width: 768px) {
+  .case-hero {
+    padding-top: 80px;
+    padding-bottom: 64px;
+    min-height: auto;
+  }
+}
+
 /* ── Keyboard focus ring ───────────────────────────────────── */
 :focus-visible {
   outline: 2px solid var(--color-accent);

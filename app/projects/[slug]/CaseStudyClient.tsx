@@ -693,15 +693,20 @@ function LearningRow({ learning, index, featured }: { learning: string; index: n
       onMouseLeave={() => setHovered(false)}
       style={{ position: "relative", display: "flex", gap: "clamp(16px, 2.5vw, 32px)", alignItems: "flex-start", cursor: "default" }}
     >
-      {/* Outlined numeral (masks the thread behind it) */}
-      <div style={{ width: "clamp(46px, 7vw, 72px)", flexShrink: 0, display: "flex", justifyContent: "center", position: "relative", zIndex: 1 }}>
+      {/* Outlined numeral (block-level dark mask hides the thread behind it) */}
+      <div style={{
+        width: "clamp(46px, 7vw, 72px)", flexShrink: 0,
+        display: "flex", justifyContent: "center", alignItems: "center",
+        position: "relative", zIndex: 1,
+        background: "#0B0A09", paddingTop: "8px", paddingBottom: "8px",
+      }}>
         <span style={{
-          background: "#0B0A09", padding: "8px 0",
-          fontSize: "clamp(34px, 5.5vw, 64px)", fontWeight: 800, lineHeight: 0.85,
+          fontSize: "clamp(34px, 5.5vw, 64px)", fontWeight: 800, lineHeight: 0.9,
           color: hovered ? "#C4622D" : "transparent",
+          WebkitTextFillColor: hovered ? "#C4622D" : "transparent",
           WebkitTextStroke: `1.5px ${hovered ? "#C4622D" : "rgba(196,98,45,0.55)"}`,
           fontVariantNumeric: "tabular-nums", letterSpacing: "-0.04em",
-          transition: "color 0.3s",
+          transition: "color 0.3s, -webkit-text-fill-color 0.3s",
         }}>
           {String(index + 1).padStart(2, "0")}
         </span>
@@ -895,7 +900,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
       <div className="pt-[72px]">
 
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden flex flex-col justify-center" style={{ background: "#0B0A09", paddingTop: "120px", paddingBottom: "120px", minHeight: "68vh" }}>
+        <section className="case-hero relative overflow-hidden flex flex-col justify-center" style={{ background: "#0B0A09" }}>
           {/* Drifting dot grid */}
           <div aria-hidden="true" className="absolute inset-0 pointer-events-none select-none" style={{
             backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.9) 1.5px, transparent 1.5px)",
@@ -991,7 +996,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1, ease: EASE }}
-            className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+            className="absolute left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
             style={{ bottom: "32px" }}
           >
             <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>Read the story</span>

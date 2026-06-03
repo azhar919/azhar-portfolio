@@ -57,7 +57,7 @@ function Eyebrow() {
 
 export default function TrustStrip() {
   return (
-    <section style={{ background: "#0B0A09", paddingTop: "80px", paddingBottom: "80px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+    <section className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "80px", paddingBottom: "80px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
       <div className="page-container">
         <Eyebrow />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5" style={{ maxWidth: "900px", margin: "0 auto" }}>
