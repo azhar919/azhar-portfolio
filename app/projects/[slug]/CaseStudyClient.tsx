@@ -996,7 +996,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1, ease: EASE }}
-            className="absolute left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
+            className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2"
             style={{ bottom: "32px" }}
           >
             <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>Read the story</span>

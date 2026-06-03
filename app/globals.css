@@ -94,7 +94,9 @@ html { scroll-behavior: smooth; }
   padding-bottom: 120px;
   min-height: 68vh;
 }
-@media (max-width: 768px) {
+/* Compact across the whole stacked range (phone + tablet, below lg) so
+   text-only heroes don't leave a void before the side-by-side layout. */
+@media (max-width: 1023px) {
   .case-hero {
     padding-top: 80px;
     padding-bottom: 64px;
