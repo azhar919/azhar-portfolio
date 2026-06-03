@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,9 +30,22 @@ const featured = [
 ];
 
 const secondary = [
-  { company: "Nedbank",     title: "Everyday Banking",    description: "Retail banking flows redesigned for millions of customers.", href: "/projects/everyday-banking" },
-  { company: "IQ Business", title: "SharePoint Redesign", description: "Restructuring internal information architecture — from chaos to clarity.", href: "/projects/corporate-banking" },
-  { company: "Nedbank",     title: "Africa Regions",      description: "Localising onboarding journeys across six African markets.", href: "/projects/africa-regions" },
+  {
+    company: "Nedbank",
+    title: "Everyday Banking",
+    description: "Simplifying personal banking onboarding into faster, clearer, more human journeys.",
+    image: "/images/EDB_creditcard-27main Copy.jpg",
+    url: "nedbank.co.za/banking",
+    href: "/projects/everyday-banking",
+  },
+  {
+    company: "Nedbank",
+    title: "Corporate Banking",
+    description: "Designing high-stakes corporate banking tools for scale, precision, and trust.",
+    image: "/images/nedbank-dashboard.png.png",
+    url: "nedbank.co.za/business",
+    href: "/projects/business-banking",
+  },
 ];
 
 function BrowserFrame({ image, url, title }: { image: string; url: string; title: string }) {
@@ -97,6 +110,9 @@ function FeaturedCard({ project, index }: { project: typeof featured[0]; index: 
         onMouseMove={handlers.onMouseMove}
         onMouseEnter={() => { setHovered(true); handlers.onMouseEnter(); }}
         onMouseLeave={() => { setHovered(false); handlers.onMouseLeave(); }}
+        onTouchStart={(e) => { setHovered(true); handlers.onTouchStart(e); }}
+        onTouchMove={handlers.onTouchMove}
+        onTouchEnd={() => { handlers.onTouchEnd(); setTimeout(() => setHovered(false), 900); }}
       >
         {overlay}
         <BrowserFrame image={project.image} url={project.url} title={project.title} />
@@ -125,68 +141,6 @@ function FeaturedCard({ project, index }: { project: typeof featured[0]; index: 
   );
 }
 
-function SecondaryCard({ project, index }: { project: typeof secondary[0]; index: number }) {
-  const reveal =
-    index === 0 ? { x: -120, y: 40, scale: 0.86, blur: 12 } :
-    index === 2 ? { x: 120, y: 40, scale: 0.86, blur: 12 } :
-    { y: 90, scale: 0.86, blur: 12 };
-  const { ref, style } = useReveal(reveal);
-  const { handlers, overlay } = useSpotlight({ radius: 300, color: "rgba(196,98,45,0.09)" });
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <motion.div ref={ref} style={{ ...style, height: "100%" }}>
-      <Link
-        href={project.href}
-        className="group flex flex-col transition-all duration-300"
-        style={{
-          position: "relative",
-          overflow: "hidden",
-          height: "100%",
-          minHeight: "190px",
-          background: "rgba(255,255,255,0.04)",
-          border: `1px solid ${hovered ? "rgba(196,98,45,0.3)" : "rgba(255,255,255,0.06)"}`,
-          borderRadius: "16px",
-          padding: "26px",
-          transform: hovered ? "translateY(-5px)" : "translateY(0)",
-          boxShadow: hovered ? "0 24px 60px rgba(0,0,0,0.4)" : "none",
-          transition: "transform 0.3s, border-color 0.3s, box-shadow 0.3s",
-        }}
-        onMouseMove={handlers.onMouseMove}
-        onMouseEnter={() => { setHovered(true); handlers.onMouseEnter(); }}
-        onMouseLeave={() => { setHovered(false); handlers.onMouseLeave(); }}
-      >
-        {overlay}
-        <div className="flex flex-col h-full" style={{ position: "relative", zIndex: 1 }}>
-          <div className="flex items-start justify-between">
-            <span style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#C4622D" }}>
-              {project.company}
-            </span>
-            <motion.span animate={{ x: hovered ? 2 : 0, y: hovered ? -2 : 0 }} transition={{ duration: 0.2 }} className="shrink-0">
-              <ArrowUpRight size={16} style={{ color: hovered ? "#C4622D" : "rgba(255,255,255,0.3)", transition: "color 0.3s" }} />
-            </motion.span>
-          </div>
-
-          <h3 style={{ fontSize: "18px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.01em", marginTop: "12px", lineHeight: 1.25 }}>
-            {project.title}
-          </h3>
-          <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.45)", lineHeight: 1.65, marginTop: "8px" }}>
-            {project.description}
-          </p>
-
-          <motion.span
-            animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 6 }}
-            transition={{ duration: 0.25, ease: EASE }}
-            style={{ fontSize: "13px", fontWeight: 500, color: "#C4622D", marginTop: "auto", paddingTop: "16px" }}
-          >
-            View project →
-          </motion.span>
-        </div>
-      </Link>
-    </motion.div>
-  );
-}
-
 function WorkHeading() {
   const { ref, style } = useReveal({ y: 70, scale: 0.92, blur: 10 });
   return (
@@ -198,6 +152,107 @@ function WorkHeading() {
         Case studies
       </h2>
     </motion.div>
+  );
+}
+
+// ── Mobile-only ──────────────────────────────────────────────────────────
+type MobileItem = {
+  company: string; title: string; description: string; href: string;
+  image?: string; url?: string;
+};
+const mobileItems: MobileItem[] = [...featured, ...secondary];
+
+function MobileWorkCard({ project }: { project: MobileItem }) {
+  const { handlers, overlay } = useSpotlight({ radius: 360, color: "rgba(196,98,45,0.12)" });
+  return (
+    <Link
+      href={project.href}
+      className="group flex flex-col h-full"
+      style={{
+        position: "relative",
+        background: "rgba(255,255,255,0.04)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        borderRadius: "16px",
+        overflow: "hidden",
+      }}
+      onTouchStart={handlers.onTouchStart}
+      onTouchMove={handlers.onTouchMove}
+      onTouchEnd={handlers.onTouchEnd}
+    >
+      {overlay}
+      {project.image && project.url && (
+        <BrowserFrame image={project.image} url={project.url} title={project.title} />
+      )}
+      <div className="flex flex-col gap-2.5 flex-1" style={{ padding: "22px", position: "relative", zIndex: 1 }}>
+        <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#C4622D" }}>
+          {project.company}
+        </p>
+        <h3 style={{ fontSize: "19px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
+          {project.title}
+        </h3>
+        <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", lineHeight: 1.65 }}>
+          {project.description}
+        </p>
+        <span className="inline-flex items-center gap-1.5" style={{ fontSize: "13.5px", fontWeight: 500, color: "#C4622D", marginTop: "auto", paddingTop: "10px" }}>
+          View project
+          <ArrowUpRight size={15} />
+        </span>
+      </div>
+    </Link>
+  );
+}
+
+function MobileCarousel() {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+
+  const onScroll = () => {
+    const el = scrollerRef.current;
+    const first = el?.firstElementChild as HTMLElement | null;
+    if (!el || !first) return;
+    const itemWidth = first.offsetWidth + 14; // card width + gap
+    setActive(Math.max(0, Math.min(mobileItems.length - 1, Math.round(el.scrollLeft / itemWidth))));
+  };
+
+  return (
+    <div className="md:hidden">
+      <div
+        ref={scrollerRef}
+        onScroll={onScroll}
+        className="-mx-5 px-5"
+        style={{
+          display: "flex",
+          gap: "14px",
+          overflowX: "auto",
+          scrollSnapType: "x mandatory",
+          scrollPaddingLeft: "20px",
+          WebkitOverflowScrolling: "touch",
+          scrollbarWidth: "none",
+        }}
+      >
+        {mobileItems.map((project) => (
+          <div key={project.href} style={{ flex: "0 0 82%", scrollSnapAlign: "start" }}>
+            <MobileWorkCard project={project} />
+          </div>
+        ))}
+      </div>
+
+      {/* Dots */}
+      <div className="flex justify-center items-center gap-2 mt-6">
+        {mobileItems.map((_, i) => (
+          <span
+            key={i}
+            style={{
+              width: i === active ? "20px" : "7px",
+              height: "7px",
+              borderRadius: "9999px",
+              background: i === active ? "#C4622D" : "rgba(255,255,255,0.22)",
+              transition: "all 0.3s ease",
+            }}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -215,17 +270,21 @@ export default function SelectedWork() {
 
         <WorkHeading />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+        {/* Desktop: 2×2 grid of image cards */}
+        <div className="hidden md:grid md:grid-cols-2 gap-5 mb-5">
           {featured.map((project, i) => (
             <FeaturedCard key={project.href} project={project} index={i} />
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="hidden md:grid md:grid-cols-2 gap-5">
           {secondary.map((project, i) => (
-            <SecondaryCard key={project.href} project={project} index={i} />
+            <FeaturedCard key={project.href} project={project} index={i} />
           ))}
         </div>
+
+        {/* Mobile: swipe carousel */}
+        <MobileCarousel />
 
       </div>
     </section>

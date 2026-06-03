@@ -1,4 +1,5 @@
 import FloatingNav from "@/components/FloatingNav";
+import MobileActionBar from "@/components/MobileActionBar";
 import Hero from "@/components/Hero";
 import TrustStrip from "@/components/TrustStrip";
 import About from "@/components/About";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <main>
       <FloatingNav />
+      <MobileActionBar />
       <Hero />
       <About />
       <Skills />

@@ -7,7 +7,7 @@
   stats?: { value: number; prefix?: string; suffix?: string; label: string }[];
   image?: string | string[];
   captions?: string[]; // parallel to image[]; short labels shown under each device/image
-  imageAspect?: "portrait" | "page" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map" | "feature-panorama" | "phone-trio"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, default = 16:9
+  imageAspect?: "portrait" | "page" | "laptop" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map" | "feature-panorama" | "phone-trio"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, default = 16:9
   dark?: boolean;
 };
 
@@ -348,7 +348,7 @@ export const caseStudies: CaseStudy[] = [
           "Inspired by modern digital banks like Wio, Revolut, and other international platforms.",
         ],
         image: "/images/Webpage - Personal wireframe.png",
-        imageAspect: "page",
+        imageAspect: "laptop",
       },
       {
         label: "The Solution",
@@ -358,7 +358,7 @@ export const caseStudies: CaseStudy[] = [
           "The experience shifted from confusing and fragmented — to clear, guided, and scalable.",
         ],
         image: "/images/Landing page final.png",
-        imageAspect: "page",
+        imageAspect: "laptop",
       },
       {
         label: "Impact",

@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate } from "framer-motion";
 import { ArrowRight, FileText } from "lucide-react";
 import Button from "./Button";
 
@@ -157,30 +157,95 @@ export default function Hero() {
   const monoScale   = useTransform(scrollYProgress, [0, 0.35], [1, 0.7]);
   const monoY       = useTransform(scrollYProgress, [0, 0.35], [0, -80]);
 
+  // ── Cursor / touch-following light (replaces the static dot grid) ──
+  // Normalised 0–1 target; spring lag gives the light a trailing "comet" feel.
+  const gx = useMotionValue(0.62);
+  const gy = useMotionValue(0.38);
+  // Snappy spring — tracks the cursor crisply (like the card spotlight),
+  // while still smoothing the idle ambient drift on touch devices.
+  const sgx = useSpring(gx, { stiffness: 260, damping: 32, mass: 0.5 });
+  const sgy = useSpring(gy, { stiffness: 260, damping: 32, mass: 0.5 });
+  const lastMove = useRef(0);
+
+  const handlePointer = (e: React.PointerEvent<HTMLElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    gx.set((e.clientX - r.left) / r.width);
+    gy.set((e.clientY - r.top) / r.height);
+    lastMove.current = performance.now();
+  };
+
+  // Ambient drift — when there's no pointer activity (i.e. mobile/touch idle),
+  // the light slowly roams a Lissajous path so the hero never feels dead.
+  useEffect(() => {
+    let raf = 0;
+    const loop = () => {
+      if (performance.now() - lastMove.current > 2200) {
+        const t = performance.now() / 1000;
+        gx.set(0.5 + Math.sin(t * 0.17) * 0.34);
+        gy.set(0.42 + Math.cos(t * 0.12) * 0.28);
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [gx, gy]);
+
+  // Gyroscope tilt — on touch devices the light tracks how the phone is
+  // tilted (a touch-free "cursor"). iOS 13+ needs a one-time tap to grant
+  // motion access; if unavailable/declined, the idle drift above stays.
+  useEffect(() => {
+    const DOE = window.DeviceOrientationEvent as
+      | (typeof DeviceOrientationEvent & { requestPermission?: () => Promise<string> })
+      | undefined;
+    if (!DOE) return;
+
+    const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
+    const onOrient = (e: DeviceOrientationEvent) => {
+      if (e.gamma == null || e.beta == null) return;
+      const nx = (clamp(e.gamma, -25, 25) + 25) / 50;        // left/right tilt
+      const ny = (clamp(e.beta - 45, -25, 25) + 25) / 50;    // forward/back tilt
+      gx.set(0.15 + nx * 0.7);
+      gy.set(0.15 + ny * 0.7);
+      lastMove.current = performance.now();
+    };
+    const start = () => window.addEventListener("deviceorientation", onOrient);
+
+    if (typeof DOE.requestPermission === "function") {
+      const ask = () => {
+        DOE.requestPermission!()
+          .then((s) => { if (s === "granted") start(); })
+          .catch(() => {});
+        window.removeEventListener("touchend", ask);
+      };
+      window.addEventListener("touchend", ask, { once: true });
+      return () => {
+        window.removeEventListener("touchend", ask);
+        window.removeEventListener("deviceorientation", onOrient);
+      };
+    }
+    start();
+    return () => window.removeEventListener("deviceorientation", onOrient);
+  }, [gx, gy]);
+
+  const glowX = useTransform(sgx, (v) => `${v * 100}%`);
+  const glowY = useTransform(sgy, (v) => `${v * 100}%`);
+  // Single subtle terracotta radial — same recipe as the card spotlight.
+  const glowBg = useMotionTemplate`radial-gradient(380px circle at ${glowX} ${glowY}, rgba(196,98,45,0.14), transparent 65%)`;
+
   const words = HEADLINE.split(" ");
 
   return (
     <section
       ref={sectionRef}
+      onPointerMove={handlePointer}
       className="relative min-h-screen flex flex-col justify-center overflow-hidden"
       style={{ background: "#0B0A09" }}
     >
-      {/* ── F: Animated dot grid ── */}
-      <style>{`
-        @keyframes grid-drift {
-          0%   { background-position: 0 0; }
-          100% { background-position: 40px 40px; }
-        }
-      `}</style>
-      <div
+      {/* ── Cursor / touch-following light (roams on its own when idle) ── */}
+      <motion.div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none select-none"
-        style={{
-          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.9) 1.5px, transparent 1.5px)",
-          backgroundSize: "40px 40px",
-          opacity: 0.10,
-          animation: "grid-drift 14s linear infinite",
-        }}
+        style={{ background: glowBg }}
       />
 
       {/* ── Ambient glow orbs ── */}

@@ -8,6 +8,7 @@ import { Search, Target, Layers, Zap, TrendingUp, RefreshCw, AlertCircle, Lightb
 import FloatingNav from "@/components/FloatingNav";
 import SouthernAfricaMap from "@/components/SouthernAfricaMap";
 import PhoneMockup from "@/components/PhoneMockup";
+import LaptopMockup from "@/components/LaptopMockup";
 import ContactFooter from "@/components/ContactFooter";
 import { useSpotlight } from "@/components/useSpotlight";
 import type { CaseStudy, Section } from "../data";
@@ -583,6 +584,7 @@ function SectionImages({ section }: { section: Section }) {
   if (!image) return null;
   const images = Array.isArray(image) ? image : [image];
   if (imageAspect === "page")               return <PageImage src={images[0]} />;
+  if (imageAspect === "laptop")             return <LaptopMockup src={images[0]} />;
   if (imageAspect === "screenshot")         return <ScreenshotImage src={images[0]} />;
   if (imageAspect === "portrait")           return <PortraitImage src={images[0]} />;
   if (imageAspect === "scattered")          return <ScatteredImages srcs={images} />;
