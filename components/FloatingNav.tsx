@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Fragment } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue } from "framer-motion";
@@ -9,33 +9,28 @@ import Button from "./Button";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const NAV_H = 72;
-const LOGO_PATH = "M14 2L27 26H22.5L19 17H9L5.5 26H1L14 2ZM14 6L11 16H17L14 6Z";
 
-/* Interactive logo — terracotta outline redraws + glow on hover */
+/* Logo — thin champagne-gold serif monogram, transparent, no container.
+   Negative tracking tucks the A's right stroke into the M for an interlocked feel. */
 function LogoMark() {
   return (
-    <motion.div
-      initial="rest"
-      whileHover="hover"
-      animate="rest"
-      style={{ width: 26, height: 26, position: "relative", display: "inline-flex" }}
+    <span
+      aria-label="Home"
+      className="transition-colors duration-300 text-[var(--gold)] hover:text-[var(--gold-light)]"
+      style={{
+        display: "inline-flex",
+        fontFamily: "var(--font-serif)",
+        fontStyle: "italic",
+        fontWeight: 400,
+        fontSize: "30px",
+        lineHeight: 1,
+        letterSpacing: "-0.09em",
+        userSelect: "none",
+        paddingRight: "0.06em",
+      }}
     >
-      <motion.div variants={{ rest: { scale: 1, rotate: 0 }, hover: { scale: 1.1, rotate: -4 } }} transition={{ type: "spring", stiffness: 300, damping: 15 }} style={{ width: "100%", height: "100%" }}>
-        <svg width="26" height="26" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Home" style={{ overflow: "visible" }}>
-          <path fillRule="evenodd" clipRule="evenodd" d={LOGO_PATH} fill="currentColor" />
-          <motion.path
-            d={LOGO_PATH}
-            fill="none"
-            stroke="#C4622D"
-            strokeWidth="1.5"
-            strokeLinejoin="round"
-            style={{ filter: "drop-shadow(0 0 4px rgba(196,98,45,0.8))" }}
-            variants={{ rest: { pathLength: 0, opacity: 0 }, hover: { pathLength: 1, opacity: 1 } }}
-            transition={{ duration: 0.6, ease: EASE }}
-          />
-        </svg>
-      </motion.div>
-    </motion.div>
+      AM
+    </span>
   );
 }
 
@@ -140,28 +135,28 @@ export default function FloatingNav() {
             background: scrolled ? "rgba(10,10,10,0.85)" : "rgba(10,10,10,0.55)",
             backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
             border: "1px solid rgba(255,255,255,0.1)",
-            borderRadius: "9999px",
+            borderRadius: "var(--radius-pill)",
             boxShadow: scrolled
               ? "0 12px 40px rgba(0,0,0,0.5)"
               : "0 8px 32px rgba(0,0,0,0.35)",
-            padding: "10px 10px 10px 26px",
+            padding: "13px 13px 13px 30px",
             transition: "background 0.3s, box-shadow 0.3s",
             position: "relative",
           }}
         >
           {/* Reading progress bar — hugs the bottom of the pill */}
-          <div aria-hidden="true" style={{ position: "absolute", left: "26px", right: "26px", bottom: "6px", height: "2px", borderRadius: "9999px", background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
-            <motion.div style={{ height: "100%", borderRadius: "9999px", background: "#C4622D", transformOrigin: "0% 50%", scaleX: progressX, boxShadow: "0 0 8px rgba(196,98,45,0.6)" }} />
+          <div aria-hidden="true" style={{ position: "absolute", left: "30px", right: "30px", bottom: "7px", height: "2px", borderRadius: "var(--radius-pill)", background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
+            <motion.div style={{ height: "100%", borderRadius: "var(--radius-pill)", background: "var(--gold)", transformOrigin: "0% 50%", scaleX: progressX, boxShadow: "0 0 8px rgb(var(--gold-rgb) / 0.6)" }} />
           </div>
 
           {/* Logo */}
-          <Link href="/" className="text-ghost transition-opacity duration-200 shrink-0 md:mr-6" aria-label="Home">
+          <Link href="/" className="text-ghost transition-opacity duration-200 shrink-0 md:mr-9" aria-label="Home">
             <LogoMark />
           </Link>
 
           {/* Centre — desktop links with sliding indicator */}
           <nav
-            className="hidden md:flex items-center gap-1 relative"
+            className="hidden md:flex items-center gap-2 relative"
             onMouseLeave={() => { setHoveredKey(null); closeDropdown(); }}
           >
             {NAV_ITEMS.map((item) => {
@@ -169,7 +164,7 @@ export default function FloatingNav() {
               const inner = (
                 <span
                   className="relative z-10 inline-flex items-center gap-1.5"
-                  style={{ fontSize: "15px", fontWeight: 500, color: lit ? "#fff" : "rgba(255,255,255,0.62)", transition: "color 0.2s" }}
+                  style={{ fontSize: "var(--text-ui)", fontWeight: 500, color: lit ? "#fff" : "rgba(255,255,255,0.62)", transition: "color 0.2s" }}
                 >
                   {item.label}
                   {item.dropdown && (
@@ -189,7 +184,7 @@ export default function FloatingNav() {
                     <motion.div
                       layoutId="navPill"
                       transition={{ type: "spring", stiffness: 420, damping: 34 }}
-                      style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.09)", borderRadius: "9999px" }}
+                      style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.09)", borderRadius: "var(--radius-pill)" }}
                     />
                   )}
                   {item.dropdown ? (
@@ -203,7 +198,7 @@ export default function FloatingNav() {
           </nav>
 
           {/* Contact + mobile toggle */}
-          <span className="hidden md:inline-flex md:ml-5">
+          <span className="hidden md:inline-flex md:ml-7">
             <Magnetic strength={0.5}>
               <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" icon={<Mail size={14} />} iconPosition="left">
                 Contact
@@ -233,17 +228,19 @@ export default function FloatingNav() {
                 background: "rgba(14,14,14,0.92)",
                 backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
                 border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "22px",
+                borderRadius: "var(--radius-2xl)",
                 boxShadow: "0 30px 80px rgba(0,0,0,0.55)",
                 overflow: "hidden",
               }}
             >
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", padding: "24px" }}>
-                {workItems.map((col) => (
-                  <div key={col.company} className="flex flex-col">
+              <div style={{ display: "flex", gap: "14px", padding: "24px" }}>
+                {workItems.map((col, ci) => (
+                  <Fragment key={col.company}>
+                    {ci > 0 && <div className="divider-gold-v" aria-hidden="true" />}
+                  <div className="flex flex-col" style={{ flex: 1 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "0 12px", marginBottom: "10px" }}>
-                      <Briefcase size={13} color="#C4622D" />
-                      <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.35)" }}>
+                      <Briefcase size={13} color="var(--gold)" />
+                      <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.35)" }}>
                         {col.company}
                       </p>
                     </div>
@@ -259,18 +256,19 @@ export default function FloatingNav() {
                           onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                         >
                           <div className="flex flex-col gap-0.5">
-                            <span className="transition-colors duration-150 group-hover:text-[#C4622D]" style={{ fontSize: "15px", fontWeight: 500, color: "#FFFFFF" }}>
+                            <span className="transition-colors duration-150 group-hover:text-[var(--gold)]" style={{ fontSize: "var(--text-ui)", fontWeight: 500, color: "#FFFFFF" }}>
                               {link.label}
                             </span>
                             <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.4)", lineHeight: 1.4 }}>{link.desc}</span>
                           </div>
                           <span className="shrink-0 ml-3 transition-transform duration-200 group-hover:translate-x-1">
-                            <ArrowRight size={14} className="transition-colors duration-200 group-hover:text-[#C4622D]" style={{ color: "rgba(255,255,255,0.3)" }} />
+                            <ArrowRight size={14} className="transition-colors duration-200 group-hover:text-[var(--gold)]" style={{ color: "rgba(255,255,255,0.3)" }} />
                           </span>
                         </Link>
                       ))}
                     </div>
                   </div>
+                  </Fragment>
                 ))}
               </div>
             </motion.div>
@@ -344,7 +342,7 @@ export default function FloatingNav() {
                               <div style={{ height: "1px", background: "rgba(255,255,255,0.08)", margin: "4px 0 0" }} />
                             )}
                             <p style={{
-                              fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em",
+                              fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em",
                               color: "rgba(255,255,255,0.4)", marginTop: "24px", marginBottom: "12px",
                             }}>
                               {col.company}
@@ -356,7 +354,7 @@ export default function FloatingNav() {
                                   href={link.href}
                                   onClick={() => setMenuOpen(false)}
                                   className="transition-colors duration-150 active:text-white"
-                                  style={{ fontSize: "16px", fontWeight: 400, color: "rgba(255,255,255,0.7)", marginBottom: "10px" }}
+                                  style={{ fontSize: "var(--text-md)", fontWeight: 400, color: "rgba(255,255,255,0.7)", marginBottom: "10px" }}
                                   onMouseEnter={e => (e.currentTarget.style.color = "#ffffff")}
                                   onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}
                                 >

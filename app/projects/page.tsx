@@ -57,7 +57,7 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
         style={{
           background: "rgba(255,255,255,0.04)",
           border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: "20px",
+          borderRadius: "var(--radius-2xl)",
           padding: "36px",
           display: "flex",
         }}
@@ -77,16 +77,16 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
         }}
       >
         <div className="flex flex-col gap-3" style={{ flex: 1 }}>
-          <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)" }}>
+          <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)" }}>
             {project.company}
           </p>
           <h3 style={{ fontSize: "22px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
             {project.title}
           </h3>
-          <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.5)", lineHeight: 1.75, maxWidth: "640px" }}>
+          <p style={{ fontSize: "var(--text-ui)", color: "rgba(255,255,255,0.5)", lineHeight: 1.75, maxWidth: "640px" }}>
             {project.description}
           </p>
-          <span style={{ fontSize: "14px", fontWeight: 500, color: "#C4622D", marginTop: "8px" }}>
+          <span style={{ fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--gold)", marginTop: "8px" }}>
             View case study →
           </span>
         </div>
@@ -111,7 +111,7 @@ export default function ProjectsPage() {
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
             top: "-20%", right: "-8%",
             width: "650px", height: "650px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(196,98,45,0.14) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.14) 0%, transparent 70%)",
           }} />
 
           <div className="page-container relative">
@@ -119,7 +119,7 @@ export default function ProjectsPage() {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: EASE }}
-              style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D", marginBottom: "16px" }}
+              style={{ fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "16px" }}
             >
               Selected Work
             </motion.p>
@@ -127,7 +127,7 @@ export default function ProjectsPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: EASE }}
-              style={{ fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 800, color: "#F5F1EC", lineHeight: 1.08, letterSpacing: "-0.04em" }}
+              style={{ fontSize: "var(--text-h1)", fontWeight: 800, color: "#F5F1EC", lineHeight: 1.08, letterSpacing: "-0.04em" }}
             >
               Where complexity<br className="hidden md:block" /> becomes clarity
             </motion.h1>
@@ -135,7 +135,7 @@ export default function ProjectsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
-              style={{ marginTop: "24px", fontSize: "18px", color: "rgba(255,255,255,0.5)", lineHeight: 1.65, maxWidth: "520px" }}
+              style={{ marginTop: "24px", fontSize: "var(--text-lg)", color: "rgba(255,255,255,0.5)", lineHeight: 1.65, maxWidth: "520px" }}
             >
               Case studies in banking and enterprise design — simplifying what banks make complex.
             </motion.p>
@@ -147,7 +147,7 @@ export default function ProjectsPage() {
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
             bottom: "5%", left: "15%",
             width: "500px", height: "400px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(196,98,45,0.05) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.05) 0%, transparent 70%)",
           }} />
           <div className="page-container relative">
             <div className="flex flex-col gap-4">

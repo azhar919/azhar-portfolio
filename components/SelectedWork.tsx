@@ -76,7 +76,7 @@ function BrowserFrame({ image, url, title }: { image: string; url: string; title
               display: "flex", alignItems: "center", justifyContent: "center",
             }}
           >
-            <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", userSelect: "none" }}>{url}</span>
+            <span style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.3)", userSelect: "none" }}>{url}</span>
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@ function BrowserFrame({ image, url, title }: { image: string; url: string; title
 
 function FeaturedCard({ project, index }: { project: typeof featured[0]; index: number }) {
   const { ref, style } = useReveal({ x: index % 2 === 0 ? -120 : 120, y: 60, scale: 0.86, blur: 14 });
-  const { handlers, overlay } = useSpotlight({ radius: 460, color: "rgba(196,98,45,0.1)" });
+  const { handlers, overlay } = useSpotlight({ radius: 460, color: "rgb(var(--gold-rgb) / 0.1)" });
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -100,8 +100,8 @@ function FeaturedCard({ project, index }: { project: typeof featured[0]; index: 
         style={{
           position: "relative",
           background: "rgba(255,255,255,0.04)",
-          border: `1px solid ${hovered ? "rgba(196,98,45,0.3)" : "rgba(255,255,255,0.08)"}`,
-          borderRadius: "16px",
+          border: `1px solid ${hovered ? "rgb(var(--gold-rgb) / 0.3)" : "rgba(255,255,255,0.08)"}`,
+          borderRadius: "var(--radius-xl)",
           overflow: "hidden",
           transform: hovered ? "translateY(-6px)" : "translateY(0)",
           boxShadow: hovered ? "0 32px 80px rgba(0,0,0,0.5)" : "none",
@@ -117,18 +117,18 @@ function FeaturedCard({ project, index }: { project: typeof featured[0]; index: 
         {overlay}
         <BrowserFrame image={project.image} url={project.url} title={project.title} />
         <div className="flex flex-col gap-3 flex-1" style={{ padding: "28px", position: "relative", zIndex: 1 }}>
-          <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)" }}>
+          <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)" }}>
             {project.company}
           </p>
           <h3 style={{ fontSize: "22px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
             {project.title}
           </h3>
-          <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
+          <p style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.5)", lineHeight: 1.7 }}>
             {project.description}
           </p>
           <span
             className="inline-flex items-center gap-1.5"
-            style={{ fontSize: "14px", fontWeight: 500, color: "#C4622D", marginTop: "auto", paddingTop: "8px" }}
+            style={{ fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--gold)", marginTop: "auto", paddingTop: "8px" }}
           >
             View project
             <span className="transition-transform duration-200 group-hover:translate-x-1" style={{ display: "inline-flex" }}>
@@ -145,10 +145,10 @@ function WorkHeading() {
   const { ref, style } = useReveal({ y: 70, scale: 0.92, blur: 10 });
   return (
     <motion.div ref={ref} style={style} className="flex flex-col gap-4 mb-16">
-      <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D" }}>
+      <p style={{ fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)" }}>
         Selected Work
       </p>
-      <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F5F1EC" }}>
+      <h2 style={{ fontSize: "var(--text-h2)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F5F1EC" }}>
         Case studies
       </h2>
     </motion.div>
@@ -163,7 +163,7 @@ type MobileItem = {
 const mobileItems: MobileItem[] = [...featured, ...secondary];
 
 function MobileWorkCard({ project }: { project: MobileItem }) {
-  const { handlers, overlay } = useSpotlight({ radius: 360, color: "rgba(196,98,45,0.12)" });
+  const { handlers, overlay } = useSpotlight({ radius: 360, color: "rgb(var(--gold-rgb) / 0.12)" });
   // Scroll-linked reveal: rises + sharpens on the way in, recedes on the way out.
   const { ref, style } = useReveal({ y: 90, scale: 0.82, blur: 14 });
   return (
@@ -175,7 +175,7 @@ function MobileWorkCard({ project }: { project: MobileItem }) {
           position: "relative",
           background: "rgba(255,255,255,0.04)",
           border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: "16px",
+          borderRadius: "var(--radius-xl)",
           overflow: "hidden",
         }}
         onTouchStart={handlers.onTouchStart}
@@ -187,7 +187,7 @@ function MobileWorkCard({ project }: { project: MobileItem }) {
           <BrowserFrame image={project.image} url={project.url} title={project.title} />
         )}
         <div className="flex flex-col gap-2.5 flex-1" style={{ padding: "22px", position: "relative", zIndex: 1 }}>
-          <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#C4622D" }}>
+          <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--gold)" }}>
             {project.company}
           </p>
           <h3 style={{ fontSize: "19px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
@@ -196,7 +196,7 @@ function MobileWorkCard({ project }: { project: MobileItem }) {
           <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", lineHeight: 1.65 }}>
             {project.description}
           </p>
-          <span className="inline-flex items-center gap-1.5" style={{ fontSize: "13.5px", fontWeight: 500, color: "#C4622D", marginTop: "auto", paddingTop: "10px" }}>
+          <span className="inline-flex items-center gap-1.5" style={{ fontSize: "13.5px", fontWeight: 500, color: "var(--gold)", marginTop: "auto", paddingTop: "10px" }}>
             View project
             <ArrowUpRight size={15} />
           </span>
@@ -249,8 +249,8 @@ function MobileCarousel() {
             style={{
               width: i === active ? "20px" : "7px",
               height: "7px",
-              borderRadius: "9999px",
-              background: i === active ? "#C4622D" : "rgba(255,255,255,0.22)",
+              borderRadius: "var(--radius-pill)",
+              background: i === active ? "var(--gold)" : "rgba(255,255,255,0.22)",
               transition: "all 0.3s ease",
             }}
           />
@@ -262,12 +262,12 @@ function MobileCarousel() {
 
 export default function SelectedWork() {
   return (
-    <section id="work" className="relative overflow-hidden" style={{ background: "#110E0B", paddingTop: "120px", paddingBottom: "120px" }}>
+    <section id="work" className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "120px", paddingBottom: "120px" }}>
 
       <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
         bottom: "-10%", left: "30%",
         width: "600px", height: "400px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(196,98,45,0.12) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.12) 0%, transparent 70%)",
       }} />
 
       <div className="page-container">

@@ -15,7 +15,7 @@ type SpotlightOpts = {
  * Works on touch too: tapping/dragging lights the glow at the finger, then it
  * fades out shortly after release so mobile cards aren't visually dead.
  */
-export function useSpotlight({ radius = 340, color = "rgba(196,98,45,0.13)" }: SpotlightOpts = {}) {
+export function useSpotlight({ radius = 340, color = "rgb(var(--gold-rgb) / 0.13)" }: SpotlightOpts = {}) {
   const [pos, setPos] = useState({ x: -9999, y: -9999 });
   const [active, setActive] = useState(false);
   const fadeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);

@@ -11,9 +11,9 @@
   /* ── Brand ──────────────────────────────────────────────── */
   --color-dark:        #0B0A09;
   /* ── Accent (tonal scale) ───────────────────────────────── */
-  --color-accent-light: #E8A06A;
-  --color-accent:       #C4622D;
-  --color-accent-dark:  #A8521F;
+  --color-accent-light: var(--gold-light);
+  --color-accent:       var(--gold);
+  --color-accent-dark:  var(--gold-dark);
   /* ── Backgrounds (warm dark) ────────────────────────────── */
   --color-surface:     #0B0A09;
   --color-raised:      #17130E;
@@ -28,19 +28,43 @@
   --color-line:        #222222;
   --color-line-subtle: #161616;
 
-  /* ── Typography scale ────────────────────────────────────── */
-  --text-display:  4.5rem;
-  --text-h1:       3.5rem;
-  --text-h2:       2.5rem;
-  --text-h3:       1.75rem;
-  --text-h4:       1.25rem;
-  --text-body-lg:  1.125rem;
-  --text-body:     1rem;
-  --text-small:    0.875rem;
-  --text-label:    0.6875rem;
+  /* Typography scale lives in :root below — responsive, used via var(--text-*) */
 }
 
 :root {
+  /* ── ACCENT — single source of truth. Change these 4 lines to reshade the whole site. ──
+     Hex tokens feed both inline styles (var(--gold)) and the Tailwind accent utilities
+     (@theme aliases below). --gold-rgb holds the raw channels so any alpha works via
+     rgb(var(--gold-rgb) / 0.x). */
+  /* Accent (token names kept as --gold* for now; values = terracotta) */
+  --gold:        #C4622D;   /* terracotta            */
+  --gold-light:  #E8A06A;   /* light terracotta      */
+  --gold-dark:   #A8521F;   /* deep terracotta       */
+  --gold-rgb:    196 98 45;
+
+  /* ── RADIUS SCALE — single source of truth for corner rounding. ── */
+  --radius-sm:   8px;    /* small chips, inputs        */
+  --radius-md:   12px;   /* compact cards, image tops  */
+  --radius-lg:   14px;   /* default cards / frames     */
+  --radius-xl:   16px;   /* feature cards              */
+  --radius-2xl:  20px;   /* large panels, dropdown     */
+  --radius-pill: 9999px; /* buttons, nav, pills        */
+
+  /* ── TYPE SCALE — single source of truth for font sizes. Responsive headings via clamp. ── */
+  --text-hero:  clamp(48px, 6vw, 72px);  /* home hero h1        */
+  --text-h1:    clamp(36px, 5vw, 64px);  /* page / case heroes  */
+  --text-h2:    clamp(32px, 4vw, 52px);  /* section headings    */
+  --text-h3:    clamp(24px, 3vw, 32px);  /* sub-headings        */
+  --text-lg:    18px;                    /* lead paragraph      */
+  --text-body:  17px;                    /* body                */
+  --text-md:    16px;                    /* body / inputs       */
+  --text-ui:    15px;                    /* nav, buttons, UI     */
+  --text-sm:    14px;                    /* small body          */
+  --text-xs:    13px;                    /* captions            */
+  --text-2xs:   12px;                    /* fine print          */
+  --text-label: 11px;                    /* uppercase eyebrows  */
+  --text-micro: 10px;                    /* tiny cues           */
+
   --gradient-hero:        radial-gradient(ellipse at 70% 10%, #1C1813 0%, #0B0A09 60%);
   --gradient-hero-subtle: radial-gradient(ellipse at 60% 0%,  #161616 0%, #0B0A09 50%);
 }
@@ -87,6 +111,23 @@
 }
 
 html { scroll-behavior: smooth; }
+
+/* ── Gold gradient hairline — tasteful section separator ───── */
+.divider-gold {
+  height: 1px;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  border: 0;
+  background: linear-gradient(90deg, transparent, rgb(var(--gold-rgb) / 0.32), transparent);
+}
+/* Vertical variant — column separator; stretches to its flex row's height */
+.divider-gold-v {
+  width: 1px;
+  align-self: stretch;
+  flex-shrink: 0;
+  background: linear-gradient(180deg, transparent, rgb(var(--gold-rgb) / 0.28), transparent);
+}
 
 /* ── Case study hero: roomy on desktop, compact on mobile ──── */
 .case-hero {

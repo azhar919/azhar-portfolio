@@ -17,7 +17,7 @@ const faqs = [
 ];
 
 function FAQItem({ faq, isOpen, onToggle }: { faq: typeof faqs[0]; isOpen: boolean; onToggle: () => void }) {
-  const { handlers, overlay } = useSpotlight({ radius: 260, color: "rgba(196,98,45,0.08)" });
+  const { handlers, overlay } = useSpotlight({ radius: 260, color: "rgb(var(--gold-rgb) / 0.08)" });
   return (
     <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)", position: "relative", overflow: "hidden" }} {...handlers}>
       {overlay}
@@ -29,7 +29,7 @@ function FAQItem({ faq, isOpen, onToggle }: { faq: typeof faqs[0]; isOpen: boole
       >
         <span
           className="transition-colors duration-200 group-hover:text-white"
-          style={{ fontSize: "18px", fontWeight: 600, color: isOpen ? "#fff" : "rgba(255,255,255,0.82)", lineHeight: 1.4, letterSpacing: "-0.01em" }}
+          style={{ fontSize: "var(--text-lg)", fontWeight: 600, color: isOpen ? "#fff" : "rgba(255,255,255,0.82)", lineHeight: 1.4, letterSpacing: "-0.01em" }}
         >
           {faq.q}
         </span>
@@ -39,12 +39,12 @@ function FAQItem({ faq, isOpen, onToggle }: { faq: typeof faqs[0]; isOpen: boole
           style={{
             flexShrink: 0, width: "32px", height: "32px", borderRadius: "50%",
             display: "grid", placeItems: "center",
-            border: `1px solid ${isOpen ? "rgba(196,98,45,0.45)" : "rgba(255,255,255,0.15)"}`,
-            background: isOpen ? "rgba(196,98,45,0.12)" : "transparent",
+            border: `1px solid ${isOpen ? "rgb(var(--gold-rgb) / 0.45)" : "rgba(255,255,255,0.15)"}`,
+            background: isOpen ? "rgb(var(--gold-rgb) / 0.12)" : "transparent",
             transition: "background 0.25s, border-color 0.25s",
           }}
         >
-          <Plus size={16} color={isOpen ? "#C4622D" : "rgba(255,255,255,0.6)"} />
+          <Plus size={16} color={isOpen ? "var(--gold)" : "rgba(255,255,255,0.6)"} />
         </motion.span>
       </button>
 
@@ -57,7 +57,7 @@ function FAQItem({ faq, isOpen, onToggle }: { faq: typeof faqs[0]; isOpen: boole
             transition={{ duration: 0.3, ease: EASE }}
             style={{ overflow: "hidden", position: "relative", zIndex: 1 }}
           >
-            <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.5)", lineHeight: 1.8, paddingBottom: "24px", paddingRight: "40px" }}>
+            <p style={{ fontSize: "var(--text-ui)", color: "rgba(255,255,255,0.5)", lineHeight: 1.8, paddingBottom: "24px", paddingRight: "40px" }}>
               {faq.a}
             </p>
           </motion.div>
@@ -71,13 +71,13 @@ function FAQLeft() {
   const { ref, style } = useReveal({ y: 70, scale: 0.94, blur: 10 });
   return (
     <motion.div ref={ref} style={style} className="md:sticky md:top-32 flex flex-col gap-5 self-start">
-      <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D" }}>
+      <p style={{ fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)" }}>
         FAQ
       </p>
-      <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F5F1EC" }}>
+      <h2 style={{ fontSize: "var(--text-h2)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F5F1EC" }}>
         Your design questions, answered
       </h2>
-      <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.45)", lineHeight: 1.7, maxWidth: "360px" }}>
+      <p style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.45)", lineHeight: 1.7, maxWidth: "360px" }}>
         A few things people often ask about how I work. Still curious about something?
       </p>
       <div className="pt-2">
@@ -113,7 +113,7 @@ export default function FAQ() {
       <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
         top: "20%", right: "-10%",
         width: "500px", height: "500px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(196,98,45,0.13) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.13) 0%, transparent 70%)",
       }} />
 
       <div className="page-container">

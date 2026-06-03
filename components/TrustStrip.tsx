@@ -23,7 +23,7 @@ function LogoChip({ client, index }: { client: typeof clients[0]; index: number 
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
         style={{
           background: client.bg,
-          borderRadius: "16px",
+          borderRadius: "var(--radius-xl)",
           height: "112px",
           display: "grid",
           placeItems: "center",
@@ -48,7 +48,7 @@ function Eyebrow() {
   return (
     <motion.p
       ref={ref}
-      style={{ ...style, fontSize: "11px", fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", textAlign: "center", marginBottom: "32px" }}
+      style={{ ...style, fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", textAlign: "center", marginBottom: "32px" }}
     >
       Worked with
     </motion.p>
@@ -57,7 +57,7 @@ function Eyebrow() {
 
 export default function TrustStrip() {
   return (
-    <section className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "80px", paddingBottom: "80px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+    <section className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "80px", paddingBottom: "80px" }}>
       <div className="page-container">
         <Eyebrow />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5" style={{ maxWidth: "900px", margin: "0 auto" }}>

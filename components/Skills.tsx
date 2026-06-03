@@ -51,8 +51,8 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
           overflow: "hidden",
           height: "100%",
           background: hovered ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.04)",
-          border: `1px solid ${hovered ? "rgba(196,98,45,0.35)" : "rgba(255,255,255,0.08)"}`,
-          borderRadius: "20px",
+          border: `1px solid ${hovered ? "rgb(var(--gold-rgb) / 0.35)" : "rgba(255,255,255,0.08)"}`,
+          borderRadius: "var(--radius-2xl)",
           padding: "36px",
           cursor: "default",
           transform: hovered ? "translateY(-6px)" : "translateY(0)",
@@ -65,7 +65,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
           aria-hidden="true"
           style={{
             position: "absolute", inset: 0, pointerEvents: "none",
-            background: `radial-gradient(340px circle at ${pos.x}px ${pos.y}px, rgba(196,98,45,0.13), transparent 65%)`,
+            background: `radial-gradient(340px circle at ${pos.x}px ${pos.y}px, rgb(var(--gold-rgb) / 0.13), transparent 65%)`,
             opacity: hovered ? 1 : 0,
             transition: "opacity 0.3s ease",
           }}
@@ -87,18 +87,18 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
             animate={{ rotate: hovered ? -6 : 0, scale: hovered ? 1.08 : 1 }}
             transition={{ type: "spring", stiffness: 300, damping: 18 }}
             style={{
-              width: "54px", height: "54px", borderRadius: "14px",
+              width: "54px", height: "54px", borderRadius: "var(--radius-lg)",
               display: "grid", placeItems: "center", marginBottom: "24px",
-              background: "rgba(196,98,45,0.12)",
-              border: "1px solid rgba(196,98,45,0.25)",
-              boxShadow: hovered ? "0 0 24px rgba(196,98,45,0.25)" : "none",
+              background: "rgb(var(--gold-rgb) / 0.12)",
+              border: "1px solid rgb(var(--gold-rgb) / 0.25)",
+              boxShadow: hovered ? "0 0 24px rgb(var(--gold-rgb) / 0.25)" : "none",
               transition: "box-shadow 0.3s",
             }}
           >
-            <Icon size={24} color="#C4622D" />
+            <Icon size={24} color="var(--gold)" />
           </motion.div>
 
-          <h3 style={{ fontSize: "18px", fontWeight: 700, color: "#FFFFFF", marginBottom: "10px", letterSpacing: "-0.01em" }}>
+          <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 700, color: "#FFFFFF", marginBottom: "10px", letterSpacing: "-0.01em" }}>
             {title}
           </h3>
 
@@ -106,10 +106,10 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
           <motion.div
             animate={{ width: hovered ? 44 : 0, opacity: hovered ? 1 : 0 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            style={{ height: "2px", background: "#C4622D", borderRadius: "2px", marginBottom: "14px" }}
+            style={{ height: "2px", background: "var(--gold)", borderRadius: "2px", marginBottom: "14px" }}
           />
 
-          <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", lineHeight: 1.75, flexGrow: 1 }}>
+          <p style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.5)", lineHeight: 1.75, flexGrow: 1 }}>
             {description}
           </p>
 
@@ -118,11 +118,11 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
               <span
                 key={kw}
                 style={{
-                  fontSize: "11px",
+                  fontSize: "var(--text-label)",
                   fontWeight: 500,
                   color: hovered ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.3)",
-                  border: `1px solid ${hovered ? "rgba(196,98,45,0.25)" : "rgba(255,255,255,0.08)"}`,
-                  borderRadius: "9999px",
+                  border: `1px solid ${hovered ? "rgb(var(--gold-rgb) / 0.25)" : "rgba(255,255,255,0.08)"}`,
+                  borderRadius: "var(--radius-pill)",
                   padding: "4px 12px",
                   transition: "color 0.3s, border-color 0.3s",
                 }}
@@ -141,13 +141,13 @@ function SkillsHeading() {
   const { ref, style } = useReveal({ y: 70, scale: 0.92, blur: 10 });
   return (
     <motion.div ref={ref} style={style} className="flex flex-col gap-4 mb-16">
-      <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D" }}>
+      <p style={{ fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)" }}>
         Services
       </p>
-      <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F5F1EC" }}>
+      <h2 style={{ fontSize: "var(--text-h2)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F5F1EC" }}>
         What I do
       </h2>
-      <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.45)", maxWidth: "420px" }}>
+      <p style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.45)", maxWidth: "420px" }}>
         Three core disciplines I bring to every project
       </p>
     </motion.div>
@@ -161,7 +161,7 @@ export default function Skills() {
       <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
         top: "-10%", right: "-10%",
         width: "500px", height: "500px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(196,98,45,0.13) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.13) 0%, transparent 70%)",
       }} />
 
       <div className="page-container">

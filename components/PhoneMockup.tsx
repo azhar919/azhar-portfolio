@@ -71,7 +71,7 @@ export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true }:
               position: "absolute", top: "12px", left: "50%", transform: "translateX(-50%)",
               width: "118px", height: "34px",
               background: "#000",
-              borderRadius: "20px",
+              borderRadius: "var(--radius-2xl)",
               border: "1px solid rgba(255,255,255,0.06)",
               boxShadow: "0 0 0 1px rgba(0,0,0,1)",
               zIndex: 2,
@@ -81,7 +81,7 @@ export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true }:
               <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#1a1a2e", border: "1px solid rgba(255,255,255,0.04)", boxShadow: "inset 0 0 3px rgba(0,0,100,0.5)" }} />
             </div>
             {/* Time */}
-            <span style={{ position: "absolute", left: "22px", fontSize: "13px", fontWeight: 700, color: "white", letterSpacing: "-0.3px", fontFamily: "system-ui" }}>9:41</span>
+            <span style={{ position: "absolute", left: "22px", fontSize: "var(--text-xs)", fontWeight: 700, color: "white", letterSpacing: "-0.3px", fontFamily: "system-ui" }}>9:41</span>
             {/* Status icons */}
             <div style={{ position: "absolute", right: "18px", display: "flex", alignItems: "center", gap: "6px" }}>
               <svg width="14" height="10" viewBox="0 0 16 12" fill="none">
@@ -120,7 +120,7 @@ export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true }:
 
           {/* Home indicator */}
           <div style={{ height: "30px", background: "#000", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <div style={{ width: "110px", height: "5px", background: "rgba(255,255,255,0.3)", borderRadius: "9999px" }} />
+            <div style={{ width: "110px", height: "5px", background: "rgba(255,255,255,0.3)", borderRadius: "var(--radius-pill)" }} />
           </div>
 
           {/* Specular screen glare */}
@@ -138,16 +138,16 @@ export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true }:
                 transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
                 style={{
                   display: "flex", alignItems: "center", gap: "5px",
-                  background: "rgba(196,98,45,0.9)", backdropFilter: "blur(8px)",
+                  background: "rgb(var(--gold-rgb) / 0.9)", backdropFilter: "blur(8px)",
                   border: "1px solid rgba(255,255,255,0.15)",
-                  borderRadius: "9999px", padding: "5px 12px",
-                  boxShadow: "0 4px 16px rgba(196,98,45,0.5)",
+                  borderRadius: "var(--radius-pill)", padding: "5px 12px",
+                  boxShadow: "0 4px 16px rgb(var(--gold-rgb) / 0.5)",
                 }}
               >
                 <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
                   <path d="M6 2v8M3 7l3 3 3-3" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-                <span style={{ fontSize: "10px", fontWeight: 500, color: "white", whiteSpace: "nowrap" }}>Scroll to explore</span>
+                <span style={{ fontSize: "var(--text-micro)", fontWeight: 600, color: "white", whiteSpace: "nowrap" }}>Scroll to explore</span>
               </motion.div>
             </div>
           )}

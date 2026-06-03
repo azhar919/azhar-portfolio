@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter, Cormorant } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import MotionProvider from "@/components/MotionProvider";
@@ -16,6 +16,14 @@ const inter = Inter({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500"],
+});
+
+// Elegant high-contrast serif — used for the hero monogram
+const cormorant = Cormorant({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  style: ["italic", "normal"],
 });
 
 
@@ -49,7 +57,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${inter.variable}`}>
+    <html lang="en" className={`${plusJakartaSans.variable} ${inter.variable} ${cormorant.variable}`}>
       <body className="min-h-screen antialiased">
         <MotionProvider>{children}</MotionProvider>
         <Analytics />

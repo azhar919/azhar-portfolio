@@ -44,7 +44,7 @@ function CaseCard({ project, index }: { project: typeof subProjects[0]; index: n
         style={{
           background: "rgba(255,255,255,0.04)",
           border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: "16px",
+          borderRadius: "var(--radius-xl)",
           overflow: "hidden",
           display: "flex",
         }}
@@ -72,10 +72,10 @@ function CaseCard({ project, index }: { project: typeof subProjects[0]; index: n
             <h3 style={{ fontSize: "20px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
               {project.title}
             </h3>
-            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", lineHeight: 1.75 }}>
+            <p style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.5)", lineHeight: 1.75 }}>
               {project.description}
             </p>
-            <span style={{ fontSize: "14px", fontWeight: 500, color: "#C4622D", marginTop: "4px" }}>
+            <span style={{ fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--gold)", marginTop: "4px" }}>
               View case study →
             </span>
           </div>
@@ -97,7 +97,7 @@ export default function AfricanBankPage() {
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
             top: "-20%", right: "-8%",
             width: "600px", height: "600px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(196,98,45,0.14) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.14) 0%, transparent 70%)",
           }} />
 
           <div className="page-container relative">
@@ -105,7 +105,7 @@ export default function AfricanBankPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: EASE }}
-              style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D", marginBottom: "16px" }}
+              style={{ fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "16px" }}
             >
               My Work
             </motion.p>
@@ -113,7 +113,7 @@ export default function AfricanBankPage() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.08, ease: EASE }}
-              style={{ fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 800, color: "#F5F1EC", lineHeight: 1.08, letterSpacing: "-0.04em" }}
+              style={{ fontSize: "var(--text-h1)", fontWeight: 800, color: "#F5F1EC", lineHeight: 1.08, letterSpacing: "-0.04em" }}
             >
               African Bank
             </motion.h1>
@@ -121,7 +121,7 @@ export default function AfricanBankPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
-              style={{ marginTop: "24px", fontSize: "18px", color: "rgba(255,255,255,0.5)", lineHeight: 1.65, maxWidth: "480px" }}
+              style={{ marginTop: "24px", fontSize: "var(--text-lg)", color: "rgba(255,255,255,0.5)", lineHeight: 1.65, maxWidth: "480px" }}
             >
               Two case studies from redesigning the bank's digital presence and customer onboarding.
             </motion.p>
@@ -133,7 +133,7 @@ export default function AfricanBankPage() {
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
             bottom: "5%", left: "20%",
             width: "500px", height: "400px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(196,98,45,0.05) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.05) 0%, transparent 70%)",
           }} />
           <div className="page-container relative">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">

@@ -67,7 +67,7 @@ function Stat({ value, suffix, label }: { value: number; suffix: string; label: 
       <span style={{ fontSize: "34px", fontWeight: 800, color: "#F5F1EC", letterSpacing: "-0.02em", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
         {n}{suffix}
       </span>
-      <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.45)", marginTop: "8px", letterSpacing: "0.02em" }}>{label}</span>
+      <span style={{ fontSize: "var(--text-2xs)", color: "rgba(255,255,255,0.45)", marginTop: "8px", letterSpacing: "0.02em" }}>{label}</span>
     </div>
   );
 }
@@ -80,7 +80,7 @@ function RotatingRole() {
     return () => clearInterval(id);
   }, []);
   return (
-    <div style={{ fontSize: "18px", color: "rgba(255,255,255,0.6)", display: "flex", gap: "9px", alignItems: "baseline", flexWrap: "wrap" }}>
+    <div style={{ fontSize: "var(--text-lg)", color: "rgba(255,255,255,0.6)", display: "flex", gap: "9px", alignItems: "baseline", flexWrap: "wrap" }}>
       <span>I design</span>
       <span style={{ position: "relative", display: "inline-flex", overflow: "hidden" }}>
         <AnimatePresence mode="wait">
@@ -90,7 +90,7 @@ function RotatingRole() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -16, opacity: 0 }}
             transition={{ duration: 0.35, ease: EASE }}
-            style={{ display: "inline-block", color: "#C4622D", fontWeight: 600 }}
+            style={{ display: "inline-block", color: "var(--gold)", fontWeight: 600 }}
           >
             {ROLES[i]}
           </motion.span>
@@ -112,11 +112,11 @@ function TagChip({ label, Icon }: { label: string; Icon: LucideIcon }) {
       className="inline-flex items-center"
       style={{
         gap: "6px",
-        background: h ? "rgba(196,98,45,0.1)" : "rgba(255,255,255,0.05)",
-        border: `1px solid ${h ? "rgba(196,98,45,0.35)" : "rgba(255,255,255,0.09)"}`,
-        borderRadius: "9999px",
+        background: h ? "rgb(var(--gold-rgb) / 0.1)" : "rgba(255,255,255,0.05)",
+        border: `1px solid ${h ? "rgb(var(--gold-rgb) / 0.35)" : "rgba(255,255,255,0.09)"}`,
+        borderRadius: "var(--radius-pill)",
         padding: "7px 16px",
-        fontSize: "13px",
+        fontSize: "var(--text-xs)",
         fontWeight: 500,
         color: h ? "#fff" : "rgba(255,255,255,0.5)",
         transition: "background 0.2s, border-color 0.2s, color 0.2s",
@@ -128,7 +128,7 @@ function TagChip({ label, Icon }: { label: string; Icon: LucideIcon }) {
         transition={{ type: "spring", stiffness: 300, damping: 14 }}
         style={{ display: "inline-flex" }}
       >
-        <Icon size={12} color={h ? "#C4622D" : "rgba(255,255,255,0.3)"} />
+        <Icon size={12} color={h ? "var(--gold)" : "rgba(255,255,255,0.3)"} />
       </motion.span>
       {label}
     </motion.span>
@@ -181,12 +181,12 @@ function PhotoCard() {
                   position: "absolute", inset: 0,
                   borderRadius: "18px",
                   background: hovered
-                    ? "conic-gradient(rgba(196,98,45,0.95) 0deg, rgba(196,98,45,0.3) 50deg, transparent 90deg, transparent 360deg)"
-                    : "conic-gradient(rgba(196,98,45,0.6) 0deg, rgba(196,98,45,0.1) 40deg, transparent 70deg, transparent 360deg)",
+                    ? "conic-gradient(rgb(var(--gold-rgb) / 0.95) 0deg, rgb(var(--gold-rgb) / 0.3) 50deg, transparent 90deg, transparent 360deg)"
+                    : "conic-gradient(rgb(var(--gold-rgb) / 0.6) 0deg, rgb(var(--gold-rgb) / 0.1) 40deg, transparent 70deg, transparent 360deg)",
                   transition: "background 0.4s ease",
                 }}
               />
-              <div style={{ position: "relative", borderRadius: "16px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <div style={{ position: "relative", borderRadius: "var(--radius-xl)", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)" }}>
                 <Image
                   src="/images/profile.jpg"
                   alt="Azhar Mohamed"
@@ -215,8 +215,8 @@ function PhotoCard() {
                     pointerEvents: "none",
                   }}
                 >
-                  <p style={{ fontSize: "13px", fontWeight: 600, color: "#fff", letterSpacing: "0.01em" }}>Azhar Mohamed</p>
-                  <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.55)", marginTop: "2px" }}>UX · UI Designer — Johannesburg</p>
+                  <p style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "#fff", letterSpacing: "0.01em" }}>Azhar Mohamed</p>
+                  <p style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.55)", marginTop: "2px" }}>UX · UI Designer — Johannesburg</p>
                 </motion.div>
               </div>
             </div>
@@ -232,7 +232,7 @@ function AboutText() {
   return (
     <motion.div ref={ref} style={style} className="flex flex-col gap-8 md:pt-6">
 
-      <p style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D" }}>
+      <p style={{ fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)" }}>
         About Me
       </p>
 
@@ -245,7 +245,7 @@ function AboutText() {
 
       <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
         {paragraphs.map((para, i) => (
-          <p key={i} style={{ fontSize: "16px", lineHeight: 1.8, color: "rgba(255,255,255,0.55)" }}>
+          <p key={i} style={{ fontSize: "var(--text-md)", lineHeight: 1.8, color: "rgba(255,255,255,0.55)" }}>
             {para}
           </p>
         ))}
@@ -285,12 +285,12 @@ function AboutText() {
 
 export default function About() {
   return (
-    <section id="about" className="relative overflow-hidden" style={{ background: "#110E0B", paddingTop: "120px", paddingBottom: "120px" }}>
+    <section id="about" className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "120px", paddingBottom: "120px" }}>
 
       <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
         top: "10%", left: "-5%",
         width: "500px", height: "500px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(196,98,45,0.14) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.14) 0%, transparent 70%)",
       }} />
 
       <div className="page-container">

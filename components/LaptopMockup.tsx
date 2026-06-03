@@ -60,12 +60,12 @@ export default function LaptopMockup({ src }: { src: string }) {
                   <motion.div
                     animate={{ y: [0, 5, 0] }}
                     transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                    style={{ display: "flex", alignItems: "center", gap: "7px", background: "rgba(196,98,45,0.92)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: "9999px", padding: "7px 16px", boxShadow: "0 8px 24px rgba(196,98,45,0.4)" }}
+                    style={{ display: "flex", alignItems: "center", gap: "7px", background: "rgb(var(--gold-rgb) / 0.92)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: "var(--radius-pill)", padding: "7px 16px", boxShadow: "0 8px 24px rgb(var(--gold-rgb) / 0.4)" }}
                   >
                     <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
                       <path d="M7 2v10M3.5 8l3.5 4 3.5-4" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    <span style={{ fontSize: "11px", fontWeight: 500, color: "white", whiteSpace: "nowrap" }}>Scroll to explore</span>
+                    <span style={{ fontSize: "var(--text-label)", fontWeight: 600, color: "white", whiteSpace: "nowrap" }}>Scroll to explore</span>
                   </motion.div>
                 </div>
               </>

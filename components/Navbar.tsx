@@ -120,14 +120,14 @@ export default function Navbar() {
                                 onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                               >
                                 <div className="flex flex-col gap-0.5">
-                                  <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)" }}>
+                                  <span style={{ fontSize: "var(--text-micro)", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)" }}>
                                     {cs.company}
                                   </span>
-                                  <span style={{ fontSize: "14px", fontWeight: 500, color: "#FFFFFF" }}>
+                                  <span style={{ fontSize: "var(--text-sm)", fontWeight: 500, color: "#FFFFFF" }}>
                                     {cs.title}
                                   </span>
                                 </div>
-                                <ArrowUpRight size={14} style={{ color: "#C4622D", flexShrink: 0 }} />
+                                <ArrowUpRight size={14} style={{ color: "var(--gold)", flexShrink: 0 }} />
                               </Link>
                             ))}
                           </div>

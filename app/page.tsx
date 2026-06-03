@@ -14,9 +14,11 @@ export default function Home() {
       <Hero />
       <About />
       <Skills />
+      <div className="divider-gold" />
       <TrustStrip />
       <SelectedWork />
       <FAQ />
+      <div className="divider-gold" />
       <Contact />
     </main>
   );

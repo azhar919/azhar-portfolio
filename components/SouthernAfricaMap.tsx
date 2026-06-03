@@ -22,20 +22,20 @@ function PulsingDot({ cx, cy, delay }: { cx: number; cy: number; delay: number }
     <g>
       {/* Outer glow */}
       <motion.circle
-        cx={cx} cy={cy} r="10" fill="none" stroke="#C4622D" strokeWidth="1.5"
+        cx={cx} cy={cy} r="10" fill="none" stroke="var(--gold)" strokeWidth="1.5"
         initial={{ opacity: 0.6, scale: 1 }}
         animate={{ opacity: 0, scale: 2.2 }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay }}
       />
       {/* Mid ring */}
       <motion.circle
-        cx={cx} cy={cy} r="7" fill="none" stroke="#C4622D" strokeWidth="1"
+        cx={cx} cy={cy} r="7" fill="none" stroke="var(--gold)" strokeWidth="1"
         initial={{ opacity: 0.4, scale: 1 }}
         animate={{ opacity: 0, scale: 1.8 }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: delay + 0.3 }}
       />
       {/* Core dot */}
-      <circle cx={cx} cy={cy} r="4" fill="#C4622D" />
+      <circle cx={cx} cy={cy} r="4" fill="var(--gold)" />
       <circle cx={cx} cy={cy} r="2" fill="#fff" opacity="0.9" />
     </g>
   );
@@ -43,7 +43,7 @@ function PulsingDot({ cx, cy, delay }: { cx: number; cy: number; delay: number }
 
 export default function SouthernAfricaMap() {
   return (
-    <div style={{ position: "relative", borderRadius: "20px", overflow: "hidden", background: "#0D0D0D", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.5)", padding: "40px" }}>
+    <div style={{ position: "relative", borderRadius: "var(--radius-2xl)", overflow: "hidden", background: "#0D0D0D", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.5)", padding: "40px" }}>
       <svg viewBox="0 0 520 500" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }}>
         <defs>
           <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -61,8 +61,8 @@ export default function SouthernAfricaMap() {
           <motion.path
             key={c.id}
             d={c.path}
-            fill={c.highlighted ? "rgba(196,98,45,0.2)" : "rgba(255,255,255,0.04)"}
-            stroke={c.highlighted ? "#C4622D" : "rgba(255,255,255,0.12)"}
+            fill={c.highlighted ? "rgb(var(--gold-rgb) / 0.2)" : "rgba(255,255,255,0.04)"}
+            stroke={c.highlighted ? "var(--gold)" : "rgba(255,255,255,0.12)"}
             strokeWidth={c.highlighted ? 1.5 : 0.8}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -72,7 +72,7 @@ export default function SouthernAfricaMap() {
 
         {/* Glow halos on highlighted countries */}
         {countries.filter(c => c.highlighted).map(c => (
-          <path key={`${c.id}-glow`} d={c.path} fill="none" stroke="#C4622D" strokeWidth="8" opacity="0.12" style={{ filter: "blur(5px)" }} />
+          <path key={`${c.id}-glow`} d={c.path} fill="none" stroke="var(--gold)" strokeWidth="8" opacity="0.12" style={{ filter: "blur(5px)" }} />
         ))}
 
         {/* Labels + connectors + pulsing dots */}
@@ -89,7 +89,7 @@ export default function SouthernAfricaMap() {
             >
               {/* Connector line for small countries */}
               {isSmall && (
-                <line x1={dx} y1={dy} x2={lx} y2={ly - 6} stroke="rgba(196,98,45,0.4)" strokeWidth="0.8" strokeDasharray="3,2" />
+                <line x1={dx} y1={dy} x2={lx} y2={ly - 6} stroke="rgb(var(--gold-rgb) / 0.4)" strokeWidth="0.8" strokeDasharray="3,2" />
               )}
               {/* Pulsing dot */}
               <PulsingDot cx={dx} cy={dy} delay={i * 0.4} />
@@ -112,12 +112,12 @@ export default function SouthernAfricaMap() {
 
       <div style={{ display: "flex", alignItems: "center", gap: "16px", marginTop: "20px", justifyContent: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-          <div style={{ width: "12px", height: "12px", borderRadius: "3px", background: "rgba(196,98,45,0.25)", border: "1.5px solid #C4622D" }} />
-          <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>Nedbank operating regions</span>
+          <div style={{ width: "12px", height: "12px", borderRadius: "3px", background: "rgb(var(--gold-rgb) / 0.25)", border: "1.5px solid var(--gold)" }} />
+          <span style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>Nedbank operating regions</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
           <div style={{ width: "12px", height: "12px", borderRadius: "3px", background: "rgba(255,255,255,0.04)", border: "0.8px solid rgba(255,255,255,0.12)" }} />
-          <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", fontWeight: 500 }}>Surrounding countries</span>
+          <span style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.3)", fontWeight: 500 }}>Surrounding countries</span>
         </div>
       </div>
     </div>

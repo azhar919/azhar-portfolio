@@ -280,7 +280,7 @@ function AccordionItem({
   onToggle: () => void;
   forceOpen?: boolean;
 }) {
-  const { handlers, overlay } = useSpotlight({ radius: 360, color: "rgba(196,98,45,0.08)" });
+  const { handlers, overlay } = useSpotlight({ radius: 360, color: "rgb(var(--gold-rgb) / 0.08)" });
   const open = isOpen || forceOpen;
   return (
     <div style={{ marginBottom: 10 }}>
@@ -294,7 +294,7 @@ function AccordionItem({
           gap: 16,
           background: open ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)",
           borderRadius: open ? "12px 12px 0 0" : 12,
-          borderLeft: `2px solid ${open ? "#C4622D" : "transparent"}`,
+          borderLeft: `2px solid ${open ? "var(--gold)" : "transparent"}`,
           padding: "20px 24px",
           cursor: "pointer",
           transition: "background 0.2s, border-color 0.2s",
@@ -304,7 +304,7 @@ function AccordionItem({
         <span className="relative z-10" style={{ flex: 1, minWidth: 0, fontSize: 15, fontWeight: 600, color: open ? "#F5F1EC" : "#FFFFFF", letterSpacing: "-0.01em" }}>{project.title}</span>
         <ChevronDown
           size={16}
-          color={open ? "#C4622D" : "rgba(255,255,255,0.35)"}
+          color={open ? "var(--gold)" : "rgba(255,255,255,0.35)"}
           className="relative z-10"
           style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s, color 0.2s", flexShrink: 0 }}
         />
@@ -322,7 +322,7 @@ function AccordionItem({
               background: "rgba(255,255,255,0.04)",
               borderRadius: "0 0 12px 12px",
               borderTop: "1px solid rgba(255,255,255,0.05)",
-              borderLeft: "2px solid #C4622D",
+              borderLeft: "2px solid var(--gold)",
             }}
           >
             <motion.div
@@ -344,7 +344,7 @@ function AccordionItem({
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
                 {project.bullets.map((bullet, i) => (
                   <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: i < project.bullets.length - 1 ? 10 : 0 }}>
-                    <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#C4622D", marginTop: "0.6em", flexShrink: 0 }} />
+                    <span style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--gold)", marginTop: "0.6em", flexShrink: 0 }} />
                     <span style={{ fontSize: 13.5, color: "rgba(255,255,255,0.58)", lineHeight: 1.8 }}>{bullet}</span>
                   </li>
                 ))}
@@ -369,8 +369,8 @@ function CompanyGroup({ group, forceOpen = false }: { group: TimelineGroup; forc
             {group.company}
           </h3>
           <span style={{
-            fontSize: 11, fontWeight: 600, color: "#C4622D", letterSpacing: "0.02em",
-            border: "1px solid rgba(196,98,45,0.3)", background: "rgba(196,98,45,0.1)",
+            fontSize: 11, fontWeight: 600, color: "var(--gold)", letterSpacing: "0.02em",
+            border: "1px solid rgb(var(--gold-rgb) / 0.3)", background: "rgb(var(--gold-rgb) / 0.1)",
             borderRadius: 9999, padding: "3px 11px", whiteSpace: "nowrap",
           }}>
             {group.dateRange}
@@ -407,7 +407,7 @@ function ExperienceTimeline({ forceOpen = false }: { forceOpen?: boolean }) {
       {/* rail track */}
       <div aria-hidden="true" className="cv-rail" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "rgba(255,255,255,0.08)" }} />
       {/* rail fill — grows with scroll */}
-      <motion.div aria-hidden="true" className="cv-rail" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "linear-gradient(to bottom, #E8A06A, #C4622D, #A8521F)", transformOrigin: "top", scaleY: fill, boxShadow: "0 0 8px rgba(196,98,45,0.5)" }} />
+      <motion.div aria-hidden="true" className="cv-rail" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "linear-gradient(to bottom, var(--gold-light), var(--gold), var(--gold-dark))", transformOrigin: "top", scaleY: fill, boxShadow: "0 0 8px rgb(var(--gold-rgb) / 0.5)" }} />
 
       {experienceTimeline.map((group, gi) => (
         <AnimatedBlock key={`${group.company}-${gi}`} delay={gi * 0.05}>
@@ -440,7 +440,7 @@ function SidebarSection({ title, icon: Icon, children }: { title: string; icon: 
       onMouseLeave={() => setHovered(false)}
       style={{
         background: hovered ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.02)",
-        border: `1px solid ${hovered ? "rgba(196,98,45,0.25)" : "rgba(255,255,255,0.06)"}`,
+        border: `1px solid ${hovered ? "rgb(var(--gold-rgb) / 0.25)" : "rgba(255,255,255,0.06)"}`,
         borderRadius: 16,
         padding: "20px 22px",
         transition: "background 0.25s, border-color 0.25s",
@@ -459,7 +459,7 @@ function SidebarSection({ title, icon: Icon, children }: { title: string; icon: 
           borderBottom: "1px solid rgba(255,255,255,0.08)",
         }}
       >
-        <Icon size={13} color="#C4622D" />
+        <Icon size={13} color="var(--gold)" />
         {title}
       </h2>
       {children}
@@ -533,7 +533,7 @@ function CVPhoto() {
             aria-hidden="true"
             style={{
               position: "absolute", inset: 0, borderRadius: 22,
-              background: "conic-gradient(rgba(196,98,45,0.75) 0deg, rgba(196,98,45,0.12) 55deg, transparent 95deg, transparent 360deg)",
+              background: "conic-gradient(rgb(var(--gold-rgb) / 0.75) 0deg, rgb(var(--gold-rgb) / 0.12) 55deg, transparent 95deg, transparent 360deg)",
             }}
           />
           <div className="relative overflow-hidden" style={{ width: 200, height: 200, borderRadius: 20, border: "1px solid rgba(255,255,255,0.1)" }}>
@@ -547,7 +547,7 @@ function CVPhoto() {
 
 /* ── Page ──────────────────────────────────────────────────── */
 export default function CVPage() {
-  const heroSpot = useSpotlight({ radius: 520, color: "rgba(196,98,45,0.08)" });
+  const heroSpot = useSpotlight({ radius: 520, color: "rgb(var(--gold-rgb) / 0.08)" });
   const [exporting, setExporting] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -602,7 +602,7 @@ export default function CVPage() {
           <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
             top: "-20%", right: "-5%",
             width: "600px", height: "600px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(196,98,45,0.14) 0%, transparent 65%)",
+            background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.14) 0%, transparent 65%)",
           }} />
 
           <div className="page-container">
@@ -617,7 +617,7 @@ export default function CVPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, ease: EASE }}
-                  style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D" }}
+                  style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)" }}
                 >
                   Portfolio · CV
                 </motion.p>
@@ -626,7 +626,7 @@ export default function CVPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.06, ease: EASE }}
-                  style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 800, lineHeight: 1.06, letterSpacing: "-0.03em", color: "#F5F1EC", margin: 0 }}
+                  style={{ fontSize: "var(--text-h2)", fontWeight: 800, lineHeight: 1.06, letterSpacing: "-0.03em", color: "#F5F1EC", margin: 0 }}
                 >
                   Azhar Mohamed
                 </motion.h1>
@@ -635,7 +635,7 @@ export default function CVPage() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.12, ease: EASE }}
-                  style={{ fontSize: 15, fontWeight: 500, color: "#C4622D" }}
+                  style={{ fontSize: 15, fontWeight: 500, color: "var(--gold)" }}
                 >
                   Senior Product Designer
                 </motion.p>
@@ -847,9 +847,9 @@ export default function CVPage() {
                       <a
                         href="mailto:Azhar919@gmail.com"
                         className="transition-colors duration-200"
-                        style={{ fontSize: 13, color: "#C4622D" }}
-                        onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#A8521F")}
-                        onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#C4622D")}
+                        style={{ fontSize: 13, color: "var(--gold)" }}
+                        onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--gold-dark)")}
+                        onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "var(--gold)")}
                       >
                         Azhar919@gmail.com
                       </a>

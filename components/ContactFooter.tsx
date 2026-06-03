@@ -50,7 +50,7 @@ const connectLinks = [
 ];
 
 const labelStyle: React.CSSProperties = {
-  fontSize: "11px",
+  fontSize: "var(--text-label)",
   fontWeight: 600,
   textTransform: "uppercase",
   letterSpacing: "0.1em",
@@ -71,7 +71,7 @@ function FooterLinkCol({ label, links }: { label: string; links: { label: string
             target="_blank"
             rel="noopener noreferrer"
             className="transition-colors duration-200"
-            style={{ fontSize: "14px", fontWeight: 400, color: "rgba(255,255,255,0.5)", marginBottom: "10px" }}
+            style={{ fontSize: "var(--text-sm)", fontWeight: 400, color: "rgba(255,255,255,0.5)", marginBottom: "10px" }}
             onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#ffffff")}
             onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)")}
           >
@@ -82,7 +82,7 @@ function FooterLinkCol({ label, links }: { label: string; links: { label: string
             key={link.label}
             href={link.href}
             className="transition-colors duration-200"
-            style={{ fontSize: "14px", fontWeight: 400, color: "rgba(255,255,255,0.5)", marginBottom: "10px" }}
+            style={{ fontSize: "var(--text-sm)", fontWeight: 400, color: "rgba(255,255,255,0.5)", marginBottom: "10px" }}
             onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#ffffff")}
             onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)")}
           >
@@ -95,7 +95,7 @@ function FooterLinkCol({ label, links }: { label: string; links: { label: string
 }
 
 export default function ContactFooter() {
-  const { handlers, overlay } = useSpotlight({ radius: 600, color: "rgba(196,98,45,0.1)" });
+  const { handlers, overlay } = useSpotlight({ radius: 600, color: "rgb(var(--gold-rgb) / 0.1)" });
   return (
     <footer className="no-print" style={{ background: "#0D0B09", position: "relative", overflow: "hidden" }} {...handlers}>
       {overlay}
@@ -110,7 +110,7 @@ export default function ContactFooter() {
           className="flex flex-col items-start"
           style={{ paddingBottom: "64px", marginBottom: "56px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}
         >
-          <span className="inline-flex items-center" style={{ gap: "8px", fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#C4622D", marginBottom: "24px" }}>
+          <span className="inline-flex items-center" style={{ gap: "8px", fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "24px" }}>
             <motion.span
               animate={{ opacity: [1, 0.35, 1], scale: [1, 0.85, 1] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -120,10 +120,10 @@ export default function ContactFooter() {
           </span>
 
           <h2 style={{ fontSize: "clamp(36px, 6vw, 72px)", fontWeight: 800, letterSpacing: "-0.04em", lineHeight: 1.04, color: "#F5F1EC", maxWidth: "820px" }}>
-            Let&apos;s create something <span style={{ color: "#C4622D" }}>effortless</span>.
+            Let&apos;s create something <span style={{ color: "var(--gold)" }}>effortless</span>.
           </h2>
 
-          <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.5)", lineHeight: 1.7, marginTop: "24px", maxWidth: "520px" }}>
+          <p style={{ fontSize: "var(--text-body)", color: "rgba(255,255,255,0.5)", lineHeight: 1.7, marginTop: "24px", maxWidth: "520px" }}>
             Have a project, role, or idea in mind? I&apos;m always open to a good conversation.
           </p>
 
@@ -153,7 +153,7 @@ export default function ContactFooter() {
             <Link href="/" className="text-white hover:opacity-60 transition-opacity duration-200 inline-block" style={{ marginBottom: "16px" }}>
               <LogoMark />
             </Link>
-            <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.4)", lineHeight: 1.7 }}>
+            <p style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.4)", lineHeight: 1.7 }}>
               Designing effortless digital experiences from Johannesburg, South Africa.
             </p>
           </div>
@@ -172,10 +172,10 @@ export default function ContactFooter() {
 
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-          <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.25)" }}>
+          <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.25)" }}>
             © 2026 Azhar Mohamed. All rights reserved.
           </span>
-          <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.25)" }}>
+          <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.25)" }}>
             Built with Claude Code
           </span>
         </div>

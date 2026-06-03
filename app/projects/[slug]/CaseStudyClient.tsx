@@ -20,7 +20,7 @@ function SectionBody({ section }: { section: Section }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       {section.body.map((para, i) => (
-        <p key={i} style={{ fontSize: "17px", color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}>{para}</p>
+        <p key={i} style={{ fontSize: "var(--text-body)", color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}>{para}</p>
       ))}
       {section.bullets && section.bulletStyle === "grid" ? (
         <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "12px", marginTop: "8px" }}>
@@ -31,12 +31,12 @@ function SectionBody({ section }: { section: Section }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, ease: EASE, delay: i * 0.08 }}
-              style={{ display: "flex", gap: "12px", alignItems: "flex-start", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "14px", padding: "18px 20px" }}
+              style={{ display: "flex", gap: "12px", alignItems: "flex-start", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "var(--radius-lg)", padding: "18px 20px" }}
             >
-              <span style={{ flexShrink: 0, width: "24px", height: "24px", borderRadius: "50%", background: "rgba(196,98,45,0.15)", border: "1px solid rgba(196,98,45,0.4)", display: "grid", placeItems: "center", marginTop: "1px" }}>
-                <Check size={13} color="#C4622D" />
+              <span style={{ flexShrink: 0, width: "24px", height: "24px", borderRadius: "50%", background: "rgb(var(--gold-rgb) / 0.15)", border: "1px solid rgb(var(--gold-rgb) / 0.4)", display: "grid", placeItems: "center", marginTop: "1px" }}>
+                <Check size={13} color="var(--gold)" />
               </span>
-              <span style={{ fontSize: "15px", color: "rgba(255,255,255,0.7)", lineHeight: 1.6 }}>{bullet}</span>
+              <span style={{ fontSize: "var(--text-ui)", color: "rgba(255,255,255,0.7)", lineHeight: 1.6 }}>{bullet}</span>
             </motion.div>
           ))}
         </div>
@@ -49,9 +49,9 @@ function SectionBody({ section }: { section: Section }) {
               whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
               viewport={{ margin: "-120px 0px -120px 0px" }}
               transition={{ duration: 0.5, ease: EASE, delay: i * 0.1 }}
-              style={{ display: "flex", gap: "10px", alignItems: "flex-start", fontSize: "17px", color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}
+              style={{ display: "flex", gap: "10px", alignItems: "flex-start", fontSize: "var(--text-body)", color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}
             >
-              <span style={{ color: "#C4622D", flexShrink: 0, marginTop: "4px", fontSize: "12px" }}>→</span>
+              <span style={{ color: "var(--gold)", flexShrink: 0, marginTop: "4px", fontSize: "var(--text-2xs)" }}>→</span>
               {bullet}
             </motion.li>
           ))}
@@ -90,7 +90,7 @@ function ProcessStepper({ items, activeIndex }: { items: { label: string; id: st
         <div style={{
           display: "flex", alignItems: "center", gap: "2px",
           background: "rgba(11,10,9,0.82)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
-          border: "1px solid rgba(255,255,255,0.08)", borderRadius: "9999px",
+          border: "1px solid rgba(255,255,255,0.08)", borderRadius: "var(--radius-pill)",
           padding: "7px 8px", boxShadow: "0 10px 36px rgba(0,0,0,0.4)",
         }}>
           {items.map((item, i) => {
@@ -103,22 +103,22 @@ function ProcessStepper({ items, activeIndex }: { items: { label: string; id: st
                 className="group"
                 style={{
                   flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-                  padding: "8px 10px", borderRadius: "9999px",
-                  background: active ? "rgba(196,98,45,0.15)" : "transparent",
+                  padding: "8px 10px", borderRadius: "var(--radius-pill)",
+                  background: active ? "rgb(var(--gold-rgb) / 0.15)" : "transparent",
                   transition: "background 0.3s",
                 }}
               >
                 <span style={{
                   width: "20px", height: "20px", borderRadius: "50%", flexShrink: 0,
-                  display: "grid", placeItems: "center", fontSize: "10px", fontWeight: 700,
-                  background: active || done ? "#C4622D" : "rgba(255,255,255,0.1)",
-                  color: active || done ? "#fff" : "rgba(255,255,255,0.5)",
+                  display: "grid", placeItems: "center", fontSize: "var(--text-micro)", fontWeight: 700,
+                  background: active || done ? "var(--gold)" : "rgba(255,255,255,0.1)",
+                  color: active || done ? "white" : "rgba(255,255,255,0.5)",
                   transition: "background 0.3s, color 0.3s",
                   fontVariantNumeric: "tabular-nums",
                 }}>
                   {i + 1}
                 </span>
-                <span style={{ fontSize: "12px", fontWeight: 500, color: active ? "#fff" : "rgba(255,255,255,0.45)", whiteSpace: "nowrap", transition: "color 0.3s" }}>
+                <span style={{ fontSize: "var(--text-2xs)", fontWeight: 500, color: active ? "#fff" : "rgba(255,255,255,0.45)", whiteSpace: "nowrap", transition: "color 0.3s" }}>
                   {item.label}
                 </span>
               </button>
@@ -137,7 +137,7 @@ function LandscapeImage({ src }: { src: string }) {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [-20, 20]);
   return (
-    <div ref={ref} style={{ width: "100%", borderRadius: "16px", overflow: "hidden", position: "relative", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)" }}>
+    <div ref={ref} style={{ width: "100%", borderRadius: "var(--radius-xl)", overflow: "hidden", position: "relative", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)" }}>
       <motion.div style={{ y }}>
         <div style={{ position: "relative", width: "100%", aspectRatio: "16/9" }}>
           <Image src={src} alt="" fill style={{ objectFit: "cover", objectPosition: "top" }} />
@@ -167,10 +167,10 @@ function PortraitImage({ src }: { src: string }) {
       <div style={{
         position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
         width: "400px", height: "400px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(196,98,45,0.15) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.15) 0%, transparent 70%)",
         pointerEvents: "none",
       }} />
-      <div style={{ position: "relative", width: "min(300px, 100%)", borderRadius: "20px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.10)", boxShadow: "0 40px 100px rgba(0,0,0,0.6)", zIndex: 1 }}>
+      <div style={{ position: "relative", width: "min(300px, 100%)", borderRadius: "var(--radius-2xl)", overflow: "hidden", border: "1px solid rgba(255,255,255,0.10)", boxShadow: "0 40px 100px rgba(0,0,0,0.6)", zIndex: 1 }}>
         <Image src={src} alt="" width={300} height={600} style={{ width: "100%", height: "auto", display: "block" }} />
       </div>
     </div>
@@ -197,8 +197,8 @@ function PageImage({ src }: { src: string }) {
   }, []);
 
   return (
-    <div style={{ width: "100%", height: hasOverflow ? "clamp(320px, 50vw, 560px)" : "auto", borderRadius: "16px", overflow: "hidden", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)", position: "relative" }}>
-      <div ref={scrollRef} style={{ width: "100%", height: "100%", overflowY: hasOverflow ? "scroll" : "visible", scrollbarWidth: "thin", scrollbarColor: "rgba(196,98,45,0.6) rgba(255,255,255,0.06)" }}>
+    <div style={{ width: "100%", height: hasOverflow ? "clamp(320px, 50vw, 560px)" : "auto", borderRadius: "var(--radius-xl)", overflow: "hidden", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.45)", position: "relative" }}>
+      <div ref={scrollRef} style={{ width: "100%", height: "100%", overflowY: hasOverflow ? "scroll" : "visible", scrollbarWidth: "thin", scrollbarColor: "rgb(var(--gold-rgb) / 0.6) rgba(255,255,255,0.06)" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img ref={imgRef} src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
       </div>
@@ -212,16 +212,16 @@ function PageImage({ src }: { src: string }) {
               transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
               style={{
                 display: "flex", alignItems: "center", gap: "8px",
-                background: "rgba(196,98,45,0.85)", backdropFilter: "blur(8px)",
+                background: "rgb(var(--gold-rgb) / 0.85)", backdropFilter: "blur(8px)",
                 border: "1px solid rgba(255,255,255,0.15)",
-                borderRadius: "9999px", padding: "9px 18px",
-                boxShadow: "0 8px 32px rgba(196,98,45,0.35)",
+                borderRadius: "var(--radius-pill)", padding: "9px 18px",
+                boxShadow: "0 8px 32px rgb(var(--gold-rgb) / 0.35)",
               }}
             >
               <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
-                <path d="M7 2v10M3.5 8l3.5 4 3.5-4" stroke="rgba(255,255,255,0.9)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M7 2v10M3.5 8l3.5 4 3.5-4" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              <span style={{ fontSize: "12px", fontWeight: 500, letterSpacing: "0.02em", color: "rgba(255,255,255,0.95)", whiteSpace: "nowrap" }}>Scroll to explore</span>
+              <span style={{ fontSize: "var(--text-2xs)", fontWeight: 600, letterSpacing: "0.02em", color: "white", whiteSpace: "nowrap" }}>Scroll to explore</span>
             </motion.div>
           </div>
         </>
@@ -232,9 +232,9 @@ function PageImage({ src }: { src: string }) {
 
 function ScreenshotImage({ src }: { src: string }) {
   return (
-    <div style={{ borderRadius: "16px", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)", padding: "24px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div style={{ borderRadius: "var(--radius-xl)", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)", padding: "24px", display: "flex", alignItems: "center", justifyContent: "center" }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt="" style={{ display: "block", maxWidth: "100%", height: "auto", borderRadius: "8px" }} />
+      <img src={src} alt="" style={{ display: "block", maxWidth: "100%", height: "auto", borderRadius: "var(--radius-sm)" }} />
     </div>
   );
 }
@@ -296,13 +296,13 @@ function ScatteredImages({ srcs }: { srcs: string[] }) {
       <div>
         <div style={{ display: "flex", gap: "12px", overflowX: "auto", paddingBottom: "12px", scrollSnapType: "x mandatory", scrollbarWidth: "none" }}>
           {srcs.slice(0, 3).map((src, i) => (
-            <div key={i} style={{ flexShrink: 0, width: "80vw", scrollSnapAlign: "start", borderRadius: "12px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.10)", boxShadow: "0 16px 40px rgba(0,0,0,0.5)" }}>
+            <div key={i} style={{ flexShrink: 0, width: "80vw", scrollSnapAlign: "start", borderRadius: "var(--radius-md)", overflow: "hidden", border: "1px solid rgba(255,255,255,0.10)", boxShadow: "0 16px 40px rgba(0,0,0,0.5)" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
             </div>
           ))}
         </div>
-        <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", textAlign: "center", marginTop: "8px", letterSpacing: "0.06em" }}>Swipe to compare →</p>
+        <p style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.3)", textAlign: "center", marginTop: "8px", letterSpacing: "0.06em" }}>Swipe to compare →</p>
       </div>
     );
   }
@@ -319,7 +319,7 @@ function ScatteredImages({ srcs }: { srcs: string[] }) {
             gridArea: "1 / 1",
             width: "min(58%, 500px)",
             zIndex: cards[i].z,
-            borderRadius: "12px",
+            borderRadius: "var(--radius-md)",
             overflow: "hidden",
             border: "1px solid rgba(255,255,255,0.10)",
             boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
@@ -359,21 +359,21 @@ function WinnerBadge() {
     <div ref={ref} style={{
       background: "rgba(34,197,94,0.12)",
       border: "1px solid rgba(34,197,94,0.35)",
-      borderRadius: "9999px",
+      borderRadius: "var(--radius-pill)",
       padding: "6px 18px",
       display: "inline-flex", alignItems: "center", gap: "8px",
     }}>
       <span style={{ fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 800, color: "#22C55E", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
         ↓ {count}%
       </span>
-      <span style={{ fontSize: "13px", fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>faster overall</span>
+      <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>faster overall</span>
     </div>
   );
 }
 
 function ImageCaption({ children }: { children: React.ReactNode }) {
   return (
-    <span style={{ display: "block", textAlign: "center", fontSize: "12px", fontWeight: 500, letterSpacing: "0.02em", color: "rgba(255,255,255,0.42)", marginTop: "14px" }}>
+    <span style={{ display: "block", textAlign: "center", fontSize: "var(--text-2xs)", fontWeight: 500, letterSpacing: "0.02em", color: "rgba(255,255,255,0.42)", marginTop: "14px" }}>
       {children}
     </span>
   );
@@ -403,7 +403,7 @@ function FeaturePanorama({ srcs, captions }: { srcs: string[]; captions?: string
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.55, ease: EASE, delay: i * 0.12 }}
             style={{
-              borderRadius: "14px",
+              borderRadius: "var(--radius-lg)",
               overflow: "hidden",
               background: "#17130E",
               border: "1px solid rgba(255,255,255,0.07)",
@@ -429,19 +429,19 @@ function AnnotationPin({ x, y, label, value, side = "right" }: { x: number; y: n
       <motion.div
         animate={{ scale: [1, 1.8, 1], opacity: [0.7, 0, 0.7] }}
         transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-        style={{ position: "absolute", inset: "-10px", borderRadius: "50%", border: "2px solid #C4622D" }}
+        style={{ position: "absolute", inset: "-10px", borderRadius: "50%", border: "2px solid var(--gold)" }}
       />
       {/* Centre dot */}
-      <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#C4622D", boxShadow: "0 0 8px rgba(196,98,45,0.8)", position: "relative", zIndex: 1 }} />
+      <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "var(--gold)", boxShadow: "0 0 8px rgb(var(--gold-rgb) / 0.8)", position: "relative", zIndex: 1 }} />
       {/* Callout — hidden on mobile */}
       <div className="hidden md:block" style={{
         position: "absolute", top: "50%", transform: "translateY(-50%)",
         [side === "right" ? "left" : "right"]: "18px",
-        background: "#C4622D", borderRadius: "8px", padding: "5px 10px",
-        whiteSpace: "nowrap", boxShadow: "0 4px 20px rgba(196,98,45,0.4)",
+        background: "var(--gold)", borderRadius: "var(--radius-sm)", padding: "5px 10px",
+        whiteSpace: "nowrap", boxShadow: "0 4px 20px rgb(var(--gold-rgb) / 0.4)",
       }}>
         <div style={{ fontSize: "9px", fontWeight: 600, color: "rgba(255,255,255,0.75)", letterSpacing: "0.06em", textTransform: "uppercase" }}>{label}</div>
-        <div style={{ fontSize: "13px", fontWeight: 700, color: "#fff", lineHeight: 1.2 }}>{value}</div>
+        <div style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "white", lineHeight: 1.2 }}>{value}</div>
       </div>
     </div>
   );
@@ -482,9 +482,9 @@ function AnnotatedComparison({ srcs }: { srcs: string[] }) {
           {/* Label row */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
             <span style={{
-              fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase",
-              padding: "4px 12px", borderRadius: "9999px",
-              background: frame.isWinner ? "#C4622D" : "rgba(255,255,255,0.08)",
+              fontSize: "var(--text-label)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase",
+              padding: "4px 12px", borderRadius: "var(--radius-pill)",
+              background: frame.isWinner ? "var(--gold)" : "rgba(255,255,255,0.08)",
               color: frame.isWinner ? "#fff" : "rgba(255,255,255,0.5)",
             }}>
               {frame.label}
@@ -492,7 +492,7 @@ function AnnotatedComparison({ srcs }: { srcs: string[] }) {
             {frame.isWinner && <WinnerBadge />}
           </div>
           {/* Image + pins */}
-          <div style={{ position: "relative", borderRadius: "14px", overflow: "hidden", border: `1px solid ${frame.isWinner ? "rgba(196,98,45,0.35)" : "rgba(255,255,255,0.07)"}`, boxShadow: "0 24px 60px rgba(0,0,0,0.45)" }}>
+          <div style={{ position: "relative", borderRadius: "var(--radius-lg)", overflow: "hidden", border: `1px solid ${frame.isWinner ? "rgb(var(--gold-rgb) / 0.35)" : "rgba(255,255,255,0.07)"}`, boxShadow: "0 24px 60px rgba(0,0,0,0.45)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={frame.src} alt={frame.label} style={{ display: "block", width: "100%", height: "auto" }} />
             {frame.pins.map((pin, j) => (
@@ -516,7 +516,7 @@ function StackedScreenshots({ srcs }: { srcs: string[] }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.55, ease: EASE, delay: i * 0.1 }}
-          style={{ borderRadius: "14px", overflow: "hidden", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}
+          style={{ borderRadius: "var(--radius-lg)", overflow: "hidden", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
@@ -530,11 +530,11 @@ function StackedScreenshots({ srcs }: { srcs: string[] }) {
 function LandscapePortraitStack({ srcs }: { srcs: string[] }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-      <div style={{ borderRadius: "14px", overflow: "hidden", position: "relative", aspectRatio: "16/9", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
+      <div style={{ borderRadius: "var(--radius-lg)", overflow: "hidden", position: "relative", aspectRatio: "16/9", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
         <Image src={srcs[0]} alt="" fill style={{ objectFit: "cover", objectPosition: "top" }} />
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <div style={{ position: "relative", width: "320px", borderRadius: "14px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
+        <div style={{ position: "relative", width: "320px", borderRadius: "var(--radius-lg)", overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)" }}>
           <Image src={srcs[1]} alt="" width={320} height={576} style={{ width: "100%", height: "auto", display: "block" }} />
         </div>
       </div>
@@ -563,10 +563,10 @@ function CaseStat({ value, prefix = "", suffix = "", label }: { value: number; p
   }, [inView, value]);
   return (
     <div ref={ref} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-      <span style={{ fontSize: "clamp(40px, 6vw, 64px)", fontWeight: 800, color: "#C4622D", lineHeight: 1, letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums" }}>
+      <span style={{ fontSize: "clamp(40px, 6vw, 64px)", fontWeight: 800, color: "var(--gold)", lineHeight: 1, letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums" }}>
         {prefix}{n}{suffix}
       </span>
-      <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>{label}</span>
+      <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>{label}</span>
     </div>
   );
 }
@@ -636,7 +636,7 @@ function CaseSection({ section, index, onInView }: { section: Section; index: nu
       <div aria-hidden="true" style={{
         position: "absolute", ...orbPos,
         width: "500px", height: "500px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(196,98,45,0.10) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.10) 0%, transparent 70%)",
         pointerEvents: "none",
       }} />
 
@@ -646,11 +646,11 @@ function CaseSection({ section, index, onInView }: { section: Section; index: nu
             <div className="flex flex-col lg:flex-row lg:items-start lg:gap-16">
               <div className="lg:w-[48%] shrink-0" style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                 {(() => { const Icon = SECTION_ICONS[section.label]; return (
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "#C4622D" }}>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--gold)" }}>
                     {Icon && <Icon size={12} />}{section.label}
                   </span>
                 ); })()}
-                <h2 style={{ fontSize: "clamp(24px, 3vw, 32px)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.25, letterSpacing: "-0.02em" }}>{section.heading}</h2>
+                <h2 style={{ fontSize: "var(--text-h3)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.25, letterSpacing: "-0.02em" }}>{section.heading}</h2>
                 <SectionBody section={section} />
                 {section.stats && <CaseStats stats={section.stats} />}
               </div>
@@ -662,11 +662,11 @@ function CaseSection({ section, index, onInView }: { section: Section; index: nu
             <div style={{ display: "flex", flexDirection: "column", gap: "52px" }}>
               <div style={{ display: "flex", flexDirection: "column", gap: "20px", maxWidth: "800px" }}>
                 {(() => { const Icon = SECTION_ICONS[section.label]; return (
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "#C4622D" }}>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--gold)" }}>
                     {Icon && <Icon size={12} />}{section.label}
                   </span>
                 ); })()}
-                <h2 style={{ fontSize: "clamp(24px, 3vw, 32px)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.25, letterSpacing: "-0.02em" }}>{section.heading}</h2>
+                <h2 style={{ fontSize: "var(--text-h3)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.25, letterSpacing: "-0.02em" }}>{section.heading}</h2>
                 <SectionBody section={section} />
                 {section.stats && <CaseStats stats={section.stats} />}
               </div>
@@ -702,9 +702,9 @@ function LearningRow({ learning, index, featured }: { learning: string; index: n
       }}>
         <span style={{
           fontSize: "clamp(34px, 5.5vw, 64px)", fontWeight: 800, lineHeight: 0.9,
-          color: hovered ? "#C4622D" : "transparent",
-          WebkitTextFillColor: hovered ? "#C4622D" : "transparent",
-          WebkitTextStroke: `1.5px ${hovered ? "#C4622D" : "rgba(196,98,45,0.55)"}`,
+          color: hovered ? "var(--gold)" : "transparent",
+          WebkitTextFillColor: hovered ? "var(--gold)" : "transparent",
+          WebkitTextStroke: `1.5px ${hovered ? "var(--gold)" : "rgb(var(--gold-rgb) / 0.55)"}`,
           fontVariantNumeric: "tabular-nums", letterSpacing: "-0.04em",
           transition: "color 0.3s, -webkit-text-fill-color 0.3s",
         }}>
@@ -760,18 +760,18 @@ function LearningsSection({ learnings, onInView, navIndex }: { learnings: string
       <div aria-hidden="true" style={{
         position: "absolute", top: "0%", right: "-10%",
         width: "600px", height: "600px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(196,98,45,0.13) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.13) 0%, transparent 70%)",
         pointerEvents: "none",
       }} />
       <div className="page-container" style={{ position: "relative" }}>
         <motion.div style={{ opacity, y, filter: blur }}>
-          <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#C4622D", marginBottom: "16px" }}>Key Learnings</p>
-          <h2 style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 800, color: "#F5F1EC", letterSpacing: "-0.04em", lineHeight: 1.05, marginBottom: "64px" }}>
+          <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--gold)", marginBottom: "16px" }}>Key Learnings</p>
+          <h2 style={{ fontSize: "var(--text-h2)", fontWeight: 800, color: "#F5F1EC", letterSpacing: "-0.04em", lineHeight: 1.05, marginBottom: "64px" }}>
             What this project taught me
           </h2>
           <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: "clamp(28px, 4vw, 44px)" }}>
             {/* Connecting thread */}
-            <div aria-hidden="true" style={{ position: "absolute", left: "clamp(23px, 3.5vw, 36px)", top: "24px", bottom: "24px", width: "2px", background: "linear-gradient(to bottom, #C4622D, rgba(196,98,45,0.12))", zIndex: 0 }} />
+            <div aria-hidden="true" style={{ position: "absolute", left: "clamp(23px, 3.5vw, 36px)", top: "24px", bottom: "24px", width: "2px", background: "linear-gradient(to bottom, var(--gold), rgb(var(--gold-rgb) / 0.12))", zIndex: 0 }} />
             {learnings.map((learning, i) => (
               <LearningRow key={i} learning={learning} index={i} featured={i === 0} />
             ))}
@@ -791,7 +791,7 @@ const COMPANY_LOGO: Record<string, { src: string; bg: string; h: number }> = {
 
 /* ── More case studies card ── */
 function MoreCard({ cs, index }: { cs: CaseStudy; index: number }) {
-  const { handlers, overlay } = useSpotlight({ radius: 320, color: "rgba(196,98,45,0.09)" });
+  const { handlers, overlay } = useSpotlight({ radius: 320, color: "rgb(var(--gold-rgb) / 0.09)" });
   const [hovered, setHovered] = useState(false);
   return (
     <Link href={getHref(cs.slug)} style={{ display: "block", textDecoration: "none", height: "100%" }}>
@@ -806,8 +806,8 @@ function MoreCard({ cs, index }: { cs: CaseStudy; index: number }) {
         style={{
           position: "relative", overflow: "hidden",
           background: "rgba(255,255,255,0.04)",
-          border: `1px solid ${hovered ? "rgba(196,98,45,0.4)" : "rgba(255,255,255,0.08)"}`,
-          borderRadius: "16px", padding: "26px", height: "100%", cursor: "pointer",
+          border: `1px solid ${hovered ? "rgb(var(--gold-rgb) / 0.4)" : "rgba(255,255,255,0.08)"}`,
+          borderRadius: "var(--radius-xl)", padding: "26px", height: "100%", cursor: "pointer",
           transform: hovered ? "translateY(-5px)" : "translateY(0)",
           boxShadow: hovered ? "0 20px 50px rgba(0,0,0,0.4)" : "none",
           transition: "transform 0.3s, border-color 0.3s, box-shadow 0.3s",
@@ -815,9 +815,9 @@ function MoreCard({ cs, index }: { cs: CaseStudy; index: number }) {
       >
         {overlay}
         <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: "8px", height: "100%" }}>
-          <span style={{ fontSize: "18px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.25 }}>{cs.title}</span>
-          <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", lineHeight: 1.6, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cs.subtitle}</span>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px", fontWeight: 500, color: "#C4622D", marginTop: "auto", paddingTop: "20px" }}>
+          <span style={{ fontSize: "var(--text-lg)", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.25 }}>{cs.title}</span>
+          <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.4)", lineHeight: 1.6, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cs.subtitle}</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "var(--text-xs)", fontWeight: 500, color: "var(--gold)", marginTop: "auto", paddingTop: "20px" }}>
             View case study
             <span className="transition-transform duration-200" style={{ display: "inline-flex", transform: hovered ? "translateX(3px)" : "translateX(0)" }}>
               <ArrowUpRight size={14} />
@@ -851,7 +851,7 @@ function MoreCaseStudies({ currentSlug }: { currentSlug: string }) {
   return (
     <section style={{ background: "#110E0B", paddingTop: "80px", paddingBottom: "80px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
       <div className="page-container">
-        <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", marginBottom: "40px" }}>More case studies</p>
+        <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", marginBottom: "40px" }}>More case studies</p>
         <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
           {order.map((company) => {
             const logo = COMPANY_LOGO[company];
@@ -865,7 +865,7 @@ function MoreCaseStudies({ currentSlug }: { currentSlug: string }) {
                       <img src={logo.src} alt={company} style={{ height: `${logo.h}px`, width: "auto", maxWidth: "130px", objectFit: "contain", display: "block" }} />
                     </div>
                   )}
-                  <span style={{ fontSize: "14px", fontWeight: 600, color: "rgba(255,255,255,0.6)", letterSpacing: "-0.01em" }}>{company}</span>
+                  <span style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: "rgba(255,255,255,0.6)", letterSpacing: "-0.01em" }}>{company}</span>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {byCompany[company].map((cs, i) => (
@@ -914,7 +914,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
             style={{
               top: "-20%", right: "-8%",
               width: "700px", height: "700px", borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(196,98,45,0.18) 0%, transparent 65%)",
+              background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.18) 0%, transparent 65%)",
             }}
           />
           <div className="absolute inset-0 noise-texture opacity-[0.02] pointer-events-none" />
@@ -926,13 +926,13 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: EASE }}
-                  style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.35)", marginBottom: "20px" }}
+                  style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.35)", marginBottom: "20px" }}
                 >
                   {study.company}
                 </motion.p>
 
                 {/* Word-by-word title */}
-                <h1 style={{ fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 800, color: "#F5F1EC", lineHeight: 1.08, letterSpacing: "-0.04em" }}>
+                <h1 style={{ fontSize: "var(--text-h1)", fontWeight: 800, color: "#F5F1EC", lineHeight: 1.08, letterSpacing: "-0.04em" }}>
                   {words.map((word, i) => (
                     <motion.span
                       key={i}
@@ -950,7 +950,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
                   initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.35, ease: EASE }}
-                  style={{ marginTop: "24px", fontSize: "18px", color: "rgba(255,255,255,0.5)", lineHeight: 1.65, maxWidth: "540px" }}
+                  style={{ marginTop: "24px", fontSize: "var(--text-lg)", color: "rgba(255,255,255,0.5)", lineHeight: 1.65, maxWidth: "540px" }}
                 >
                   {study.subtitle}
                 </motion.p>
@@ -962,7 +962,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
                   style={{ marginTop: "32px", display: "flex", flexWrap: "wrap", gap: "10px" }}
                 >
                   {study.tools.map((tool) => (
-                    <span key={tool} style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "12px", fontWeight: 500, color: "rgba(255,255,255,0.5)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "9999px", padding: "6px 14px" }}>
+                    <span key={tool} style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "var(--text-2xs)", fontWeight: 500, color: "rgba(255,255,255,0.5)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "var(--radius-pill)", padding: "6px 14px" }}>
                       <PenTool size={10} />
                       {tool}
                     </span>
@@ -981,7 +981,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
                       transition={{ duration: 0.9, delay: 0.25, ease: EASE }}
                       style={{ width: "100%" }}
                     >
-                      <div style={{ position: "relative", width: "100%", aspectRatio: "16/10", borderRadius: "14px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 32px 80px rgba(0,0,0,0.5)" }}>
+                      <div style={{ position: "relative", width: "100%", aspectRatio: "16/10", borderRadius: "var(--radius-lg)", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 32px 80px rgba(0,0,0,0.5)" }}>
                         <Image src={study.heroImage} alt="" fill style={{ objectFit: "cover", objectPosition: "top left" }} />
                       </div>
                     </motion.div>
@@ -999,7 +999,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
             className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2"
             style={{ bottom: "32px" }}
           >
-            <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>Read the story</span>
+            <span style={{ fontSize: "var(--text-micro)", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>Read the story</span>
             <motion.div animate={{ y: [0, 7, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}>
               <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                 <path d="M4 7l6 6 6-6" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -1014,8 +1014,10 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
           <CaseSection key={i} section={section} index={i} onInView={handleInView} />
         ))}
 
+        <div className="divider-gold" />
         <LearningsSection learnings={study.learnings} onInView={handleInView} navIndex={study.sections.length} />
         <MoreCaseStudies currentSlug={study.slug} />
+        <div className="divider-gold" />
         <ContactFooter />
       </div>
     </main>
