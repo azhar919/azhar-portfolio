@@ -164,41 +164,45 @@ const mobileItems: MobileItem[] = [...featured, ...secondary];
 
 function MobileWorkCard({ project }: { project: MobileItem }) {
   const { handlers, overlay } = useSpotlight({ radius: 360, color: "rgba(196,98,45,0.12)" });
+  // Scroll-linked reveal: rises + sharpens on the way in, recedes on the way out.
+  const { ref, style } = useReveal({ y: 90, scale: 0.82, blur: 14 });
   return (
-    <Link
-      href={project.href}
-      className="group flex flex-col h-full"
-      style={{
-        position: "relative",
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: "16px",
-        overflow: "hidden",
-      }}
-      onTouchStart={handlers.onTouchStart}
-      onTouchMove={handlers.onTouchMove}
-      onTouchEnd={handlers.onTouchEnd}
-    >
-      {overlay}
-      {project.image && project.url && (
-        <BrowserFrame image={project.image} url={project.url} title={project.title} />
-      )}
-      <div className="flex flex-col gap-2.5 flex-1" style={{ padding: "22px", position: "relative", zIndex: 1 }}>
-        <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#C4622D" }}>
-          {project.company}
-        </p>
-        <h3 style={{ fontSize: "19px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
-          {project.title}
-        </h3>
-        <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", lineHeight: 1.65 }}>
-          {project.description}
-        </p>
-        <span className="inline-flex items-center gap-1.5" style={{ fontSize: "13.5px", fontWeight: 500, color: "#C4622D", marginTop: "auto", paddingTop: "10px" }}>
-          View project
-          <ArrowUpRight size={15} />
-        </span>
-      </div>
-    </Link>
+    <motion.div ref={ref} style={{ ...style, height: "100%" }}>
+      <Link
+        href={project.href}
+        className="group flex flex-col h-full"
+        style={{
+          position: "relative",
+          background: "rgba(255,255,255,0.04)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: "16px",
+          overflow: "hidden",
+        }}
+        onTouchStart={handlers.onTouchStart}
+        onTouchMove={handlers.onTouchMove}
+        onTouchEnd={handlers.onTouchEnd}
+      >
+        {overlay}
+        {project.image && project.url && (
+          <BrowserFrame image={project.image} url={project.url} title={project.title} />
+        )}
+        <div className="flex flex-col gap-2.5 flex-1" style={{ padding: "22px", position: "relative", zIndex: 1 }}>
+          <p style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#C4622D" }}>
+            {project.company}
+          </p>
+          <h3 style={{ fontSize: "19px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
+            {project.title}
+          </h3>
+          <p style={{ fontSize: "13.5px", color: "rgba(255,255,255,0.5)", lineHeight: 1.65 }}>
+            {project.description}
+          </p>
+          <span className="inline-flex items-center gap-1.5" style={{ fontSize: "13.5px", fontWeight: 500, color: "#C4622D", marginTop: "auto", paddingTop: "10px" }}>
+            View project
+            <ArrowUpRight size={15} />
+          </span>
+        </div>
+      </Link>
+    </motion.div>
   );
 }
 
