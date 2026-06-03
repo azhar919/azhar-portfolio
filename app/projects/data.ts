@@ -3,7 +3,10 @@
   heading: string;
   body: string[];
   bullets?: string[];
+  bulletStyle?: "list" | "grid";
+  stats?: { value: number; prefix?: string; suffix?: string; label: string }[];
   image?: string | string[];
+  captions?: string[]; // parallel to image[]; short labels shown under each device/image
   imageAspect?: "portrait" | "page" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map" | "feature-panorama" | "phone-trio"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, default = 16:9
   dark?: boolean;
 };
@@ -388,14 +391,17 @@ export const caseStudies: CaseStudy[] = [
         label: "The Challenge",
         heading: "Too long. Too complex. Easy to abandon.",
         body: ["The existing onboarding experience was fundamentally broken:"],
+        stats: [
+          { value: 30, suffix: "+", label: "Screens to complete" },
+          { value: 90, suffix: "%", label: "Drop-off rate" },
+        ],
         bullets: [
-          "Over 30+ screens to complete",
           "Heavy manual input required",
-          "90% drop-off rate",
           "Inconsistent UI and interaction patterns",
           "Confusing button placement and navigation",
         ],
         image: ["/images/Mpho.png", "/images/PB - Web - NTB.png"],
+        captions: ["Target user persona", "The recommended end-to-end customer journey"],
         imageAspect: "feature-panorama",
       },
       {
@@ -440,6 +446,7 @@ export const caseStudies: CaseStudy[] = [
           "/images/Step 1.3 - Getting started.png",
           "/images/Step 4 - Product selection.png",
         ],
+        captions: ["Getting started", "Product selection"],
         imageAspect: "phone-trio",
       },
       {
@@ -452,7 +459,9 @@ export const caseStudies: CaseStudy[] = [
           "Faster onboarding experience",
           "More consistent and scalable design foundation",
         ],
+        bulletStyle: "grid",
         image: "/images/Completed.png",
+        captions: ["Account successfully created"],
         imageAspect: "phone-trio",
         dark: true,
       },
