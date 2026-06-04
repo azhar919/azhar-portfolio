@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Inter, Cormorant } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter, Cormorant, Montserrat } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import MotionProvider from "@/components/MotionProvider";
@@ -24,6 +24,13 @@ const cormorant = Cormorant({
   subsets: ["latin"],
   weight: ["400", "500"],
   style: ["italic", "normal"],
+});
+
+// African Bank's brand typeface — used only inside the AB design-system showcase
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 
@@ -57,7 +64,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${inter.variable} ${cormorant.variable}`}>
+    <html lang="en" className={`${plusJakartaSans.variable} ${inter.variable} ${cormorant.variable} ${montserrat.variable}`}>
       <body className="min-h-screen antialiased">
         <MotionProvider>{children}</MotionProvider>
         <Analytics />

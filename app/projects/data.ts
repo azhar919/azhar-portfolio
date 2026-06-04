@@ -3,11 +3,13 @@
   heading: string;
   body: string[];
   bullets?: string[];
+  footnote?: string; // optional closing line rendered after the bullets
   bulletStyle?: "list" | "grid";
   stats?: { value: number; prefix?: string; suffix?: string; label: string }[];
   image?: string | string[];
   captions?: string[]; // parallel to image[]; short labels shown under each device/image
-  imageAspect?: "portrait" | "page" | "laptop" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map" | "feature-panorama" | "phone-trio"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, default = 16:9
+  imageAspect?: "portrait" | "page" | "laptop" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map" | "feature-panorama" | "phone-trio" | "before-after"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, before-after = labelled old→new comparison, default = 16:9
+  showcase?: "design-system"; // renders a built visual (e.g. a mini design-system sheet) instead of an image
   dark?: boolean;
 };
 
@@ -195,6 +197,7 @@ export const caseStudies: CaseStudy[] = [
           "The core issue became clear: the architecture wasn't built around user mental models — it reflected how content was stored, not how it was found.",
         ],
         image: "/images/iqbusiness case study/Screenshot 2024-10-07 at 16.20.19 1.png",
+        imageAspect: "laptop",
       },
       {
         label: "Design",
@@ -205,6 +208,7 @@ export const caseStudies: CaseStudy[] = [
           "This allowed me to design an architecture based on real mental models, not assumptions.",
         ],
         image: "/images/iqbusiness case study/Screenshot 2024-10-07 at 16.22.09 1.png",
+        imageAspect: "laptop",
       },
       {
         label: "Test & Iterate",
@@ -229,7 +233,7 @@ export const caseStudies: CaseStudy[] = [
           "What was once a frustrating experience became clear, predictable, and aligned with how people think.",
         ],
         image: "/images/iqbusiness case study/Screenshot 2024-10-07 at 16.23.24 1.png",
-        imageAspect: "screenshot",
+        imageAspect: "laptop",
         dark: true,
       },
     ],
@@ -312,6 +316,7 @@ export const caseStudies: CaseStudy[] = [
     subtitle:
       "Transforming an outdated, fragmented website into a modern, structured, and scalable platform — built on a unified design system.",
     tools: ["Figma", "UI Design", "User Research", "Prototyping"],
+    heroImage: "/images/african-bank-landing.png.png",
     sections: [
       {
         label: "The Challenge",
@@ -344,9 +349,15 @@ export const caseStudies: CaseStudy[] = [
         heading: "Rebuild the foundation, not just the interface",
         body: [
           "We didn't redesign screens. We rebuilt the system.",
-          "Created a new design system and component library, redefined the information architecture, grouped products into clear logical categories, and standardised buttons, CTAs, and interaction patterns.",
-          "Inspired by modern digital banks like Wio, Revolut, and other international platforms.",
         ],
+        bullets: [
+          "Created a new design system and component library",
+          "Redefined the information architecture",
+          "Grouped products into clear logical categories",
+          "Standardised buttons, CTAs, and interaction patterns",
+        ],
+        footnote: "Inspired by modern digital banks like Wio, Revolut, and other international platforms.",
+        showcase: "design-system",
         image: "/images/Webpage - Personal wireframe.png",
         imageAspect: "laptop",
       },
@@ -354,20 +365,28 @@ export const caseStudies: CaseStudy[] = [
         label: "The Solution",
         heading: "A modern, structured, and guided experience",
         body: [
-          "The new website introduced clarity at every level: clean, consistent visual design, a unified component system, clear product grouping and hierarchy, and strong intentional CTAs.",
-          "The experience shifted from confusing and fragmented — to clear, guided, and scalable.",
+          "The new website introduced clarity at every level:",
         ],
+        bullets: [
+          "Clean, consistent visual design",
+          "A unified component system",
+          "Clear product grouping and hierarchy",
+          "Strong, intentional CTAs",
+        ],
+        footnote: "The experience shifted from confusing and fragmented — to clear, guided, and scalable.",
         image: "/images/Landing page final.png",
         imageAspect: "laptop",
       },
       {
         label: "Impact",
         heading: "From confusion to confidence",
-        body: [
+        body: [],
+        bullets: [
           "Improved product discoverability and clearer user journeys.",
           "Consistent experience across every page.",
           "Stronger foundation for future scalability.",
         ],
+        bulletStyle: "grid",
         dark: true,
       },
     ],

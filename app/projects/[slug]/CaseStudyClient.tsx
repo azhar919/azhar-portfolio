@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, Target, Layers, Zap, TrendingUp, RefreshCw, AlertCircle, Lightbulb, Compass, CheckCircle, Hammer, BarChart2, PenTool, ArrowUpRight, Check, type LucideIcon } from "lucide-react";
+import { Search, Target, Layers, Zap, TrendingUp, RefreshCw, AlertCircle, Lightbulb, Compass, CheckCircle, Hammer, BarChart2, PenTool, ArrowUpRight, User, Building2, CreditCard, BadgeCheck, BookOpen, type LucideIcon } from "lucide-react";
 import FloatingNav from "@/components/FloatingNav";
 import SouthernAfricaMap from "@/components/SouthernAfricaMap";
 import PhoneMockup from "@/components/PhoneMockup";
@@ -23,20 +23,22 @@ function SectionBody({ section }: { section: Section }) {
         <p key={i} style={{ fontSize: "var(--text-body)", color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}>{para}</p>
       ))}
       {section.bullets && section.bulletStyle === "grid" ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "12px", marginTop: "8px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px", marginTop: "8px" }}>
           {section.bullets.map((bullet, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 22 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.5, ease: EASE, delay: i * 0.08 }}
-              style={{ display: "flex", gap: "12px", alignItems: "flex-start", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "var(--radius-lg)", padding: "18px 20px" }}
+              transition={{ duration: 0.55, ease: EASE, delay: i * 0.09 }}
+              whileHover={{ y: -5 }}
+              style={{ position: "relative", display: "flex", flexDirection: "column", gap: "16px", background: "linear-gradient(160deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.015) 100%)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: "var(--radius-xl)", padding: "26px", overflow: "hidden" }}
             >
-              <span style={{ flexShrink: 0, width: "24px", height: "24px", borderRadius: "50%", background: "rgb(var(--gold-rgb) / 0.15)", border: "1px solid rgb(var(--gold-rgb) / 0.4)", display: "grid", placeItems: "center", marginTop: "1px" }}>
-                <Check size={13} color="var(--gold)" />
+              <span aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: "linear-gradient(90deg, transparent, rgb(var(--gold-rgb) / 0.6), transparent)" }} />
+              <span style={{ width: "46px", height: "46px", borderRadius: "var(--radius-md)", background: "linear-gradient(150deg, rgb(var(--gold-rgb) / 0.28), rgb(var(--gold-rgb) / 0.07))", border: "1px solid rgb(var(--gold-rgb) / 0.3)", display: "grid", placeItems: "center" }}>
+                <CheckCircle size={22} color="var(--gold)" strokeWidth={2} />
               </span>
-              <span style={{ fontSize: "var(--text-ui)", color: "rgba(255,255,255,0.7)", lineHeight: 1.6 }}>{bullet}</span>
+              <span style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.82)", lineHeight: 1.55, fontWeight: 500 }}>{bullet}</span>
             </motion.div>
           ))}
         </div>
@@ -56,6 +58,9 @@ function SectionBody({ section }: { section: Section }) {
             </motion.li>
           ))}
         </ul>
+      )}
+      {section.footnote && (
+        <p style={{ fontSize: "var(--text-body)", color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}>{section.footnote}</p>
       )}
     </div>
   );
@@ -257,6 +262,126 @@ function DualImage({ srcs }: { srcs: [string, string] }) {
   );
 }
 
+
+/* ── African Bank design-system sheet — tokens pulled straight from their Figma ──
+   (light "artboard" embedded in the dark page; Montserrat, navy + green, real components) */
+const AB = {
+  navy: "#002B60",    // brand core 500 — primary text / brand surface
+  blue: "#3E5D88",    // brand core 400 — secondary text
+  green: "#5DC400",   // brand highlight 500 — primary CTA
+  surface: "#E3E8EF", // brand core 100 — light surface
+  border: "#C9D1DB",  // gray 300 — input border
+  strong: "#475365",  // gray 700 — strong border
+  slate: "#8A97A8",   // gray 500
+  font: "var(--font-montserrat)",
+};
+
+function DSBlock({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+      <span style={{ fontFamily: AB.font, fontSize: "11px", fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase", color: AB.slate }}>{title}</span>
+      {children}
+    </div>
+  );
+}
+
+function DSField({ label, value, placeholder, focused }: { label: string; value?: string; placeholder?: string; focused?: boolean }) {
+  // Matches AB's input component: label (Montserrat Medium 14) + 48px box, 1px border, 8px radius
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+      <span style={{ fontFamily: AB.font, fontSize: "14px", fontWeight: 500, color: AB.navy }}>{label}</span>
+      <div style={{
+        height: "48px", display: "flex", alignItems: "center", padding: "0 12px",
+        background: "#fff", borderRadius: "8px",
+        border: `1px solid ${focused ? AB.navy : AB.border}`,
+        boxShadow: focused ? "0 0 0 3px rgba(0,43,96,0.12)" : "none",
+        fontFamily: AB.font, fontSize: "14px", fontWeight: 500, color: value ? AB.navy : "#9AA7B8",
+      }}>
+        {value || placeholder}
+      </div>
+    </div>
+  );
+}
+
+function DesignSystemShowcase() {
+  const swatches: { c: string; name: string }[] = [
+    { c: AB.navy, name: "Navy" },
+    { c: AB.blue, name: "Blue" },
+    { c: AB.green, name: "Green" },
+    { c: AB.surface, name: "Surface" },
+    { c: AB.border, name: "Border" },
+    { c: AB.slate, name: "Slate" },
+    { c: "#FFFFFF", name: "White" },
+  ];
+  const icons = [User, Building2, BadgeCheck, CreditCard, BookOpen];
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, ease: EASE }}
+      style={{ borderRadius: "var(--radius-2xl)", overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 34px 90px rgba(0,0,0,0.55)" }}
+    >
+      {/* Header — African Bank's navy/blue gradient */}
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "16px clamp(24px, 4vw, 36px)", background: "linear-gradient(135deg, #004AA4 0%, #012046 100%)" }}>
+        <span style={{ width: "10px", height: "10px", borderRadius: "3px", background: AB.green }} />
+        <span style={{ fontFamily: AB.font, fontSize: "15px", fontWeight: 700, color: "#fff", letterSpacing: "-0.01em" }}>Design System</span>
+        <span style={{ fontFamily: AB.font, fontSize: "12px", color: "rgba(255,255,255,0.6)" }}>· African Bank component library</span>
+      </div>
+
+      {/* Light artboard */}
+      <div style={{ background: "#F7F8FA", padding: "clamp(24px, 4vw, 36px)", display: "flex", flexDirection: "column", gap: "30px" }}>
+        <DSBlock title="Colour">
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            {swatches.map((s) => (
+              <div key={s.name} title={s.name} style={{ display: "flex", flexDirection: "column", gap: "5px", alignItems: "center" }}>
+                <div style={{ width: "44px", height: "44px", borderRadius: "8px", background: s.c, border: "1px solid rgba(0,0,0,0.1)" }} />
+                <span style={{ fontFamily: AB.font, fontSize: "9px", color: AB.slate, fontWeight: 500 }}>{s.name}</span>
+              </div>
+            ))}
+          </div>
+        </DSBlock>
+
+        <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "32px" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "26px" }}>
+            <DSBlock title="Type">
+              <div style={{ display: "flex", alignItems: "baseline", gap: "12px" }}>
+                <span style={{ fontFamily: AB.font, fontSize: "44px", fontWeight: 700, color: AB.navy, lineHeight: 1, letterSpacing: "-0.02em" }}>Aa</span>
+                <span style={{ fontFamily: AB.font, fontSize: "12px", color: AB.blue }}>Montserrat · 400 / 500 / 600</span>
+              </div>
+            </DSBlock>
+
+            <DSBlock title="Icons">
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                {icons.map((Ico, i) => (
+                  <span key={i} style={{ width: "40px", height: "40px", borderRadius: "12px", background: AB.surface, display: "grid", placeItems: "center" }}>
+                    <Ico size={19} color={AB.navy} strokeWidth={1.8} />
+                  </span>
+                ))}
+              </div>
+            </DSBlock>
+
+            <DSBlock title="Buttons">
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", alignItems: "center" }}>
+                <span style={{ fontFamily: AB.font, fontSize: "13px", fontWeight: 600, color: "#fff", background: AB.green, padding: "10px 20px", borderRadius: "999px" }}>Confirm</span>
+                <span style={{ fontFamily: AB.font, fontSize: "13px", fontWeight: 600, color: "#fff", background: AB.navy, padding: "10px 20px", borderRadius: "999px" }}>Apply now</span>
+                <span style={{ fontFamily: AB.font, fontSize: "13px", fontWeight: 600, color: AB.blue, background: "#fff", border: `1px solid ${AB.strong}`, padding: "9px 18px", borderRadius: "999px" }}>Edit details</span>
+              </div>
+            </DSBlock>
+          </div>
+
+          <DSBlock title="Input fields">
+            <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <DSField label="Email address" value="jamie@gmail.com" />
+              <DSField label="ID number" placeholder="Enter your ID number" focused />
+            </div>
+          </DSBlock>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 function TripleImage({ srcs }: { srcs: [string, string, string] }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -337,22 +462,24 @@ function ScatteredImages({ srcs }: { srcs: string[] }) {
 /* Count-up badge for the winner stat */
 function WinnerBadge() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const inView = useInView(ref, { margin: "-60px" }); // re-fires every time it scrolls into view
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView) { setCount(0); return; } // reset when it leaves so it re-counts on return
     const duration = 1200;
     const target = 45;
     const start = performance.now();
+    let raf = 0;
     const tick = (now: number) => {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
       const ease = 1 - Math.pow(1 - progress, 3);
       setCount(Math.round(ease * target));
-      if (progress < 1) requestAnimationFrame(tick);
+      if (progress < 1) raf = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [inView]);
 
   return (
@@ -421,86 +548,73 @@ function FeaturePanorama({ srcs, captions }: { srcs: string[]; captions?: string
   );
 }
 
-/* Annotated before/after comparison with pulsing metric callouts */
-function AnnotationPin({ x, y, label, value, side = "right" }: { x: number; y: number; label: string; value: string; side?: "left" | "right" }) {
-  return (
-    <div style={{ position: "absolute", left: `${x}%`, top: `${y}%`, transform: "translate(-50%, -50%)", zIndex: 10, pointerEvents: "none" }}>
-      {/* Pulsing ring */}
-      <motion.div
-        animate={{ scale: [1, 1.8, 1], opacity: [0.7, 0, 0.7] }}
-        transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-        style={{ position: "absolute", inset: "-10px", borderRadius: "50%", border: "2px solid var(--gold)" }}
-      />
-      {/* Centre dot */}
-      <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "var(--gold)", boxShadow: "0 0 8px rgb(var(--gold-rgb) / 0.8)", position: "relative", zIndex: 1 }} />
-      {/* Callout — hidden on mobile */}
-      <div className="hidden md:block" style={{
-        position: "absolute", top: "50%", transform: "translateY(-50%)",
-        [side === "right" ? "left" : "right"]: "18px",
-        background: "var(--gold)", borderRadius: "var(--radius-sm)", padding: "5px 10px",
-        whiteSpace: "nowrap", boxShadow: "0 4px 20px rgb(var(--gold-rgb) / 0.4)",
-      }}>
-        <div style={{ fontSize: "9px", fontWeight: 600, color: "rgba(255,255,255,0.75)", letterSpacing: "0.06em", textTransform: "uppercase" }}>{label}</div>
-        <div style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "white", lineHeight: 1.2 }}>{value}</div>
-      </div>
-    </div>
-  );
-}
 
 function AnnotatedComparison({ srcs }: { srcs: string[] }) {
-  const frames = [
-    {
-      src: srcs[0],
-      label: "Iteration 1",
-      isWinner: false,
-      pins: [
-        { x: 53, y: 32, label: "Avg time", value: "17m 4.9s", side: "right" as const },
-        { x: 65, y: 60, label: "Time on task", value: "↑ Slower", side: "left" as const },
-      ],
-    },
-    {
-      src: srcs[1],
-      label: "Iteration 2",
-      isWinner: true,
-      pins: [
-        { x: 53, y: 32, label: "Avg time", value: "9m 31.7s", side: "right" as const },
-        { x: 65, y: 60, label: "Time on task", value: "↓ Faster", side: "left" as const },
-      ],
-    },
+  const iterations = [
+    { src: srcs[0], label: "Iteration 1", time: "17m 4.9s", tag: "Slower", winner: false, rgb: "239,68,68" },   // red — slower
+    { src: srcs[1], label: "Iteration 2", time: "9m 31.7s", tag: "Faster", winner: true,  rgb: "34,197,94" },   // green — faster
   ];
-
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-      {frames.map((frame, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.6, ease: EASE, delay: i * 0.15 }}
-        >
-          {/* Label row */}
-          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-            <span style={{
-              fontSize: "var(--text-label)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase",
-              padding: "4px 12px", borderRadius: "var(--radius-pill)",
-              background: frame.isWinner ? "var(--gold)" : "rgba(255,255,255,0.08)",
-              color: frame.isWinner ? "#fff" : "rgba(255,255,255,0.5)",
-            }}>
-              {frame.label}
-            </span>
-            {frame.isWinner && <WinnerBadge />}
-          </div>
-          {/* Image + pins */}
-          <div style={{ position: "relative", borderRadius: "var(--radius-lg)", overflow: "hidden", border: `1px solid ${frame.isWinner ? "rgb(var(--gold-rgb) / 0.35)" : "rgba(255,255,255,0.07)"}`, boxShadow: "0 24px 60px rgba(0,0,0,0.45)" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={frame.src} alt={frame.label} style={{ display: "block", width: "100%", height: "auto" }} />
-            {frame.pins.map((pin, j) => (
-              <AnnotationPin key={j} {...pin} />
-            ))}
-          </div>
-        </motion.div>
-      ))}
+    <div style={{ display: "flex", flexDirection: "column", gap: "28px" }}>
+      {/* Metric comparison — the iteration story at a glance (re-animates on scroll-in) */}
+      <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "16px" }}>
+        {iterations.map((it, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 26 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ margin: "-40px" }}
+            transition={{ duration: 0.55, ease: EASE, delay: i * 0.12 }}
+            style={{
+              position: "relative", borderRadius: "var(--radius-xl)", padding: "26px",
+              border: `1px solid rgba(${it.rgb}, 0.4)`,
+              background: `linear-gradient(160deg, rgba(${it.rgb}, 0.12) 0%, rgba(255,255,255,0.02) 100%)`,
+              display: "flex", flexDirection: "column", gap: "16px",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <span style={{ fontSize: "var(--text-label)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", padding: "4px 12px", borderRadius: "var(--radius-pill)", background: `rgb(${it.rgb})`, color: "#fff" }}>
+                {it.label}
+              </span>
+              <span style={{ fontSize: "var(--text-2xs)", fontWeight: 700, color: `rgb(${it.rgb})` }}>
+                {it.winner ? "↓ " : "↑ "}{it.tag}
+              </span>
+            </div>
+            <div>
+              <motion.span
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ margin: "-40px" }}
+                transition={{ duration: 0.5, delay: 0.15 + i * 0.12, ease: EASE }}
+                style={{ display: "inline-block", fontSize: "clamp(34px, 5vw, 50px)", fontWeight: 800, color: `rgb(${it.rgb})`, letterSpacing: "-0.03em", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}
+              >
+                {it.time}
+              </motion.span>
+              <span style={{ display: "block", fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.45)", marginTop: "8px" }}>Average time to find content</span>
+            </div>
+            {it.winner && <WinnerBadge />}
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Real Useberry tree-test screens — supporting evidence */}
+      <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "16px" }}>
+        {iterations.map((it, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.55, ease: EASE, delay: 0.1 + i * 0.12 }}
+          >
+            <div style={{ position: "relative", aspectRatio: "16/10", borderRadius: "var(--radius-lg)", overflow: "hidden", border: `1px solid rgba(${it.rgb}, 0.3)`, background: "#17130E", boxShadow: "0 20px 50px rgba(0,0,0,0.4)" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={it.src} alt={it.label} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top" }} />
+            </div>
+            <ImageCaption>{it.label} · Useberry tree test</ImageCaption>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -670,6 +784,7 @@ function CaseSection({ section, index, onInView }: { section: Section; index: nu
                 <SectionBody section={section} />
                 {section.stats && <CaseStats stats={section.stats} />}
               </div>
+              {section.showcase === "design-system" && <DesignSystemShowcase />}
               {section.image && <SectionImages section={section} />}
             </div>
           )}
