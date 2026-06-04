@@ -51,10 +51,17 @@ export const caseStudies: CaseStudy[] = [
         heading: "Research & Insights — \"Understanding the Pain\"",
         body: [
           "To understand where friction lived, I mapped the full user journey and conducted user testing on the existing flows.",
-          "Pain points emerged quickly: unclear steps, excessive screens, confusing product offers, and a lack of visible progress.",
-          "Clients didn't feel guided — they felt pushed.",
+          "Pain points emerged quickly:",
         ],
+        bullets: [
+          "Unclear steps",
+          "Excessive screens",
+          "Confusing product offers",
+          "A lack of visible progress",
+        ],
+        footnote: "Clients didn't feel guided — they felt pushed.",
         image: "/images/iMac - 2.png",
+        imageAspect: "laptop",
       },
       {
         label: "Design",
@@ -65,27 +72,34 @@ export const caseStudies: CaseStudy[] = [
           "Using low-fidelity wireframes, I restructured the process around user intent, not business convenience.",
         ],
         image: "/images/PL standalon choice- PL standalone selected.png",
-        imageAspect: "page",
+        imageAspect: "laptop",
       },
       {
         label: "Deliver",
         heading: "The Solution — \"Designing for Ease and Trust\"",
-        body: [
+        body: [],
+        bullets: [
           "The new onboarding flow cut down steps, clarified progress, and reduced friction.",
           "Value-added offers were repositioned to appear after key tasks, ensuring clients felt supported — not sold to.",
           "The UI adopted Nedbank's growing design system, creating consistency across products and platforms.",
         ],
         image: "/images/EDB_creditcard-27main Copy.jpg",
-        imageAspect: "page",
+        imageAspect: "laptop",
       },
       {
         label: "Results",
         heading: "Impact",
         body: [
           "The redesigned onboarding process helped bring focus back to what mattered: the client's goal.",
-          "The new experience reduced friction, improved task clarity, and established reusable patterns for future product flows.",
         ],
+        bullets: [
+          "Reduced friction",
+          "Improved task clarity",
+          "Established reusable patterns for future product flows",
+        ],
+        bulletStyle: "grid",
         image: "/images/iMac - 1.png",
+        imageAspect: "laptop",
         dark: true,
       },
     ],
@@ -277,7 +291,8 @@ export const caseStudies: CaseStudy[] = [
       {
         label: "Define",
         heading: "Research & Insights — \"Understanding Regional Contexts\"",
-        body: [
+        body: [],
+        bullets: [
           "We partnered with business and compliance teams to map differences in product eligibility, documentation requirements, and customer verification processes.",
           "Beyond regulatory needs, we explored subtle UX differences: connection speeds, device usage patterns, and language tone preferences.",
           "Each discovery reshaped our design decisions.",
@@ -292,27 +307,31 @@ export const caseStudies: CaseStudy[] = [
           "The goal wasn't to copy — it was to translate.",
         ],
         image: "/images/image 9.png",
-        imageAspect: "screenshot",
+        imageAspect: "laptop",
       },
       {
         label: "Deliver",
         heading: "The Solution — \"A System That Scales Gracefully\"",
-        body: [
+        body: [],
+        bullets: [
           "The new onboarding flow cut down steps, clarified progress, and reduced friction.",
           "Value-added offers were repositioned to appear after key tasks, ensuring clients felt supported — not sold to.",
           "The UI adopted Nedbank's growing design system, creating consistency across products and platforms.",
         ],
         image: "/images/image 10.png",
-        imageAspect: "screenshot",
+        imageAspect: "laptop",
       },
       {
         label: "Results",
         heading: "Impact",
         body: [
           "The redesigned multi-region onboarding framework created operational efficiency and design harmony across borders.",
+        ],
+        bullets: [
           "Reduced redundant regional builds.",
           "Created scalable, future-proof onboarding templates for additional countries.",
         ],
+        bulletStyle: "grid",
         dark: true,
       },
     ],
