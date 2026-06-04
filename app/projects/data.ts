@@ -5,7 +5,7 @@
   bullets?: string[];
   footnote?: string; // optional closing line rendered after the bullets
   bulletStyle?: "list" | "grid";
-  stats?: { value: number; prefix?: string; suffix?: string; label: string }[];
+  stats?: { value: number; prefix?: string; suffix?: string; label: string; tone?: "positive" | "negative" }[]; // tone omitted = neutral (terracotta)
   image?: string | string[];
   captions?: string[]; // parallel to image[]; short labels shown under each device/image
   imageAspect?: "portrait" | "page" | "laptop" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map" | "feature-panorama" | "phone-trio" | "before-after"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, before-after = labelled old→new comparison, default = 16:9
@@ -120,10 +120,15 @@ export const caseStudies: CaseStudy[] = [
         heading: "Research & Insights — \"Understanding the Corporate Mindset\"",
         body: [
           "We conducted stakeholder interviews and user feedback sessions with treasury managers, finance officers, and global trade specialists.",
-          "They didn't want flashy design — they wanted clarity, reliability, and control. From these sessions, three core needs emerged: Visibility: Quick access to balances, rates, and documentation. Efficiency: Streamlined, step-light processes for recurring tasks. Confidence: Every action should feel precise and traceable.",
+          "They didn't want flashy design — they wanted clarity, reliability, and control. From these sessions, three core needs emerged:",
+        ],
+        bullets: [
+          "Visibility — Quick access to balances, rates, and documentation.",
+          "Efficiency — Streamlined, step-light processes for recurring tasks.",
+          "Confidence — Every action should feel precise and traceable.",
         ],
         image: "/images/Screenshot 2026-04-01 at 14.23.39 1.png",
-        imageAspect: "screenshot",
+        imageAspect: "laptop",
       },
       {
         label: "Design",
@@ -134,30 +139,38 @@ export const caseStudies: CaseStudy[] = [
           "I structured information into clear, digestible views that let users complete tasks faster and with confidence.",
         ],
         image: "/images/image 4 prototpye.png",
-        imageAspect: "screenshot",
+        imageAspect: "laptop",
       },
       {
         label: "Deliver",
         heading: "The Solution — \"Precision Tools for Power Users\"",
         body: [
           "The redesigned features within the Business Hub transformed the experience from dense and mechanical to structured and intuitive.",
-          "Global Transactional Accounts: Simplified dashboard views for multiple currencies and real-time conversion summaries.",
-          "Global Documentary Trade: Streamlined document uploads and status tracking, reducing confusion and processing delays.",
-          "Call & Term Investment Accounts: Interactive comparison tables for rates and durations, helping corporate users make quick, informed decisions.",
+        ],
+        bullets: [
+          "Global Transactional Accounts — Simplified dashboard views for multiple currencies and real-time conversion summaries.",
+          "Global Documentary Trade — Streamlined document uploads and status tracking, reducing confusion and processing delays.",
+          "Call & Term Investment Accounts — Interactive comparison tables for rates and durations, helping corporate users make quick, informed decisions.",
         ],
         image: ["/images/image 6.png", "/images/image 7.png", "/images/image 8.png"],
-        imageAspect: "scattered",
+        captions: ["Global Transactional Accounts", "Global Documentary Trade", "Call & Term Investment Accounts"],
+        imageAspect: "feature-panorama",
       },
       {
         label: "Results",
         heading: "Impact — \"Design that Earned Trust\"",
         body: [
           "The new experience improved user efficiency and reinforced client trust in Nedbank's enterprise digital offering.",
-          "Reduced steps in key flows by up to 40%.",
+        ],
+        stats: [
+          { value: 40, suffix: "%", label: "Fewer steps in key flows", tone: "positive" },
+        ],
+        bullets: [
           "Enhanced visibility of global transactions.",
           "Decreased error rates in documentation submission.",
           "Positive feedback from business clients on ease of navigation and clarity of data presentation.",
         ],
+        bulletStyle: "grid",
         dark: true,
       },
     ],
@@ -411,8 +424,8 @@ export const caseStudies: CaseStudy[] = [
         heading: "Too long. Too complex. Easy to abandon.",
         body: ["The existing onboarding experience was fundamentally broken:"],
         stats: [
-          { value: 30, suffix: "+", label: "Screens to complete" },
-          { value: 90, suffix: "%", label: "Drop-off rate" },
+          { value: 30, suffix: "+", label: "Screens to complete", tone: "negative" },
+          { value: 90, suffix: "%", label: "Drop-off rate", tone: "negative" },
         ],
         bullets: [
           "Heavy manual input required",

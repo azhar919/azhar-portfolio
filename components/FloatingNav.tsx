@@ -10,26 +10,25 @@ import Button from "./Button";
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const NAV_H = 72;
 
-/* Logo — thin champagne-gold serif monogram, transparent, no container.
-   Negative tracking tucks the A's right stroke into the M for an interlocked feel. */
+/* Logo — clean sans wordmark that matches the nav typography (the serif version
+   read as out of place). "AM" in the heading face with a terracotta accent dot. */
 function LogoMark() {
   return (
     <span
       aria-label="Home"
-      className="transition-colors duration-300 text-[var(--gold)] hover:text-[var(--gold-light)]"
+      className="transition-opacity duration-200 hover:opacity-80"
       style={{
         display: "inline-flex",
-        fontFamily: "var(--font-serif)",
-        fontStyle: "italic",
-        fontWeight: 400,
-        fontSize: "30px",
-        lineHeight: 1,
-        letterSpacing: "-0.09em",
+        alignItems: "baseline",
+        fontFamily: "var(--font-heading)",
+        fontWeight: 800,
+        fontSize: "22px",
+        letterSpacing: "-0.03em",
+        color: "#F5F1EC",
         userSelect: "none",
-        paddingRight: "0.06em",
       }}
     >
-      AM
+      AM<span style={{ color: "var(--gold)" }}>.</span>
     </span>
   );
 }
@@ -85,7 +84,7 @@ type NavItem = { key: string; label: string; href?: string; dropdown?: boolean }
 const NAV_ITEMS: NavItem[] = [
   { key: "home",     label: "Home",     href: "/" },
   { key: "projects", label: "Projects", dropdown: true },
-  { key: "about",    label: "About",    href: "/#about" },
+  { key: "about",    label: "About me", href: "/#about" },
   { key: "cv",       label: "CV",       href: "/cv" },
 ];
 
@@ -371,7 +370,7 @@ export default function FloatingNav() {
               </div>
 
               {/* About + CV */}
-              {[{ label: "About", href: "/#about" }, { label: "CV", href: "/cv" }].map((link, i) => (
+              {[{ label: "About me", href: "/#about" }, { label: "CV", href: "/cv" }].map((link, i) => (
                 <motion.div
                   key={link.href}
                   initial={{ opacity: 0, y: 14 }}

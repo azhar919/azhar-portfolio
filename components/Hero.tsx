@@ -173,7 +173,7 @@ export default function Hero() {
                     key={i}
                     initial={{ opacity: 0, x: sx, y: sy, rotate: sr, filter: "blur(6px)" }}
                     animate={{ opacity: 1, x: 0, y: 0, rotate: 0, filter: "blur(0px)" }}
-                    transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.1 + i * 0.06 }}
+                    transition={{ type: "spring", stiffness: 90, damping: 16, delay: 0.18 + i * 0.12 }}
                     style={{ display: "inline-block", marginRight: "0.28em" }}
                   >
                     {word}
@@ -185,7 +185,7 @@ export default function Hero() {
             <motion.p
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.68, ease: EASE }}
+              transition={{ duration: 0.7, delay: 1.05, ease: EASE }}
               style={{ fontSize: "var(--text-lg)", color: "rgba(255,255,255,0.55)", lineHeight: 1.7, maxWidth: "520px" }}
             >
               Design focused on building intuitive systems, workflows, and interfaces that put people first.
@@ -194,7 +194,7 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8, ease: EASE }}
+              transition={{ duration: 0.6, delay: 1.25, ease: EASE }}
               className="flex flex-wrap gap-4 pt-2"
             >
               <Button href="#work" variant="primary" icon={<ArrowRight size={16} />}>

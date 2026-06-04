@@ -22,6 +22,7 @@ function SectionBody({ section }: { section: Section }) {
       {section.body.map((para, i) => (
         <p key={i} style={{ fontSize: "var(--text-body)", color: "rgba(255,255,255,0.55)", lineHeight: 1.75 }}>{para}</p>
       ))}
+      {section.stats && <CaseStats stats={section.stats} />}
       {section.bullets && section.bulletStyle === "grid" ? (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px", marginTop: "8px" }}>
           {section.bullets.map((bullet, i) => (
@@ -656,13 +657,14 @@ function LandscapePortraitStack({ srcs }: { srcs: string[] }) {
   );
 }
 
-/* Animated metric callout for a section */
-function CaseStat({ value, prefix = "", suffix = "", label }: { value: number; prefix?: string; suffix?: string; label: string }) {
+/* Animated metric callout for a section. tone: positive=green, negative=red, default=terracotta */
+function CaseStat({ value, prefix = "", suffix = "", label, tone }: { value: number; prefix?: string; suffix?: string; label: string; tone?: "positive" | "negative" }) {
+  const color = tone === "positive" ? "#22C55E" : tone === "negative" ? "#EF4444" : "var(--gold)";
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const inView = useInView(ref, { margin: "-60px" }); // re-counts each time it scrolls into view
   const [n, setN] = useState(0);
   useEffect(() => {
-    if (!inView) return;
+    if (!inView) { setN(0); return; } // reset on exit so it re-animates on return
     const duration = 1400;
     const start = performance.now();
     let raf = 0;
@@ -677,7 +679,7 @@ function CaseStat({ value, prefix = "", suffix = "", label }: { value: number; p
   }, [inView, value]);
   return (
     <div ref={ref} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-      <span style={{ fontSize: "clamp(40px, 6vw, 64px)", fontWeight: 800, color: "var(--gold)", lineHeight: 1, letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums" }}>
+      <span style={{ fontSize: "clamp(40px, 6vw, 64px)", fontWeight: 800, color, lineHeight: 1, letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums" }}>
         {prefix}{n}{suffix}
       </span>
       <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>{label}</span>
@@ -766,7 +768,6 @@ function CaseSection({ section, index, onInView }: { section: Section; index: nu
                 ); })()}
                 <h2 style={{ fontSize: "var(--text-h3)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.25, letterSpacing: "-0.02em" }}>{section.heading}</h2>
                 <SectionBody section={section} />
-                {section.stats && <CaseStats stats={section.stats} />}
               </div>
               <div className="lg:flex-1 mt-10 lg:mt-0">
                 <SectionImages section={section} />
@@ -782,7 +783,6 @@ function CaseSection({ section, index, onInView }: { section: Section; index: nu
                 ); })()}
                 <h2 style={{ fontSize: "var(--text-h3)", fontWeight: 700, color: "#FFFFFF", lineHeight: 1.25, letterSpacing: "-0.02em" }}>{section.heading}</h2>
                 <SectionBody section={section} />
-                {section.stats && <CaseStats stats={section.stats} />}
               </div>
               {section.showcase === "design-system" && <DesignSystemShowcase />}
               {section.image && <SectionImages section={section} />}
