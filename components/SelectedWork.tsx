@@ -10,6 +10,10 @@ import { useSpotlight } from "./useSpotlight";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
+// Tiny dark placeholder — fades from the card's #1C1813 backing into the image.
+const BLUR =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
+
 const featured = [
   {
     company: "African Bank",
@@ -81,7 +85,7 @@ function BrowserFrame({ image, url, title }: { image: string; url: string; title
         </div>
       </div>
       <div className="w-full relative overflow-hidden h-[180px] md:h-[220px] lg:h-[300px]" style={{ background: "#1C1813" }}>
-        <Image src={image} alt={title} fill style={{ objectFit: "cover", objectPosition: "top left" }} />
+        <Image src={image} alt={title} fill placeholder="blur" blurDataURL={BLUR} sizes="(max-width: 768px) 82vw, 50vw" style={{ objectFit: "cover", objectPosition: "top left" }} />
       </div>
     </div>
   );

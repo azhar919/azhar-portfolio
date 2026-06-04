@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate, useReducedMotion } from "framer-motion";
 import { ArrowRight, FileText } from "lucide-react";
 import Button from "./Button";
 
@@ -10,6 +10,7 @@ const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const HEADLINE = "Every interaction is a chance to be effortless";
 
 export default function Hero() {
+  const reducedMotion = useReducedMotion();
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -31,6 +32,7 @@ export default function Hero() {
   const lastMove = useRef(0);
 
   const handlePointer = (e: React.PointerEvent<HTMLElement>) => {
+    if (reducedMotion) return;
     const r = e.currentTarget.getBoundingClientRect();
     gx.set((e.clientX - r.left) / r.width);
     gy.set((e.clientY - r.top) / r.height);
@@ -40,6 +42,7 @@ export default function Hero() {
   // Ambient drift — when there's no pointer activity (i.e. mobile/touch idle),
   // the light slowly roams a Lissajous path so the hero never feels dead.
   useEffect(() => {
+    if (reducedMotion) return;
     let raf = 0;
     const loop = () => {
       if (performance.now() - lastMove.current > 2200) {
@@ -51,12 +54,13 @@ export default function Hero() {
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, [gx, gy]);
+  }, [gx, gy, reducedMotion]);
 
   // Gyroscope tilt — on touch devices the light tracks how the phone is
   // tilted (a touch-free "cursor"). iOS 13+ needs a one-time tap to grant
   // motion access; if unavailable/declined, the idle drift above stays.
   useEffect(() => {
+    if (reducedMotion) return;
     const DOE = window.DeviceOrientationEvent as
       | (typeof DeviceOrientationEvent & { requestPermission?: () => Promise<string> })
       | undefined;
@@ -88,7 +92,7 @@ export default function Hero() {
     }
     start();
     return () => window.removeEventListener("deviceorientation", onOrient);
-  }, [gx, gy]);
+  }, [gx, gy, reducedMotion]);
 
   const glowX = useTransform(sgx, (v) => `${v * 100}%`);
   const glowY = useTransform(sgy, (v) => `${v * 100}%`);

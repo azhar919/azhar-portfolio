@@ -1097,7 +1097,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
                       style={{ width: "100%" }}
                     >
                       <div style={{ position: "relative", width: "100%", aspectRatio: "16/10", borderRadius: "var(--radius-lg)", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 32px 80px rgba(0,0,0,0.5)" }}>
-                        <Image src={study.heroImage} alt="" fill style={{ objectFit: "cover", objectPosition: "top left" }} />
+                        <Image src={study.heroImage} alt="" fill placeholder="blur" blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==" sizes="(max-width: 1024px) 90vw, 45vw" style={{ objectFit: "cover", objectPosition: "top left" }} />
                       </div>
                     </motion.div>
                   )}

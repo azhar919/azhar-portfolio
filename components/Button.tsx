@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
+import Magnetic from "./Magnetic";
 
 type Variant = "primary" | "secondary";
 type Size = "sm" | "md";
@@ -16,6 +17,8 @@ interface ButtonProps {
   icon?: ReactNode;
   iconPosition?: "left" | "right";
   fullWidth?: boolean;
+  /** Magnetic cursor-pull on hover. On by default; turn off for compact nav buttons. */
+  magnetic?: boolean;
   className?: string;
   onClick?: () => void;
   "aria-label"?: string;
@@ -45,6 +48,7 @@ export default function Button({
   icon,
   iconPosition = "right",
   fullWidth,
+  magnetic = true,
   className = "",
   onClick,
   ...rest
@@ -67,23 +71,23 @@ export default function Button({
     </>
   );
 
-  if (href && external) {
-    return (
+  const el =
+    href && external ? (
       <a href={href} target="_blank" rel="noopener noreferrer" className={classes} onClick={onClick} {...rest}>
         {content}
       </a>
-    );
-  }
-  if (href) {
-    return (
+    ) : href ? (
       <Link href={href} className={classes} onClick={onClick} {...rest}>
         {content}
       </Link>
+    ) : (
+      <button type="button" className={classes} onClick={onClick} {...rest}>
+        {content}
+      </button>
     );
-  }
-  return (
-    <button type="button" className={classes} onClick={onClick} {...rest}>
-      {content}
-    </button>
-  );
+
+  // Full-width buttons (mobile stacks) and opted-out buttons skip the magnetic
+  // pull — it only reads well on roomy inline CTAs, not compact nav buttons.
+  if (fullWidth || !magnetic) return el;
+  return <Magnetic>{el}</Magnetic>;
 }

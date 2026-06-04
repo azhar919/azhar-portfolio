@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, Fragment } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, useScroll, useSpring, useMotionValue } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { Menu, X, ChevronDown, ArrowRight, Briefcase, Mail } from "lucide-react";
 import Button from "./Button";
 
@@ -30,29 +30,6 @@ function LogoMark() {
     >
       AM<span style={{ color: "var(--gold)" }}>.</span>
     </span>
-  );
-}
-
-/* Magnetic wrapper — child eases toward the cursor */
-function Magnetic({ children, strength = 0.4 }: { children: React.ReactNode; strength?: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 220, damping: 15 });
-  const sy = useSpring(y, { stiffness: 220, damping: 15 });
-
-  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
-    x.set((e.clientX - (r.left + r.width / 2)) * strength);
-    y.set((e.clientY - (r.top + r.height / 2)) * strength);
-  };
-  const reset = () => { x.set(0); y.set(0); };
-
-  return (
-    <motion.div ref={ref} onMouseMove={onMove} onMouseLeave={reset} style={{ x: sx, y: sy, display: "inline-flex" }}>
-      {children}
-    </motion.div>
   );
 }
 
@@ -182,7 +159,7 @@ export default function FloatingNav() {
                   {lit && (
                     <motion.div
                       layoutId="navPill"
-                      transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                      transition={{ type: "spring", stiffness: 260, damping: 30 }}
                       style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.09)", borderRadius: "var(--radius-pill)" }}
                     />
                   )}
@@ -198,11 +175,9 @@ export default function FloatingNav() {
 
           {/* Contact + mobile toggle */}
           <span className="hidden md:inline-flex md:ml-7">
-            <Magnetic strength={0.5}>
-              <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" icon={<Mail size={14} />} iconPosition="left">
-                Contact
-              </Button>
-            </Magnetic>
+            <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" magnetic={false} icon={<Mail size={14} />} iconPosition="left">
+              Contact
+            </Button>
           </span>
           <button className="flex md:hidden items-center justify-center w-10 h-10 rounded-full" onClick={() => setMenuOpen(v => !v)} aria-label="Toggle menu">
             <Menu size={20} color="white" />

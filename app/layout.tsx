@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Inter, Cormorant, Montserrat } from "next/font/googl
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import MotionProvider from "@/components/MotionProvider";
+import CustomCursor from "@/components/CustomCursor";
 
 const SITE_URL = "https://azhar-portfolio-gold.vercel.app";
 
@@ -67,6 +68,7 @@ export default function RootLayout({
     <html lang="en" className={`${plusJakartaSans.variable} ${inter.variable} ${cormorant.variable} ${montserrat.variable}`}>
       <body className="min-h-screen antialiased">
         <MotionProvider>{children}</MotionProvider>
+        <CustomCursor />
         <Analytics />
       </body>
     </html>
