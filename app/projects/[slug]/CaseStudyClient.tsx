@@ -329,6 +329,35 @@ function DualImage({ srcs }: { srcs: [string, string] }) {
   );
 }
 
+/* Three page-tops side by side — used to show how inconsistent separate pages
+   were (different layouts/themes), each faded at the bottom with a caption. */
+function PageTriptych({ srcs, captions }: { srcs: string[]; captions?: string[] }) {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-3" style={{ gap: "18px" }}>
+      {srcs.slice(0, 3).map((src, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 26 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.55, ease: EASE, delay: i * 0.1 }}
+          whileHover={{ y: -6 }}
+          style={{ display: "flex", flexDirection: "column", gap: "12px" }}
+        >
+          <div style={{ position: "relative", borderRadius: "var(--radius-lg)", overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 20px 50px rgba(0,0,0,0.5)", height: "clamp(300px, 42vh, 430px)", background: "#0B0A09" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
+            <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "110px", background: "linear-gradient(to bottom, transparent, #0B0A09)", pointerEvents: "none" }} />
+          </div>
+          {captions?.[i] && (
+            <span style={{ fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.06em", color: "rgba(255,255,255,0.5)", textAlign: "center" }}>{captions[i]}</span>
+          )}
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 
 /* ── African Bank design-system sheet — tokens pulled straight from their Figma ──
    (light "artboard" embedded in the dark page; Montserrat, navy + green, real components) */
@@ -775,6 +804,7 @@ function SectionImages({ section }: { section: Section }) {
   if (imageAspect === "map")                   return <SouthernAfricaMap />;
   if (imageAspect === "annotated-comparison")  return <AnnotatedComparison srcs={images} />;
   if (imageAspect === "before-after")          return <BeforeAfter srcs={images} labels={section.compareLabels} />;
+  if (imageAspect === "page-trio")             return <PageTriptych srcs={images} captions={section.captions} />;
   if (imageAspect === "feature-panorama")      return <FeaturePanorama srcs={images} captions={section.captions} />;
   if (imageAspect === "phone-trio")            return <PhoneTrio srcs={images} captions={section.captions} />;
   if (images.length === 1)                  return <LandscapeImage src={images[0]} />;

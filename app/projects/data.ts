@@ -9,7 +9,7 @@
   image?: string | string[];
   captions?: string[]; // parallel to image[]; short labels shown under each device/image
   compareLabels?: [string, string]; // [before, after] chip labels for imageAspect "before-after"
-  imageAspect?: "portrait" | "page" | "laptop" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map" | "feature-panorama" | "phone-trio" | "before-after"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, before-after = labelled old→new comparison, default = 16:9
+  imageAspect?: "portrait" | "page" | "laptop" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map" | "feature-panorama" | "phone-trio" | "before-after" | "page-trio"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, before-after = labelled old→new comparison, page-trio = three page-tops side by side with captions, default = 16:9
   showcase?: "design-system"; // renders a built visual (e.g. a mini design-system sheet) instead of an image
   dark?: boolean;
 };
@@ -371,11 +371,12 @@ export const caseStudies: CaseStudy[] = [
           "Users weren't being guided — they were being left to figure things out.",
         ],
         image: [
-          "/images/Screenshot 2025-01-08 at 13.33.22 1.png",
-          "/images/Screenshot 2025-01-08 at 13.33.22 1 (2).png",
-          "/images/image 53.png",
+          "/images/african-bank-personal-loan-before.png",
+          "/images/african-bank-personal-banking-before.png",
+          "/images/african-bank-invest-before.png",
         ],
-        imageAspect: "scattered",
+        imageAspect: "page-trio",
+        captions: ["Personal Loan", "MyWORLD account", "Invest"],
       },
       {
         label: "Approach",
