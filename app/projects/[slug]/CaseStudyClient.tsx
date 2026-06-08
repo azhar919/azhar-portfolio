@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, Target, Layers, Zap, TrendingUp, RefreshCw, AlertCircle, Lightbulb, Compass, CheckCircle, Hammer, BarChart2, PenTool, ArrowUpRight, User, Building2, CreditCard, BadgeCheck, BookOpen, type LucideIcon } from "lucide-react";
+import { Search, Target, Layers, Zap, TrendingUp, RefreshCw, AlertCircle, Lightbulb, Compass, CheckCircle, Hammer, BarChart2, PenTool, ArrowUpRight, ArrowRight, User, Building2, CreditCard, BadgeCheck, BookOpen, type LucideIcon } from "lucide-react";
 import FloatingNav from "@/components/FloatingNav";
 import SouthernAfricaMap from "@/components/SouthernAfricaMap";
 import PhoneMockup from "@/components/PhoneMockup";
@@ -241,6 +241,72 @@ function ScreenshotImage({ src }: { src: string }) {
     <div style={{ borderRadius: "var(--radius-xl)", background: "#17130E", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 24px 60px rgba(0,0,0,0.4)", padding: "24px", display: "flex", alignItems: "center", justifyContent: "center" }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt="" style={{ display: "block", maxWidth: "100%", height: "auto", borderRadius: "var(--radius-sm)" }} />
+    </div>
+  );
+}
+
+function BAPanel({ src, label, accent }: { src: string; label: string; accent: boolean }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, ease: EASE, delay: accent ? 0.12 : 0 }}
+      style={{ position: "relative", display: "flex", flexDirection: "column", gap: "16px", alignItems: "center" }}
+    >
+      {/* Ambient glow — gold behind the redesign, cool/neutral behind the original */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute", inset: "8% -6% 4% -6%", borderRadius: "50%", filter: "blur(46px)", pointerEvents: "none",
+          background: accent
+            ? "radial-gradient(circle at 50% 38%, rgb(var(--gold-rgb) / 0.22), transparent 70%)"
+            : "radial-gradient(circle at 50% 38%, rgba(120,140,170,0.12), transparent 70%)",
+        }}
+      />
+      <div style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", gap: "10px" }}>
+        <span style={{
+          fontSize: "var(--text-label)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em",
+          color: accent ? "#1A1206" : "rgba(255,255,255,0.7)",
+          background: accent ? "var(--gold)" : "rgba(255,255,255,0.06)",
+          border: accent ? "none" : "1px solid rgba(255,255,255,0.14)",
+          borderRadius: "var(--radius-pill)", padding: "6px 16px", whiteSpace: "nowrap",
+        }}>
+          {label}
+        </span>
+      </div>
+      <div style={{ position: "relative", zIndex: 1, width: "100%" }}>
+        <LaptopMockup src={src} />
+      </div>
+    </motion.div>
+  );
+}
+
+function BeforeAfter({ srcs, labels }: { srcs: string[]; labels?: [string, string] }) {
+  const [beforeLabel, afterLabel] = labels ?? ["Before", "After"];
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr]" style={{ gap: "20px", alignItems: "center" }}>
+      <BAPanel src={srcs[0]} label={beforeLabel} accent={false} />
+
+      {/* Transition badge — points right on desktop, down on mobile */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.6 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.5, ease: EASE, delay: 0.25 }}
+        className="flex items-center justify-center"
+        style={{ alignSelf: "center" }}
+      >
+        <div className="rotate-90 lg:rotate-0" style={{
+          width: "52px", height: "52px", borderRadius: "50%", display: "grid", placeItems: "center", flexShrink: 0,
+          background: "linear-gradient(150deg, rgb(var(--gold-rgb) / 0.3), rgb(var(--gold-rgb) / 0.08))",
+          border: "1px solid rgb(var(--gold-rgb) / 0.4)", boxShadow: "0 8px 24px rgb(var(--gold-rgb) / 0.25)",
+        }}>
+          <ArrowRight size={22} color="var(--gold)" strokeWidth={2.2} />
+        </div>
+      </motion.div>
+
+      <BAPanel src={srcs[1]} label={afterLabel} accent />
     </div>
   );
 }
@@ -708,6 +774,7 @@ function SectionImages({ section }: { section: Section }) {
   if (imageAspect === "screenshots")           return <StackedScreenshots srcs={images} />;
   if (imageAspect === "map")                   return <SouthernAfricaMap />;
   if (imageAspect === "annotated-comparison")  return <AnnotatedComparison srcs={images} />;
+  if (imageAspect === "before-after")          return <BeforeAfter srcs={images} labels={section.compareLabels} />;
   if (imageAspect === "feature-panorama")      return <FeaturePanorama srcs={images} captions={section.captions} />;
   if (imageAspect === "phone-trio")            return <PhoneTrio srcs={images} captions={section.captions} />;
   if (images.length === 1)                  return <LandscapeImage src={images[0]} />;

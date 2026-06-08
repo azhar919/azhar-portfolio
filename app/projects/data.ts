@@ -8,6 +8,7 @@
   stats?: { value: number; prefix?: string; suffix?: string; label: string; tone?: "positive" | "negative" }[]; // tone omitted = neutral (terracotta)
   image?: string | string[];
   captions?: string[]; // parallel to image[]; short labels shown under each device/image
+  compareLabels?: [string, string]; // [before, after] chip labels for imageAspect "before-after"
   imageAspect?: "portrait" | "page" | "laptop" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map" | "feature-panorama" | "phone-trio" | "before-after"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, before-after = labelled old→new comparison, default = 16:9
   showcase?: "design-system"; // renders a built visual (e.g. a mini design-system sheet) instead of an image
   dark?: boolean;
@@ -358,8 +359,8 @@ export const caseStudies: CaseStudy[] = [
           "Inconsistent colour palette, buttons that varied in size and behaviour, scattered CTAs, broken navigation, and an information architecture that made no sense.",
           "Products and features were presented in a way that made them feel like separate, disconnected offerings — confusing users and breaking trust.",
         ],
-        image: "/images/ab-website-section.png",
-        imageAspect: "screenshot",
+        image: "/images/african-bank-bank-before.png",
+        imageAspect: "laptop",
       },
       {
         label: "Insights",
@@ -406,8 +407,9 @@ export const caseStudies: CaseStudy[] = [
           "Strong, intentional CTAs",
         ],
         footnote: "The experience shifted from confusing and fragmented — to clear, guided, and scalable.",
-        image: "/images/Landing page final.png",
-        imageAspect: "laptop",
+        image: ["/images/african-bank-bank-before.png", "/images/Landing page final.png"],
+        imageAspect: "before-after",
+        compareLabels: ["Before · Business Bank account (2024)", "After · Redesign"],
       },
       {
         label: "Impact",
