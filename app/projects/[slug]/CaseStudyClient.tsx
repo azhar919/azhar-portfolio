@@ -33,7 +33,7 @@ function SectionBody({ section }: { section: Section }) {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.55, ease: EASE, delay: i * 0.09 }}
               whileHover={{ y: -5 }}
-              style={{ position: "relative", display: "flex", flexDirection: "column", gap: "16px", background: "linear-gradient(160deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.015) 100%)", border: "1px solid rgba(255,255,255,0.09)", borderRadius: "var(--radius-xl)", padding: "26px", overflow: "hidden" }}
+              style={{ position: "relative", display: "flex", flexDirection: "column", gap: "16px", background: "#1E1E21", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "var(--radius-xl)", padding: "26px", overflow: "hidden", boxShadow: "0 20px 50px rgba(0,0,0,0.4)" }}
             >
               <span aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: "linear-gradient(90deg, transparent, rgb(var(--gold-rgb) / 0.6), transparent)" }} />
               <span style={{ width: "46px", height: "46px", borderRadius: "var(--radius-md)", background: "linear-gradient(150deg, rgb(var(--gold-rgb) / 0.28), rgb(var(--gold-rgb) / 0.07))", border: "1px solid rgb(var(--gold-rgb) / 0.3)", display: "grid", placeItems: "center" }}>
@@ -329,6 +329,101 @@ function DualImage({ srcs }: { srcs: [string, string] }) {
   );
 }
 
+/* ── Information-architecture comparison (hand-built, no screenshots) ──
+   A tangled node map (before) vs a clean hierarchy (after). */
+type IaNode = { id: string; label: string; x: number; y: number; root?: boolean };
+
+function IaNodeMap({ nodes, edges, accent, dashed }: { nodes: IaNode[]; edges: [string, string][]; accent: string; dashed?: boolean }) {
+  const byId: Record<string, IaNode> = Object.fromEntries(nodes.map((n) => [n.id, n]));
+  return (
+    <div style={{ position: "relative", width: "100%", height: "clamp(300px, 40vw, 380px)" }}>
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+        {edges.map(([a, b], i) => {
+          const na = byId[a], nb = byId[b];
+          return (
+            <line key={i} x1={na.x} y1={na.y} x2={nb.x} y2={nb.y} stroke={`rgb(${accent} / 0.5)`} strokeWidth={1.4} strokeDasharray={dashed ? "3 3" : undefined} vectorEffect="non-scaling-stroke" />
+          );
+        })}
+      </svg>
+      {nodes.map((n) => (
+        <div key={n.id} style={{
+          position: "absolute", left: `${n.x}%`, top: `${n.y}%`, transform: "translate(-50%,-50%)",
+          fontSize: n.root ? "12px" : "11px", fontWeight: n.root ? 700 : 500,
+          color: n.root ? "#fff" : "rgba(255,255,255,0.8)",
+          background: n.root ? `rgb(${accent} / 0.22)` : "rgba(20,18,15,0.85)",
+          border: `1px solid rgb(${accent} / ${n.root ? 0.6 : 0.35})`,
+          borderRadius: "var(--radius-pill)", padding: n.root ? "6px 14px" : "5px 11px",
+          whiteSpace: "nowrap", boxShadow: "0 4px 14px rgba(0,0,0,0.45)", backdropFilter: "blur(4px)",
+        }}>
+          {n.label}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function IaPanel({ title, accent, nodes, edges, dashed }: { title: string; accent: string; nodes: IaNode[]; edges: [string, string][]; dashed?: boolean }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.6, ease: EASE }}
+      style={{ position: "relative", borderRadius: "var(--radius-xl)", border: `1px solid rgb(${accent} / 0.22)`, background: "#161616", boxShadow: "0 24px 60px rgba(0,0,0,0.4)", padding: "22px", overflow: "hidden" }}
+    >
+      <span aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, rgb(${accent} / 0.6), transparent)` }} />
+      <span style={{ display: "inline-block", fontSize: "var(--text-label)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: `rgb(${accent})`, marginBottom: "10px" }}>{title}</span>
+      <IaNodeMap nodes={nodes} edges={edges} accent={accent} dashed={dashed} />
+    </motion.div>
+  );
+}
+
+function IaComparison() {
+  const before: { nodes: IaNode[]; edges: [string, string][] } = {
+    nodes: [
+      { id: "r", label: "Intranet", x: 50, y: 12, root: true },
+      { id: "a", label: "Home", x: 17, y: 36 },
+      { id: "b", label: "Docs", x: 48, y: 30 },
+      { id: "c", label: "Files", x: 83, y: 36 },
+      { id: "d", label: "HR ?", x: 29, y: 60 },
+      { id: "e", label: "Documents", x: 63, y: 56 },
+      { id: "f", label: "Policies", x: 16, y: 84 },
+      { id: "g", label: "Misc", x: 46, y: 86 },
+      { id: "h", label: "Templates", x: 76, y: 80 },
+      { id: "i", label: "Old stuff", x: 86, y: 62 },
+    ],
+    edges: [
+      ["r", "a"], ["r", "b"], ["r", "c"],
+      ["a", "e"], ["b", "d"], ["c", "d"], ["b", "h"],
+      ["d", "g"], ["e", "f"], ["e", "i"], ["c", "g"], ["a", "h"], ["b", "i"], ["e", "g"],
+    ],
+  };
+  const after: { nodes: IaNode[]; edges: [string, string][] } = {
+    nodes: [
+      { id: "home", label: "Home", x: 50, y: 12, root: true },
+      { id: "p", label: "People & HR", x: 22, y: 44 },
+      { id: "pr", label: "Projects", x: 50, y: 44 },
+      { id: "k", label: "Knowledge", x: 78, y: 44 },
+      { id: "p1", label: "Onboarding", x: 15, y: 82 },
+      { id: "p2", label: "Policies", x: 31, y: 82 },
+      { id: "pr1", label: "Active", x: 43, y: 82 },
+      { id: "pr2", label: "Archive", x: 58, y: 82 },
+      { id: "k1", label: "Templates", x: 70, y: 82 },
+      { id: "k2", label: "Guides", x: 85, y: 82 },
+    ],
+    edges: [
+      ["home", "p"], ["home", "pr"], ["home", "k"],
+      ["p", "p1"], ["p", "p2"], ["pr", "pr1"], ["pr", "pr2"], ["k", "k1"], ["k", "k2"],
+    ],
+  };
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: "24px" }}>
+      <IaPanel title="Before · Tangled structure" accent="239 68 68" nodes={before.nodes} edges={before.edges} dashed />
+      <IaPanel title="After · Logical hierarchy" accent="var(--gold-rgb)" nodes={after.nodes} edges={after.edges} />
+    </div>
+  );
+}
+
 /* Three page-tops side by side — used to show how inconsistent separate pages
    were (different layouts/themes), each faded at the bottom with a caption. */
 function PageTriptych({ srcs, captions }: { srcs: string[]; captions?: string[] }) {
@@ -564,7 +659,7 @@ function WinnerBadge() {
   useEffect(() => {
     if (!inView) { setCount(0); return; } // reset when it leaves so it re-counts on return
     const duration = 1200;
-    const target = 45;
+    const target = 44; // 17m 4.9s → 9m 31.7s = 44.2% faster (real Useberry data)
     const start = performance.now();
     let raf = 0;
     const tick = (now: number) => {
@@ -580,16 +675,16 @@ function WinnerBadge() {
 
   return (
     <div ref={ref} style={{
-      background: "rgba(34,197,94,0.12)",
-      border: "1px solid rgba(34,197,94,0.35)",
+      background: "#22C55E",
       borderRadius: "var(--radius-pill)",
-      padding: "6px 18px",
-      display: "inline-flex", alignItems: "center", gap: "8px",
+      padding: "8px 18px",
+      display: "inline-flex", alignItems: "center", gap: "8px", alignSelf: "flex-start",
+      boxShadow: "0 10px 26px rgba(34,197,94,0.32)",
     }}>
-      <span style={{ fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 800, color: "#22C55E", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
+      <span style={{ fontSize: "clamp(18px, 4vw, 24px)", fontWeight: 800, color: "#06210F", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
         ↓ {count}%
       </span>
-      <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "rgba(255,255,255,0.7)" }}>faster overall</span>
+      <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: "rgba(6,33,15,0.72)" }}>faster overall</span>
     </div>
   );
 }
@@ -645,6 +740,102 @@ function FeaturePanorama({ srcs, captions }: { srcs: string[]; captions?: string
 }
 
 
+// Real Useberry tree-test data — high-friction tasks (>10s in the original),
+// avg time-on-task, original vs redesigned IA. Sorted slowest-original first.
+const TREE_TASKS: { label: string; before: number; after: number }[] = [
+  { label: "Rewards & benefits", before: 134.2, after: 19.1 },
+  { label: "Digital Economy", before: 101.6, after: 37.9 },
+  { label: "Learning & Development", before: 96.3, after: 14.7 },
+  { label: "Data Platforms", before: 57.9, after: 10.1 },
+  { label: "Performance Management", before: 52.4, after: 5.7 },
+  { label: "Resources for Team Leads", before: 32.0, after: 50.0 },
+  { label: "Timesheets", before: 26.4, after: 52.7 },
+  { label: "POPIA Compliance", before: 24.3, after: 6.7 },
+  { label: "Business Analysis Toolkits", before: 22.0, after: 9.2 },
+  { label: "Standard Bank", before: 20.2, after: 20.5 },
+  { label: "IQ documents & templates", before: 19.1, after: 13.8 },
+  { label: "IQ Formula", before: 12.9, after: 48.3 },
+];
+
+function fmtSecs(s: number) {
+  return s >= 60 ? `${Math.floor(s / 60)}m ${(s % 60).toFixed(1)}s` : `${s.toFixed(1)}s`;
+}
+
+function TreeLegend({ color, label }: { color: string; label: string }) {
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "7px", fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.6)" }}>
+      <span style={{ width: "20px", height: "6px", borderRadius: "var(--radius-pill)", background: `rgb(${color})` }} />
+      {label}
+    </span>
+  );
+}
+
+const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
+
+function TreeTaskRow({ t, max, p, i }: { t: { label: string; before: number; after: number }; max: number; p: number; i: number }) {
+  // Per-row progress with a light top-down stagger; drives bar width + count-up.
+  const rp = clamp01(p * 1.32 - i * 0.03);
+  const faster = t.after <= t.before;
+  const pct = Math.round((1 - t.after / t.before) * 100 * rp);
+  const bars = [{ v: t.before, c: "239,68,68" }, { v: t.after, c: "34,197,94" }];
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "minmax(104px, 30%) 1fr auto", alignItems: "center", gap: "clamp(10px, 2vw, 18px)", padding: "11px 0", borderTop: i === 0 ? "none" : "1px solid rgba(255,255,255,0.06)", opacity: 0.25 + 0.75 * rp, transform: `translateY(${(1 - rp) * 8}px)` }}>
+      <span style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.82)", fontWeight: 500, lineHeight: 1.3 }}>{t.label}</span>
+      <div style={{ display: "flex", flexDirection: "column", gap: "5px", minWidth: 0 }}>
+        {bars.map((b, bi) => (
+          <div key={bi} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ flex: 1, height: "8px", borderRadius: "var(--radius-pill)", background: "rgba(255,255,255,0.05)", overflow: "hidden" }}>
+              <div style={{ height: "100%", width: `${(b.v / max) * 100 * rp}%`, borderRadius: "var(--radius-pill)", background: `rgb(${b.c})` }} />
+            </div>
+            <span style={{ width: "58px", textAlign: "right", fontSize: "var(--text-2xs)", color: "rgba(255,255,255,0.55)", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{fmtSecs(b.v * rp)}</span>
+          </div>
+        ))}
+      </div>
+      <span style={{ fontSize: "var(--text-xs)", fontWeight: 700, color: faster ? "#22C55E" : "#EF4444", fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap", opacity: rp }}>
+        {faster ? `−${pct}%` : `+${Math.abs(pct)}%`}
+      </span>
+    </div>
+  );
+}
+
+function TreeTaskChart() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { margin: "-80px" }); // re-fires on each scroll-in
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    if (!inView) { setP(0); return; } // reset so it re-animates on return
+    const duration = 1200;
+    const start = performance.now();
+    let raf = 0;
+    const tick = (now: number) => {
+      const prog = Math.min((now - start) / duration, 1);
+      setP(1 - Math.pow(1 - prog, 3));
+      if (prog < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView]);
+
+  const max = Math.max(...TREE_TASKS.map((t) => t.before));
+  return (
+    <div ref={ref} style={{ borderRadius: "var(--radius-xl)", border: "1px solid rgba(255,255,255,0.08)", background: "#161616", boxShadow: "0 24px 60px rgba(0,0,0,0.4)", padding: "clamp(22px, 4vw, 32px)" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", justifyContent: "space-between", gap: "12px", marginBottom: "18px" }}>
+        <h4 style={{ fontSize: "var(--text-md)", fontWeight: 700, color: "#F5F1EC", letterSpacing: "-0.01em" }}>Time to find content, by task</h4>
+        <div style={{ display: "flex", gap: "18px" }}>
+          <TreeLegend color="239,68,68" label="Original" />
+          <TreeLegend color="34,197,94" label="Redesigned" />
+        </div>
+      </div>
+      <div>
+        {TREE_TASKS.map((t, i) => <TreeTaskRow key={t.label} t={t} max={max} p={p} i={i} />)}
+      </div>
+      <p style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.42)", marginTop: "18px", lineHeight: 1.65 }}>
+        Average time-on-task for the high-friction items (over ~10s in the original), original vs redesigned architecture. Task success stayed at 100% across both rounds — the redesign cut the effort to get there. Tree test via Useberry · 4 then 6 participants.
+      </p>
+    </div>
+  );
+}
+
 function AnnotatedComparison({ srcs }: { srcs: string[] }) {
   const iterations = [
     { src: srcs[0], label: "Iteration 1", time: "17m 4.9s", tag: "Slower", winner: false, rgb: "239,68,68" },   // red — slower
@@ -662,36 +853,36 @@ function AnnotatedComparison({ srcs }: { srcs: string[] }) {
             viewport={{ margin: "-40px" }}
             transition={{ duration: 0.55, ease: EASE, delay: i * 0.12 }}
             style={{
-              position: "relative", borderRadius: "var(--radius-xl)", padding: "26px",
-              border: `1px solid rgba(${it.rgb}, 0.4)`,
-              background: `linear-gradient(160deg, rgba(${it.rgb}, 0.12) 0%, rgba(255,255,255,0.02) 100%)`,
-              display: "flex", flexDirection: "column", gap: "16px",
+              borderRadius: "24px", padding: "clamp(32px, 4vw, 44px)",
+              border: "1px solid rgba(255,255,255,0.10)",
+              background: "#1E1E21",
+              boxShadow: "0 24px 60px rgba(0,0,0,0.45)",
+              display: "flex", flexDirection: "column", gap: "22px",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <span style={{ fontSize: "var(--text-label)", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", padding: "4px 12px", borderRadius: "var(--radius-pill)", background: `rgb(${it.rgb})`, color: "#fff" }}>
-                {it.label}
-              </span>
-              <span style={{ fontSize: "var(--text-2xs)", fontWeight: 700, color: `rgb(${it.rgb})` }}>
-                {it.winner ? "↓ " : "↑ "}{it.tag}
-              </span>
-            </div>
-            <div>
+            <span style={{ fontSize: "var(--text-label)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.42)" }}>
+              {it.label}
+            </span>
+            <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
               <motion.span
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ margin: "-40px" }}
-                transition={{ duration: 0.5, delay: 0.15 + i * 0.12, ease: EASE }}
-                style={{ display: "inline-block", fontSize: "clamp(34px, 5vw, 50px)", fontWeight: 800, color: `rgb(${it.rgb})`, letterSpacing: "-0.03em", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}
+                transition={{ duration: 0.5, delay: 0.12 + i * 0.1, ease: EASE }}
+                style={{ display: "inline-block", fontSize: "clamp(44px, 7vw, 64px)", fontWeight: 800, color: `rgb(${it.rgb})`, lineHeight: 0.95, letterSpacing: "-0.03em", fontVariantNumeric: "tabular-nums" }}
               >
                 {it.time}
               </motion.span>
-              <span style={{ display: "block", fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.45)", marginTop: "8px" }}>Average time to find content</span>
+              <span style={{ width: "44px", height: "3px", borderRadius: "var(--radius-pill)", background: `rgb(${it.rgb})` }} />
+              <span style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.5)" }}>Average time to find content</span>
             </div>
             {it.winner && <WinnerBadge />}
           </motion.div>
         ))}
       </div>
+
+      {/* Per-task breakdown — the real Useberry time-on-task data */}
+      <TreeTaskChart />
 
       {/* Real Useberry tree-test screens — supporting evidence */}
       <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "16px" }}>
@@ -805,6 +996,7 @@ function SectionImages({ section }: { section: Section }) {
   if (imageAspect === "annotated-comparison")  return <AnnotatedComparison srcs={images} />;
   if (imageAspect === "before-after")          return <BeforeAfter srcs={images} labels={section.compareLabels} />;
   if (imageAspect === "page-trio")             return <PageTriptych srcs={images} captions={section.captions} />;
+  if (imageAspect === "ia-comparison")         return <IaComparison />;
   if (imageAspect === "feature-panorama")      return <FeaturePanorama srcs={images} captions={section.captions} />;
   if (imageAspect === "phone-trio")            return <PhoneTrio srcs={images} captions={section.captions} />;
   if (images.length === 1)                  return <LandscapeImage src={images[0]} />;

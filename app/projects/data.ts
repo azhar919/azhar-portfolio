@@ -9,7 +9,7 @@
   image?: string | string[];
   captions?: string[]; // parallel to image[]; short labels shown under each device/image
   compareLabels?: [string, string]; // [before, after] chip labels for imageAspect "before-after"
-  imageAspect?: "portrait" | "page" | "laptop" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map" | "feature-panorama" | "phone-trio" | "before-after" | "page-trio"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, before-after = labelled old→new comparison, page-trio = three page-tops side by side with captions, default = 16:9
+  imageAspect?: "portrait" | "page" | "laptop" | "screenshot" | "scattered" | "landscape-portrait" | "annotated-comparison" | "screenshots" | "map" | "feature-panorama" | "phone-trio" | "before-after" | "page-trio" | "ia-comparison"; // portrait = phone, page = full-height, screenshot = natural size, scattered = overlapping rotated cards, landscape-portrait = stacked mixed orientations, annotated-comparison = before/after with metric callouts, screenshots = multiple stacked at natural size, before-after = labelled old→new comparison, page-trio = three page-tops side by side with captions, ia-comparison = built tangled→clean IA node diagram, default = 16:9
   showcase?: "design-system"; // renders a built visual (e.g. a mini design-system sheet) instead of an image
   dark?: boolean;
 };
@@ -212,10 +212,8 @@ export const caseStudies: CaseStudy[] = [
           "Content was scattered, categories were unclear, and users often got lost trying to find simple information.",
           "It didn't matter if you were new or experienced — the system didn't align with how people thought.",
         ],
-        image: [
-          "/images/iqbusiness case study/Screenshot 2026-04-01 at 15.34.20 1.png",
-          "/images/iqbusiness case study/image 1.png",
-        ],
+        image: "ia",
+        imageAspect: "ia-comparison",
       },
       {
         label: "Define",
