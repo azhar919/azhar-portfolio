@@ -124,7 +124,7 @@ function ProcessStepper({ items, activeIndex }: { items: { label: string; id: st
                 }}>
                   {i + 1}
                 </span>
-                <span style={{ fontSize: "var(--text-2xs)", fontWeight: 500, color: active ? "#fff" : "rgba(255,255,255,0.45)", whiteSpace: "nowrap", transition: "color 0.3s" }}>
+                <span style={{ fontSize: "var(--text-2xs)", fontWeight: 500, color: active ? "#fff" : "rgba(255,255,255,0.6)", whiteSpace: "nowrap", transition: "color 0.3s" }}>
                   {item.label}
                 </span>
               </button>
@@ -618,7 +618,7 @@ function ScatteredImages({ srcs }: { srcs: string[] }) {
             </div>
           ))}
         </div>
-        <p style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.3)", textAlign: "center", marginTop: "8px", letterSpacing: "0.06em" }}>Swipe to compare →</p>
+        <p style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.55)", textAlign: "center", marginTop: "8px", letterSpacing: "0.06em" }}>Swipe to compare →</p>
       </div>
     );
   }
@@ -691,7 +691,7 @@ function WinnerBadge() {
 
 function ImageCaption({ children }: { children: React.ReactNode }) {
   return (
-    <span style={{ display: "block", textAlign: "center", fontSize: "var(--text-2xs)", fontWeight: 500, letterSpacing: "0.02em", color: "rgba(255,255,255,0.42)", marginTop: "14px" }}>
+    <span style={{ display: "block", textAlign: "center", fontSize: "var(--text-2xs)", fontWeight: 500, letterSpacing: "0.02em", color: "rgba(255,255,255,0.55)", marginTop: "14px" }}>
       {children}
     </span>
   );
@@ -829,7 +829,7 @@ function TreeTaskChart() {
       <div>
         {TREE_TASKS.map((t, i) => <TreeTaskRow key={t.label} t={t} max={max} p={p} i={i} />)}
       </div>
-      <p style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.42)", marginTop: "18px", lineHeight: 1.65 }}>
+      <p style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.55)", marginTop: "18px", lineHeight: 1.65 }}>
         Average time-on-task for the high-friction items (over ~10s in the original), original vs redesigned architecture. Task success stayed at 100% across both rounds — the redesign cut the effort to get there. Tree test via Useberry · 4 then 6 participants.
       </p>
     </div>
@@ -860,7 +860,7 @@ function AnnotatedComparison({ srcs }: { srcs: string[] }) {
               display: "flex", flexDirection: "column", gap: "22px",
             }}
           >
-            <span style={{ fontSize: "var(--text-label)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.42)" }}>
+            <span style={{ fontSize: "var(--text-label)", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)" }}>
               {it.label}
             </span>
             <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
@@ -1220,7 +1220,7 @@ function MoreCard({ cs, index }: { cs: CaseStudy; index: number }) {
         {overlay}
         <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: "8px", height: "100%" }}>
           <span style={{ fontSize: "var(--text-lg)", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.25 }}>{cs.title}</span>
-          <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.4)", lineHeight: 1.6, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cs.subtitle}</span>
+          <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.55)", lineHeight: 1.6, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{cs.subtitle}</span>
           <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "var(--text-xs)", fontWeight: 500, color: "var(--gold)", marginTop: "auto", paddingTop: "20px" }}>
             View case study
             <span className="transition-transform duration-200" style={{ display: "inline-flex", transform: hovered ? "translateX(3px)" : "translateX(0)" }}>
@@ -1255,7 +1255,7 @@ function MoreCaseStudies({ currentSlug }: { currentSlug: string }) {
   return (
     <section style={{ background: "#110E0B", paddingTop: "80px", paddingBottom: "80px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
       <div className="page-container">
-        <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", marginBottom: "40px" }}>More case studies</p>
+        <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)", marginBottom: "40px" }}>More case studies</p>
         <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
           {order.map((company) => {
             const logo = COMPANY_LOGO[company];
@@ -1298,7 +1298,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
   const words = study.title.split(" ");
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <FloatingNav />
 
       <div className="pt-[72px]">
@@ -1330,7 +1330,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: EASE }}
-                  style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.35)", marginBottom: "20px" }}
+                  style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)", marginBottom: "20px" }}
                 >
                   {study.company}
                 </motion.p>
@@ -1403,7 +1403,7 @@ export default function CaseStudyClient({ study }: { study: CaseStudy }) {
             className="absolute left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2"
             style={{ bottom: "32px" }}
           >
-            <span style={{ fontSize: "var(--text-micro)", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.3)" }}>Read the story</span>
+            <span style={{ fontSize: "var(--text-micro)", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)" }}>Read the story</span>
             <motion.div animate={{ y: [0, 7, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}>
               <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                 <path d="M4 7l6 6 6-6" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

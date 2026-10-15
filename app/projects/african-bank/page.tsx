@@ -79,7 +79,7 @@ function CaseCard({ project, index }: { project: typeof subProjects[0]; index: n
               View case study →
             </span>
           </div>
-          <ArrowUpRight size={16} className="shrink-0 mt-1 ml-4" style={{ color: "rgba(255,255,255,0.3)" }} />
+          <ArrowUpRight size={16} className="shrink-0 mt-1 ml-4" style={{ color: "rgba(255,255,255,0.55)" }} />
         </div>
       </Link>
     </motion.div>
@@ -88,7 +88,7 @@ function CaseCard({ project, index }: { project: typeof subProjects[0]; index: n
 
 export default function AfricanBankPage() {
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <FloatingNav />
       <div className="pt-[72px]">
 

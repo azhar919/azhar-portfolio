@@ -332,13 +332,13 @@ function AccordionItem({
               transition={{ duration: 0.18, ease: "easeOut" }}
               style={{ padding: "4px 28px 26px" }}
             >
-              <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", fontWeight: 600, marginTop: 20, marginBottom: 10 }}>
+              <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)", fontWeight: 600, marginTop: 20, marginBottom: 10 }}>
                 Project Overview
               </p>
               <p style={{ fontSize: 13.5, color: "rgba(255,255,255,0.58)", lineHeight: 1.8, margin: 0 }}>
                 {project.overview}
               </p>
-              <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)", fontWeight: 600, marginTop: 22, marginBottom: 12 }}>
+              <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)", fontWeight: 600, marginTop: 22, marginBottom: 12 }}>
                 Key Contributions
               </p>
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
@@ -378,7 +378,7 @@ function CompanyGroup({ group, forceOpen = false }: { group: TimelineGroup; forc
         </div>
         <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginTop: 5, marginBottom: 0 }}>
           {group.role}
-          <span style={{ color: "rgba(255,255,255,0.3)" }}> · {group.projects.length} project{group.projects.length > 1 ? "s" : ""}</span>
+          <span style={{ color: "rgba(255,255,255,0.55)" }}> · {group.projects.length} project{group.projects.length > 1 ? "s" : ""}</span>
         </p>
       </div>
       <div>
@@ -453,7 +453,7 @@ function SidebarSection({ title, icon: Icon, children }: { title: string; icon: 
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "0.1em",
-          color: "rgba(255,255,255,0.4)",
+          color: "rgba(255,255,255,0.55)",
           marginBottom: 16,
           paddingBottom: 12,
           borderBottom: "1px solid rgba(255,255,255,0.08)",
@@ -491,7 +491,7 @@ function HeroStat({ value, suffix, label }: { value: number; suffix: string; lab
       <span style={{ fontSize: 30, fontWeight: 800, color: "#F5F1EC", lineHeight: 1, letterSpacing: "-0.02em", fontVariantNumeric: "tabular-nums" }}>
         {n}{suffix}
       </span>
-      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", marginTop: 6 }}>{label}</span>
+      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", marginTop: 6 }}>{label}</span>
     </div>
   );
 }
@@ -588,7 +588,7 @@ export default function CVPage() {
   };
 
   return (
-    <main style={{ background: "#0B0A09", minHeight: "100vh" }}>
+    <main id="main-content" tabIndex={-1} style={{ background: "#0B0A09", minHeight: "100vh" }}>
       <FloatingNav />
       <div className="pt-[72px]">
        <div ref={contentRef} className={exporting ? "cv-exporting" : undefined}>
@@ -789,7 +789,7 @@ export default function CVPage() {
                       <div key={edu.institution} className="flex flex-col gap-1">
                         <p style={{ fontSize: 13, fontWeight: 600, color: "#FFFFFF", margin: 0 }}>{edu.institution}</p>
                         <p style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", margin: 0 }}>{edu.qualification}</p>
-                        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", margin: 0 }}>{edu.year}</p>
+                        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", margin: 0 }}>{edu.year}</p>
                       </div>
                     ))}
                   </SidebarSection>
@@ -801,7 +801,7 @@ export default function CVPage() {
                       {certifications.map(cert => (
                         <li key={cert.name} className="flex flex-col gap-0.5">
                           <span style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.5 }}>{cert.name}</span>
-                          {cert.year && <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>{cert.year}</span>}
+                          {cert.year && <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)" }}>{cert.year}</span>}
                         </li>
                       ))}
                     </ul>
@@ -814,7 +814,7 @@ export default function CVPage() {
                       {training.map(item => (
                         <li key={item.name} className="flex flex-col gap-0.5">
                           <span style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{item.name}</span>
-                          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.3)" }}>{item.year}</span>
+                          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)" }}>{item.year}</span>
                         </li>
                       ))}
                     </ul>
@@ -858,9 +858,9 @@ export default function CVPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="transition-colors duration-200"
-                        style={{ fontSize: 13, color: "rgba(255,255,255,0.45)" }}
+                        style={{ fontSize: 13, color: "rgba(255,255,255,0.55)" }}
                         onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#FFFFFF")}
-                        onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.45)")}
+                        onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.55)")}
                       >
                         LinkedIn
                       </a>

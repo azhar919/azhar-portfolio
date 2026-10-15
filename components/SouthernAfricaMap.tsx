@@ -117,7 +117,7 @@ export default function SouthernAfricaMap() {
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
           <div style={{ width: "12px", height: "12px", borderRadius: "3px", background: "rgba(255,255,255,0.04)", border: "0.8px solid rgba(255,255,255,0.12)" }} />
-          <span style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.3)", fontWeight: 500 }}>Surrounding countries</span>
+          <span style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.55)", fontWeight: 500 }}>Surrounding countries</span>
         </div>
       </div>
     </div>

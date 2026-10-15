@@ -54,7 +54,7 @@ const labelStyle: React.CSSProperties = {
   fontWeight: 600,
   textTransform: "uppercase",
   letterSpacing: "0.1em",
-  color: "rgba(255,255,255,0.3)",
+  color: "rgba(255,255,255,0.55)",
   marginBottom: "16px",
   display: "block",
 };
@@ -153,7 +153,7 @@ export default function ContactFooter() {
             <Link href="/" className="text-white hover:opacity-60 transition-opacity duration-200 inline-block" style={{ marginBottom: "16px" }}>
               <LogoMark />
             </Link>
-            <p style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.4)", lineHeight: 1.7 }}>
+            <p style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.55)", lineHeight: 1.7 }}>
               Designing effortless digital experiences from Johannesburg, South Africa.
             </p>
           </div>
@@ -172,10 +172,10 @@ export default function ContactFooter() {
 
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-          <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.25)" }}>
+          <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.55)" }}>
             © 2026 Azhar Mohamed. All rights reserved.
           </span>
-          <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.25)" }}>
+          <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.55)" }}>
             Built with Claude Code
           </span>
         </div>

@@ -67,7 +67,7 @@ function Stat({ value, suffix, label }: { value: number; suffix: string; label: 
       <span style={{ fontSize: "34px", fontWeight: 800, color: "#F5F1EC", letterSpacing: "-0.02em", lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
         {n}{suffix}
       </span>
-      <span style={{ fontSize: "var(--text-2xs)", color: "rgba(255,255,255,0.45)", marginTop: "8px", letterSpacing: "0.02em" }}>{label}</span>
+      <span style={{ fontSize: "var(--text-2xs)", color: "rgba(255,255,255,0.55)", marginTop: "8px", letterSpacing: "0.02em" }}>{label}</span>
     </div>
   );
 }

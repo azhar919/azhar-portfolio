@@ -120,7 +120,7 @@ export default function Navbar() {
                                 onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                               >
                                 <div className="flex flex-col gap-0.5">
-                                  <span style={{ fontSize: "var(--text-micro)", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)" }}>
+                                  <span style={{ fontSize: "var(--text-micro)", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)" }}>
                                     {cs.company}
                                   </span>
                                   <span style={{ fontSize: "var(--text-sm)", fontWeight: 500, color: "#FFFFFF" }}>

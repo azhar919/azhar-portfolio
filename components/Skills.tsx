@@ -75,7 +75,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
         <span aria-hidden="true" style={{
           position: "absolute", top: "20px", right: "26px",
           fontSize: "clamp(40px, 5vw, 60px)", fontWeight: 800, lineHeight: 1,
-          color: "rgba(255,255,255,0.05)", fontVariantNumeric: "tabular-nums",
+          color: "rgba(255,255,255,0.55)", fontVariantNumeric: "tabular-nums",
           userSelect: "none", pointerEvents: "none",
         }}>
           {String(index + 1).padStart(2, "0")}
@@ -120,7 +120,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
                 style={{
                   fontSize: "var(--text-label)",
                   fontWeight: 500,
-                  color: hovered ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.3)",
+                  color: hovered ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.55)",
                   border: `1px solid ${hovered ? "rgb(var(--gold-rgb) / 0.25)" : "rgba(255,255,255,0.08)"}`,
                   borderRadius: "var(--radius-pill)",
                   padding: "4px 12px",
@@ -147,7 +147,7 @@ function SkillsHeading() {
       <h2 style={{ fontSize: "var(--text-h2)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F5F1EC" }}>
         What I do
       </h2>
-      <p style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.45)", maxWidth: "420px" }}>
+      <p style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.55)", maxWidth: "420px" }}>
         Three core disciplines I bring to every project
       </p>
     </motion.div>

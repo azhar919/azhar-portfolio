@@ -67,6 +67,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${plusJakartaSans.variable} ${inter.variable} ${cormorant.variable} ${montserrat.variable}`}>
       <body className="min-h-screen antialiased">
+        <a href="#main-content" className="skip-link">Skip to content</a>
         <MotionProvider>{children}</MotionProvider>
         <CustomCursor />
         <Analytics />

@@ -80,7 +80,7 @@ function BrowserFrame({ image, url, title }: { image: string; url: string; title
               display: "flex", alignItems: "center", justifyContent: "center",
             }}
           >
-            <span style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.3)", userSelect: "none" }}>{url}</span>
+            <span style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.55)", userSelect: "none" }}>{url}</span>
           </div>
         </div>
       </div>
@@ -121,7 +121,7 @@ function FeaturedCard({ project, index }: { project: typeof featured[0]; index: 
         {overlay}
         <BrowserFrame image={project.image} url={project.url} title={project.title} />
         <div className="flex flex-col gap-3 flex-1" style={{ padding: "28px", position: "relative", zIndex: 1 }}>
-          <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)" }}>
+          <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)" }}>
             {project.company}
           </p>
           <h3 style={{ fontSize: "22px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>

@@ -48,7 +48,7 @@ function Eyebrow() {
   return (
     <motion.p
       ref={ref}
-      style={{ ...style, fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)", textAlign: "center", marginBottom: "32px" }}
+      style={{ ...style, fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)", textAlign: "center", marginBottom: "32px" }}
     >
       Worked with
     </motion.p>

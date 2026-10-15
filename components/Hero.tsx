@@ -221,7 +221,7 @@ export default function Hero() {
         style={{ opacity: contentOpacity }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span style={{ fontSize: "var(--text-micro)", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)" }}>Scroll</span>
+        <span style={{ fontSize: "var(--text-micro)", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)" }}>Scroll</span>
         {/* Mouse-style cue with travelling dot */}
         <div style={{
           width: "22px", height: "34px", borderRadius: "var(--radius-pill)",

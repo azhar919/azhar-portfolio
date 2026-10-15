@@ -15,7 +15,7 @@ const NAV_H = 72;
 function LogoMark() {
   return (
     <span
-      aria-label="Home"
+      aria-label="AM. — Azhar Mohamed, home"
       className="transition-opacity duration-200 hover:opacity-80"
       style={{
         display: "inline-flex",
@@ -126,7 +126,7 @@ export default function FloatingNav() {
           </div>
 
           {/* Logo */}
-          <Link href="/" className="text-ghost transition-opacity duration-200 shrink-0 md:mr-9" aria-label="Home">
+          <Link href="/" className="text-ghost transition-opacity duration-200 shrink-0 md:mr-9" aria-label="AM. — Azhar Mohamed, home">
             <LogoMark />
           </Link>
 
@@ -214,7 +214,7 @@ export default function FloatingNav() {
                   <div className="flex flex-col" style={{ flex: 1 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "0 12px", marginBottom: "10px" }}>
                       <Briefcase size={13} color="var(--gold)" />
-                      <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.35)" }}>
+                      <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)" }}>
                         {col.company}
                       </p>
                     </div>
@@ -233,10 +233,10 @@ export default function FloatingNav() {
                             <span className="transition-colors duration-150 group-hover:text-[var(--gold)]" style={{ fontSize: "var(--text-ui)", fontWeight: 500, color: "#FFFFFF" }}>
                               {link.label}
                             </span>
-                            <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.4)", lineHeight: 1.4 }}>{link.desc}</span>
+                            <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.55)", lineHeight: 1.4 }}>{link.desc}</span>
                           </div>
                           <span className="shrink-0 ml-3 transition-transform duration-200 group-hover:translate-x-1">
-                            <ArrowRight size={14} className="transition-colors duration-200 group-hover:text-[var(--gold)]" style={{ color: "rgba(255,255,255,0.3)" }} />
+                            <ArrowRight size={14} className="transition-colors duration-200 group-hover:text-[var(--gold)]" style={{ color: "rgba(255,255,255,0.55)" }} />
                           </span>
                         </Link>
                       ))}
@@ -266,7 +266,7 @@ export default function FloatingNav() {
               className="flex items-center justify-between px-5 shrink-0"
               style={{ height: `${NAV_H}px`, borderBottom: "1px solid rgba(255,255,255,0.08)" }}
             >
-              <Link href="/" className="text-ghost hover:opacity-60 transition-opacity duration-200" aria-label="Home" onClick={() => setMenuOpen(false)}>
+              <Link href="/" className="text-ghost hover:opacity-60 transition-opacity duration-200" aria-label="AM. — Azhar Mohamed, home" onClick={() => setMenuOpen(false)}>
                 <LogoMark />
               </Link>
               <button onClick={() => setMenuOpen(false)} aria-label="Close menu">
@@ -317,7 +317,7 @@ export default function FloatingNav() {
                             )}
                             <p style={{
                               fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em",
-                              color: "rgba(255,255,255,0.4)", marginTop: "24px", marginBottom: "12px",
+                              color: "rgba(255,255,255,0.55)", marginTop: "24px", marginBottom: "12px",
                             }}>
                               {col.company}
                             </p>

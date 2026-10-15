@@ -36,11 +36,15 @@
      Hex tokens feed both inline styles (var(--gold)) and the Tailwind accent utilities
      (@theme aliases below). --gold-rgb holds the raw channels so any alpha works via
      rgb(var(--gold-rgb) / 0.x). */
-  /* Accent (token names kept as --gold* for now; values = terracotta) */
-  --gold:        #C4622D;   /* terracotta            */
+  /* Accent (token names kept as --gold* for now; values = terracotta).
+     --gold is tuned to clear WCAG AA (4.5:1) as small text on our dark surfaces;
+     --gold-dark is the button background (white text on it passes 4.5:1);
+     --gold-darker is the button hover. */
+  --gold:        #CC6A33;   /* terracotta (AA-safe as text) */
   --gold-light:  #E8A06A;   /* light terracotta      */
-  --gold-dark:   #A8521F;   /* deep terracotta       */
-  --gold-rgb:    196 98 45;
+  --gold-dark:   #A8521F;   /* deep terracotta — button bg (AA with white) */
+  --gold-darker: #8E4417;   /* button hover          */
+  --gold-rgb:    204 106 51;
 
   /* ── RADIUS SCALE — single source of truth for corner rounding. ── */
   --radius-sm:   8px;    /* small chips, inputs        */
@@ -241,4 +245,29 @@ h1, h2, h3, h4 {
 .has-custom-cursor textarea,
 .has-custom-cursor [contenteditable="true"] {
   cursor: text !important;
+}
+
+/* Skip-to-content link — visually hidden until keyboard focus (WCAG 2.4.1) */
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
+  transform: translateY(-150%);
+  background: var(--gold-dark);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease;
+}
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+main:focus {
+  outline: none;
 }

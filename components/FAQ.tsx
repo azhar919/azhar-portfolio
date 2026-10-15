@@ -77,7 +77,7 @@ function FAQLeft() {
       <h2 style={{ fontSize: "var(--text-h2)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F5F1EC" }}>
         Your design questions, answered
       </h2>
-      <p style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.45)", lineHeight: 1.7, maxWidth: "360px" }}>
+      <p style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.55)", lineHeight: 1.7, maxWidth: "360px" }}>
         A few things people often ask about how I work. Still curious about something?
       </p>
       <div className="pt-2">

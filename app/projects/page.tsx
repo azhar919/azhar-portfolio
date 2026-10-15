@@ -77,7 +77,7 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
         }}
       >
         <div className="flex flex-col gap-3" style={{ flex: 1 }}>
-          <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.3)" }}>
+          <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)" }}>
             {project.company}
           </p>
           <h3 style={{ fontSize: "22px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
@@ -93,7 +93,7 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
         <ArrowUpRight
           size={18}
           className="shrink-0 mt-1 ml-8"
-          style={{ color: "rgba(255,255,255,0.25)" }}
+          style={{ color: "rgba(255,255,255,0.55)" }}
         />
       </Link>
     </motion.div>
@@ -102,7 +102,7 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
 
 export default function ProjectsPage() {
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <FloatingNav />
       <div className="pt-[72px]">
 
