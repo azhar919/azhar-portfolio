@@ -486,6 +486,48 @@ function PageTriptych({ srcs, captions }: { srcs: string[]; captions?: string[] 
 /* Three screens, each in its own laptop frame (3-up on desktop, stacked on mobile).
    Static top-crop with a soft fade — the hero carries the scrollable laptop; here the
    device language stays consistent across the whole case study. */
+/* One screen inside the triptych — scrollable like the single LaptopMockup so
+   the full page design can be explored (was a static top-crop before). Opens on
+   the meaningful region via `offset` (fraction of the scrollable range). */
+function TriptychScreen({ src, offset = 0 }: { src: string; offset?: number }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [hasOverflow, setHasOverflow] = useState(true);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const img = imgRef.current;
+    const apply = () => {
+      setHasOverflow(el.scrollHeight > el.clientHeight + 4);
+      const range = el.scrollHeight - el.clientHeight;
+      if (offset > 0 && range > 0) el.scrollTop = offset * range;
+    };
+    if (img?.complete) apply();
+    else img?.addEventListener("load", apply);
+    window.addEventListener("resize", apply);
+    return () => {
+      img?.removeEventListener("load", apply);
+      window.removeEventListener("resize", apply);
+    };
+  }, [offset]);
+
+  return (
+    <div style={{ position: "relative", aspectRatio: "16/10", borderRadius: "3px", overflow: "hidden", background: "#fff", border: "1px solid #000" }}>
+      <div
+        ref={scrollRef}
+        style={{ position: "absolute", inset: 0, overflowY: "scroll", scrollbarWidth: "none", WebkitOverflowScrolling: "touch" }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img loading="lazy" decoding="async" ref={imgRef} src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
+      </div>
+      {hasOverflow && (
+        <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "64px", background: "linear-gradient(to top, rgba(255,255,255,0.9), transparent)", pointerEvents: "none" }} />
+      )}
+    </div>
+  );
+}
+
 function LaptopTriptych({ srcs, captions, offsets }: { srcs: string[]; captions?: string[]; offsets?: number[] }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3" style={{ gap: "clamp(18px, 3vw, 30px)", alignItems: "start" }}>
@@ -511,12 +553,8 @@ function LaptopTriptych({ srcs, captions, offsets }: { srcs: string[]; captions?
               <div style={{ display: "flex", justifyContent: "center", marginBottom: "5px" }}>
                 <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: "#0e0e1a", border: "1px solid rgba(255,255,255,0.08)" }} />
               </div>
-              {/* screen — top-crop with a white fade hinting more below the fold */}
-              <div style={{ position: "relative", aspectRatio: "16/10", borderRadius: "3px", overflow: "hidden", background: "#fff", border: "1px solid #000" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img loading="lazy" decoding="async" src={src} alt="" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "auto", transform: offsets?.[i] ? `translateY(-${offsets[i] * 100}%)` : undefined }} />
-                <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "64px", background: "linear-gradient(to top, rgba(255,255,255,0.9), transparent)", pointerEvents: "none" }} />
-              </div>
+              {/* screen — scrollable so the full page design can be explored */}
+              <TriptychScreen src={src} offset={offsets?.[i]} />
             </div>
             {/* base / hinge */}
             <div style={{ position: "relative", width: "110%", marginLeft: "-5%", height: "11px", background: "linear-gradient(180deg, #cfd3d6 0%, #a7adb2 45%, #7d8388 100%)", borderRadius: "0 0 11px 11px", boxShadow: "0 6px 11px rgba(0,0,0,0.42)" }}>
