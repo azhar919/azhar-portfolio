@@ -1,28 +1,61 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { EASE } from "@/lib/motion";
 
-const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
-
-export default function LaptopMockup({ src }: { src: string }) {
+export default function LaptopMockup({ src, initialScroll = 0 }: { src: string; initialScroll?: number }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const [hasOverflow, setHasOverflow] = useState(true);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    const check = () => setHasOverflow(el.scrollHeight > el.clientHeight + 4);
-    const img = imgRef.current;
-    if (img?.complete) check();
-    else img?.addEventListener("load", check);
-    window.addEventListener("resize", check);
-    return () => {
-      img?.removeEventListener("load", check);
-      window.removeEventListener("resize", check);
+    let io: IntersectionObserver | undefined;
+    let raf = 0;
+    let played = false;
+
+    const setup = () => {
+      setHasOverflow(el.scrollHeight > el.clientHeight + 4);
+      const range = el.scrollHeight - el.clientHeight;
+      const target = initialScroll > 0 ? initialScroll * range : 0;
+      if (target <= 0) return;
+      if (reduce) { el.scrollTop = target; return; }
+      // When the frame enters view, animate the screen from the top down to the
+      // meaningful region — the screen "plays" instead of appearing pre-scrolled.
+      io = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting || played) return;
+          played = true;
+          const start = performance.now();
+          const dur = 1300;
+          const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+          const tick = (now: number) => {
+            const p = Math.min((now - start) / dur, 1);
+            el.scrollTop = easeOut(p) * target;
+            if (p < 1) raf = requestAnimationFrame(tick);
+          };
+          raf = requestAnimationFrame(tick);
+        },
+        { threshold: 0.4 }
+      );
+      io.observe(el);
     };
-  }, []);
+
+    const img = imgRef.current;
+    const onResize = () => setHasOverflow(el.scrollHeight > el.clientHeight + 4);
+    if (img?.complete) setup();
+    else img?.addEventListener("load", setup);
+    window.addEventListener("resize", onResize);
+    return () => {
+      img?.removeEventListener("load", setup);
+      window.removeEventListener("resize", onResize);
+      io?.disconnect();
+      cancelAnimationFrame(raf);
+    };
+  }, [initialScroll, reduce]);
 
   return (
     <motion.div
@@ -50,7 +83,7 @@ export default function LaptopMockup({ src }: { src: string }) {
           <div style={{ position: "relative", aspectRatio: "16/10", borderRadius: "4px", overflow: "hidden", background: "#ffffff", border: "1px solid #000" }}>
             <div ref={scrollRef} style={{ position: "absolute", inset: 0, overflowY: "scroll", scrollbarWidth: "none" }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img ref={imgRef} src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
+              <img loading="lazy" decoding="async" ref={imgRef} src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
             </div>
 
             {hasOverflow && (

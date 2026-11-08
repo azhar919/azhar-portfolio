@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-heading: var(--font-heading);   /* Plus Jakarta Sans */
-  --font-body:    var(--font-body);      /* Inter             */
+  --font-heading: var(--font-body);      /* Inter (unified — headings + body) */
+  --font-body:    var(--font-body);      /* Inter                              */
 
   /* ── Extra-large breakpoints ────────────────────────────── */
   --breakpoint-xl2: 1920px;
@@ -14,6 +14,8 @@
   --color-accent-light: var(--gold-light);
   --color-accent:       var(--gold);
   --color-accent-dark:  var(--gold-dark);
+  --color-teal:         var(--teal);
+  --color-teal-dark:    var(--teal-dark);
   /* ── Backgrounds (warm dark) ────────────────────────────── */
   --color-surface:     #0B0A09;
   --color-raised:      #17130E;
@@ -45,6 +47,20 @@
   --gold-dark:   #A8521F;   /* deep terracotta — button bg (AA with white) */
   --gold-darker: #8E4417;   /* button hover          */
   --gold-rgb:    204 106 51;
+
+  /* ── SECOND ACCENT — teal. Pairs with terracotta on warm-dark; cools the palette
+     so the site reads as a deliberate two-colour system, not a single-accent template.
+     --teal is tuned to clear AA as small text on our dark surfaces. ── */
+  --teal:        #4FC4B2;   /* teal (AA-safe as text on dark) */
+  --teal-light:  #8BE0D3;
+  --teal-dark:   #2C8577;   /* deep teal — solid fills */
+  --teal-rgb:    79 196 178;
+
+  /* ── DARK SURFACE SCALE — single source of truth for the dark chrome. ── */
+  --bg:          #0B0A09;   /* base page background (near-black) */
+  --bg-rgb:      11 10 9;
+  --bg-alt:      #110E0B;   /* alternating section band */
+  --bg-raised:   #17130E;   /* cards / raised surfaces  */
 
   /* ── RADIUS SCALE — single source of truth for corner rounding. ── */
   --radius-sm:   8px;    /* small chips, inputs        */
@@ -195,16 +211,45 @@ html { scroll-behavior: smooth; }
 /* ── Font shorthand utilities ──────────────────────────────── */
 .font-grotesk  { font-family: var(--font-heading), system-ui, sans-serif; }
 .font-alegreya { font-family: var(--font-body),    system-ui, sans-serif; }
+/* Expressive serif accent — Cormorant. Use for a single emphasised word in a display
+   heading and for pull-quotes, so the serif voice is consistent everywhere (not Georgia). */
+.font-serif    { font-family: var(--font-serif), Georgia, "Times New Roman", serif; }
+.accent-serif  { font-family: var(--font-serif), Georgia, serif; font-style: italic; font-weight: 500; }
+/* Eyebrow / UI label — ONE treatment site-wide: monospace, uppercase, tracked.
+   Colour set inline per use (teal = label/info; keep it to teal for section eyebrows). */
+/* ── Eyebrow / section kicker — ONE treatment everywhere ──
+   Inter (same family as body + headings, so it reads as a matching accent,
+   not a different typeface), bold, wide-tracked, uppercase. Default colour
+   teal (set inline via color). Used for every section kicker and metadata
+   label so they read as one deliberate system. No decorative diamond. */
+.eyebrow {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+/* eyebrow with a leading icon/marker sits on the text centreline */
+.eyebrow-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
 
 body {
   font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv05" 1, "ss01" 1; /* single-storey details — a touch of character on Inter */
+  letter-spacing: -0.006em;                   /* Inter reads a hair tight at body sizes */
   background-color: #0B0A09;
   color: #FFFFFF;
 }
 
 h1, h2, h3, h4 {
   font-family: var(--font-heading), system-ui, sans-serif;
+  letter-spacing: -0.022em; /* default display tracking for Inter; per-size classes refine */
 }
 
 /* ── Typography line-height & tracking ────────────────────── */
@@ -228,6 +273,39 @@ h1, h2, h3, h4 {
   100% { background-position: 40px 40px; }
 }
 .animate-marquee { animation: marquee 22s linear infinite; }
+
+/* Hide scrollbar on carousels/scrollers while keeping scroll */
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ── About Me bento grid ─────────────────────────────────────── */
+.about-bento { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 768px) {
+  .about-bento {
+    grid-template-columns: 1.1fr 1fr 1fr;
+    grid-auto-rows: minmax(0, auto);
+    grid-template-areas:
+      "photo intro  intro"
+      "photo quote  avail"
+      "stats photog connect";
+  }
+  .about-bento > .bt-photo   { grid-area: photo; }
+  .about-bento > .bt-intro   { grid-area: intro; }
+  .about-bento > .bt-quote   { grid-area: quote; }
+  .about-bento > .bt-avail   { grid-area: avail; }
+  .about-bento > .bt-stats   { grid-area: stats; }
+  .about-bento > .bt-photog  { grid-area: photog; }
+  .about-bento > .bt-connect { grid-area: connect; }
+}
+
+@keyframes motif-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes motif-spin-rev {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
 
 /* Grain texture used in hero */
 .noise-texture {

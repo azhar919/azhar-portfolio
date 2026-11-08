@@ -40,3 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 public/images/image 86.png
+
+# local-only (research evidence, separate DS bundle, dev logs)
+/research/
+/design-system/
+*.log

@@ -6,10 +6,20 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import FloatingNav from "@/components/FloatingNav";
 import ContactFooter from "@/components/ContactFooter";
+import Motif from "@/components/Motif";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
-const projects = [
+type ProjItem = { slug: string; href?: string; company: string; title: string; description: string };
+const projects: ProjItem[] = [
+  {
+    slug: "life-healthcare",
+    href: "/projects/life-healthcare",
+    company: "Life Healthcare",
+    title: "Website Redesign + Design System",
+    description:
+      "Reimagining South Africa's largest private-hospital website around the patient — and building the tokenised, accessible design system beneath it. Two case studies.",
+  },
   {
     slug: "everyday-banking",
     company: "Nedbank",
@@ -33,14 +43,14 @@ const projects = [
   },
   {
     slug: "corporate-banking",
-    company: "IQ Business",
+    company: "iqbusiness",
     title: "SharePoint Redesign",
     description:
       "Restructuring internal information architecture and redesigning the intranet experience for a large consulting firm.",
   },
 ];
 
-function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
+function ProjectCard({ project, index }: { project: ProjItem; index: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
@@ -52,7 +62,7 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
       transition={{ duration: 0.65, delay: index * 0.08, ease: EASE }}
     >
       <Link
-        href={`/projects/${project.slug}`}
+        href={project.href ?? `/projects/${project.slug}`}
         className="group flex items-start justify-between transition-all duration-300"
         style={{
           background: "rgba(255,255,255,0.04)",
@@ -77,12 +87,12 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
         }}
       >
         <div className="flex flex-col gap-3" style={{ flex: 1 }}>
-          <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)" }}>
+          <p className="eyebrow" style={{ color: "var(--teal)" }}>
             {project.company}
           </p>
-          <h3 style={{ fontSize: "22px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
+          <h2 style={{ fontSize: "22px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
             {project.title}
-          </h3>
+          </h2>
           <p style={{ fontSize: "var(--text-ui)", color: "rgba(255,255,255,0.5)", lineHeight: 1.75, maxWidth: "640px" }}>
             {project.description}
           </p>
@@ -108,18 +118,15 @@ export default function ProjectsPage() {
 
         {/* ── Hero ── */}
         <section className="relative overflow-hidden flex flex-col justify-center" style={{ background: "#0B0A09", paddingTop: "100px", paddingBottom: "100px", minHeight: "340px" }}>
-          <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
-            top: "-20%", right: "-8%",
-            width: "650px", height: "650px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.14) 0%, transparent 70%)",
-          }} />
+          <Motif variant="orbit" tone="duo" size={760} parallax={80} style={{ top: "-30%", right: "-8%" }} />
 
           <div className="page-container relative">
             <motion.p
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: EASE }}
-              style={{ fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "16px" }}
+              className="eyebrow"
+              style={{ color: "var(--teal)", marginBottom: "16px" }}
             >
               Selected Work
             </motion.p>
@@ -144,11 +151,7 @@ export default function ProjectsPage() {
 
         {/* ── Projects list ── */}
         <section className="relative overflow-hidden" style={{ background: "#110E0B", paddingTop: "80px", paddingBottom: "120px" }}>
-          <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
-            bottom: "5%", left: "15%",
-            width: "500px", height: "400px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.05) 0%, transparent 70%)",
-          }} />
+          <Motif variant="constellation" tone="teal" size={560} parallax={55} style={{ bottom: "2%", left: "12%", opacity: 0.6 }} />
           <div className="page-container relative">
             <div className="flex flex-col gap-4">
               {projects.map((project, i) => (

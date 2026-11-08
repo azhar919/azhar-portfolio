@@ -4,10 +4,67 @@ import { useRef, useEffect } from "react";
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate, useReducedMotion } from "framer-motion";
 import { ArrowRight, FileText } from "lucide-react";
 import Button from "./Button";
+import Motif from "./Motif";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
 const HEADLINE = "Every interaction is a chance to be effortless";
+
+/* Floating design artifacts — abstract proof of craft on the hero's right side.
+   Type tile, palette, a button component and a control, drifting over the motif. */
+function HeroArtifacts() {
+  const reduce = useReducedMotion();
+  const float = (dur: number, delay: number) => ({
+    animate: reduce ? {} : { y: [0, -10, 0] },
+    transition: { duration: dur, repeat: reduce ? 0 : Infinity, ease: "easeInOut" as const, delay },
+  });
+  const card: React.CSSProperties = {
+    background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: "16px", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)",
+    boxShadow: "0 24px 60px rgba(0,0,0,0.5)",
+  };
+  return (
+    <div aria-hidden="true" className="hidden lg:block absolute inset-0 pointer-events-none select-none" style={{ zIndex: 5 }}>
+      {/* Type tile */}
+      <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.6, ease: EASE }} style={{ position: "absolute", top: "19%", right: "25%", rotate: "-5deg" }}>
+        <motion.div {...float(7, 0)} style={{ ...card, padding: "20px 28px", textAlign: "center" }}>
+          <div style={{ fontFamily: "var(--font-heading)", fontSize: "48px", fontWeight: 800, color: "#F5F1EC", lineHeight: 1, letterSpacing: "-0.03em" }}>Aa</div>
+          <div style={{ fontSize: "10.5px", color: "rgba(255,255,255,0.5)", marginTop: "9px", letterSpacing: "0.1em", textTransform: "uppercase" }}>Inter · Display</div>
+        </motion.div>
+      </motion.div>
+
+      {/* Control / toggle */}
+      <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.76, ease: EASE }} style={{ position: "absolute", top: "30%", right: "5%", rotate: "6deg" }}>
+        <motion.div {...float(7.5, 0.5)} style={{ ...card, padding: "14px 16px", display: "flex", alignItems: "center", gap: "12px" }}>
+          <span style={{ width: "40px", height: "23px", borderRadius: "9999px", background: "var(--teal)", position: "relative", flexShrink: 0 }}>
+            <span style={{ position: "absolute", top: "3px", right: "3px", width: "17px", height: "17px", borderRadius: "50%", background: "#fff" }} />
+          </span>
+          <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>Accessible</span>
+        </motion.div>
+      </motion.div>
+
+      {/* Palette */}
+      <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.9, ease: EASE }} style={{ position: "absolute", top: "46%", right: "11%", rotate: "4deg" }}>
+        <motion.div {...float(8, 0.3)} style={{ ...card, padding: "15px 17px", display: "flex", flexDirection: "column", gap: "11px" }}>
+          <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.5)", letterSpacing: "0.1em", textTransform: "uppercase" }}>Palette</span>
+          <div style={{ display: "flex", gap: "7px" }}>
+            {["var(--gold)", "var(--gold-light)", "var(--teal)", "#F5F1EC", "#161210"].map((c) => (
+              <span key={c} style={{ width: "22px", height: "22px", borderRadius: "50%", background: c, border: "1px solid rgba(255,255,255,0.12)" }} />
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Button component */}
+      <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 1.04, ease: EASE }} style={{ position: "absolute", top: "63%", right: "27%" }}>
+        <motion.div {...float(6.5, 0.2)} style={{ ...card, padding: "16px 18px", display: "flex", flexDirection: "column", gap: "11px", alignItems: "flex-start" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "var(--gold-dark)", color: "#fff", fontWeight: 600, fontSize: "13px", borderRadius: "9999px", padding: "9px 17px" }}>Get started <ArrowRight size={14} /></span>
+          <span style={{ fontSize: "10px", color: "rgba(255,255,255,0.45)", letterSpacing: "0.08em", textTransform: "uppercase" }}>Button · Primary</span>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+}
 
 export default function Hero() {
   const reducedMotion = useReducedMotion();
@@ -115,19 +172,14 @@ export default function Hero() {
         style={{ background: glowBg }}
       />
 
-      {/* ── Ambient glow orbs ── */}
+      {/* ── Signature motif (orbit = the hero's signature; other sections use
+            different variants from the same family so nothing repeats) ── */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden="true">
-        <div style={{
-          position: "absolute", top: "-20%", right: "-8%",
-          width: "750px", height: "750px", borderRadius: "50%",
-          background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.22) 0%, transparent 65%)",
-        }} />
-        <div style={{
-          position: "absolute", bottom: "0%", left: "-20%",
-          width: "600px", height: "600px", borderRadius: "50%",
-          background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.08) 0%, transparent 65%)",
-        }} />
+        <Motif variant="orbit" tone="duo" size={840} parallax={90} style={{ top: "-16%", right: "-14%" }} />
       </div>
+
+      {/* ── Floating design artifacts (right side) ── */}
+      <HeroArtifacts />
 
       <div className="absolute inset-0 noise-texture opacity-[0.025] pointer-events-none select-none" />
 
@@ -150,7 +202,8 @@ export default function Hero() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: EASE }}
-              style={{ fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)" }}
+              className="eyebrow"
+              style={{ color: "var(--teal)" }}
             >
               UX · UI · Design Operations
             </motion.p>
@@ -172,13 +225,21 @@ export default function Hero() {
                 const sx = (rand(i + 1) - 0.5) * 220;
                 const sy = (rand(i + 7) - 0.5) * 130;
                 const sr = (rand(i + 13) - 0.5) * 50;
+                const isAccent = i === words.length - 1; // "effortless"
                 return (
                   <motion.span
                     key={i}
                     initial={{ opacity: 0, x: sx, y: sy, rotate: sr, filter: "blur(6px)" }}
                     animate={{ opacity: 1, x: 0, y: 0, rotate: 0, filter: "blur(0px)" }}
                     transition={{ type: "spring", stiffness: 90, damping: 16, delay: 0.18 + i * 0.12 }}
-                    style={{ display: "inline-block", marginRight: "0.28em" }}
+                    className={isAccent ? "accent-serif" : undefined}
+                    style={{
+                      display: "inline-block",
+                      marginRight: "0.28em",
+                      ...(isAccent
+                        ? { color: "var(--teal)", letterSpacing: "-0.01em", fontWeight: 500, paddingRight: "0.06em" }
+                        : null),
+                    }}
                   >
                     {word}
                   </motion.span>
@@ -222,17 +283,19 @@ export default function Hero() {
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
         <span style={{ fontSize: "var(--text-micro)", fontWeight: 600, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(255,255,255,0.55)" }}>Scroll</span>
-        {/* Mouse-style cue with travelling dot */}
-        <div style={{
-          width: "22px", height: "34px", borderRadius: "var(--radius-pill)",
-          border: "1.5px solid rgba(255,255,255,0.2)",
-          display: "flex", justifyContent: "center", paddingTop: "6px",
-        }}>
+        {/* Journey-thread cue — a node travels down a gradient line (echoes the journey motif) */}
+        <div style={{ position: "relative", width: "2px", height: "56px", borderRadius: "2px", background: "linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.02) 100%)" }}>
           <motion.div
-            animate={{ y: [0, 10, 0], opacity: [1, 0.3, 1] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-            style={{ width: "4px", height: "8px", borderRadius: "var(--radius-pill)", background: "var(--gold)" }}
+            animate={{ y: [-2, 50, -2], opacity: [0, 1, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              position: "absolute", left: "50%", top: 0, marginLeft: "-3.5px",
+              width: "7px", height: "7px", borderRadius: "50%",
+              background: "var(--gold)", boxShadow: "0 0 10px rgb(var(--gold-rgb) / 0.8)",
+            }}
           />
+          {/* teal waypoint at the end of the thread */}
+          <span aria-hidden="true" style={{ position: "absolute", left: "50%", bottom: "-3px", marginLeft: "-2.5px", width: "5px", height: "5px", borderRadius: "50%", background: "var(--teal)", boxShadow: "0 0 8px rgb(var(--teal-rgb) / 0.7)" }} />
         </div>
       </motion.div>
     </section>

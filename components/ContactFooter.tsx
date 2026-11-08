@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
 import { useSpotlight } from "./useSpotlight";
 import Button from "./Button";
+import Motif from "./Motif";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -39,9 +40,10 @@ const navLinks = [
 ];
 
 const projectLinks = [
-  { label: "African Bank", href: "/projects/african-bank" },
-  { label: "IQ Business",  href: "/projects/corporate-banking" },
-  { label: "Nedbank",      href: "/projects/everyday-banking" },
+  { label: "Life Healthcare", href: "/projects/life-healthcare" },
+  { label: "African Bank",    href: "/projects/african-bank" },
+  { label: "iqbusiness",     href: "/projects/corporate-banking" },
+  { label: "Nedbank",         href: "/projects/everyday-banking" },
 ];
 
 const connectLinks = [
@@ -50,11 +52,7 @@ const connectLinks = [
 ];
 
 const labelStyle: React.CSSProperties = {
-  fontSize: "var(--text-label)",
-  fontWeight: 600,
-  textTransform: "uppercase",
-  letterSpacing: "0.1em",
-  color: "rgba(255,255,255,0.55)",
+  color: "rgba(255,255,255,0.5)",
   marginBottom: "16px",
   display: "block",
 };
@@ -62,7 +60,7 @@ const labelStyle: React.CSSProperties = {
 function FooterLinkCol({ label, links }: { label: string; links: { label: string; href: string; external?: boolean }[] }) {
   return (
     <div className="flex flex-col">
-      <span style={labelStyle}>{label}</span>
+      <span className="eyebrow" style={labelStyle}>{label}</span>
       {links.map(link =>
         link.external ? (
           <a
@@ -99,6 +97,8 @@ export default function ContactFooter() {
   return (
     <footer className="no-print" style={{ background: "#0D0B09", position: "relative", overflow: "hidden" }} {...handlers}>
       {overlay}
+      {/* motif bookend — mirrors the hero's orbit at the foot of the page */}
+      <Motif variant="orbit" tone="duo" size={620} parallax={70} style={{ bottom: "-26%", right: "-9%", opacity: 0.55 }} />
       <div className="page-container relative z-10" style={{ paddingTop: "100px", paddingBottom: "72px" }}>
 
         {/* ── Contact CTA ── */}
@@ -110,17 +110,17 @@ export default function ContactFooter() {
           className="flex flex-col items-start"
           style={{ paddingBottom: "64px", marginBottom: "56px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}
         >
-          <span className="inline-flex items-center" style={{ gap: "8px", fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "24px" }}>
+          <span className="eyebrow eyebrow-row" style={{ color: "var(--teal)", marginBottom: "24px" }}>
             <motion.span
               animate={{ opacity: [1, 0.35, 1], scale: [1, 0.85, 1] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#22C55E", boxShadow: "0 0 8px rgba(34,197,94,0.7)" }}
+              style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--teal)", boxShadow: "0 0 8px rgb(var(--teal-rgb) / 0.7)" }}
             />
             Available for new projects
           </span>
 
           <h2 style={{ fontSize: "clamp(36px, 6vw, 72px)", fontWeight: 800, letterSpacing: "-0.04em", lineHeight: 1.04, color: "#F5F1EC", maxWidth: "820px" }}>
-            Let&apos;s create something <span style={{ color: "var(--gold)" }}>effortless</span>.
+            Let&apos;s create something <span className="accent-serif" style={{ color: "var(--teal)" }}>effortless</span>.
           </h2>
 
           <p style={{ fontSize: "var(--text-body)", color: "rgba(255,255,255,0.5)", lineHeight: 1.7, marginTop: "24px", maxWidth: "520px" }}>

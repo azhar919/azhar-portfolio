@@ -4,11 +4,30 @@ import { useState, useRef, useEffect, Fragment } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
-import { Menu, X, ChevronDown, ArrowRight, Briefcase, Mail } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight, Mail } from "lucide-react";
 import Button from "./Button";
+import { EASE } from "@/lib/motion";
 
-const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 const NAV_H = 72;
+
+/* Client logo chips for the Projects dropdown (replaces a repeated generic icon). */
+const COMPANY_LOGO: Record<string, { src: string; bg: string; h: number }> = {
+  "Life Healthcare": { src: "/images/lhc-logo-navy.svg",              bg: "#F4ECDE", h: 13 },
+  "African Bank":    { src: "/images/African Bank logo black.png",    bg: "#F4ECDE", h: 12 },
+  "iqbusiness":     { src: "/images/iqbusiness logo (FC) black.png", bg: "#F4ECDE", h: 13 },
+  "Nedbank":         { src: "/images/Nedbank Logo.png",               bg: "#005944", h: 20 },
+};
+
+function LogoChip({ company }: { company: string }) {
+  const l = COMPANY_LOGO[company];
+  if (!l) return null;
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", background: l.bg, borderRadius: "5px", height: "22px", padding: "0 7px", flexShrink: 0 }}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={l.src} alt="" style={{ height: `${l.h}px`, maxWidth: "62px", objectFit: "contain", display: "block" }} />
+    </span>
+  );
+}
 
 /* Logo — clean sans wordmark that matches the nav typography (the serif version
    read as out of place). "AM" in the heading face with a terracotta accent dot. */
@@ -35,6 +54,13 @@ function LogoMark() {
 
 const workItems = [
   {
+    company: "Life Healthcare",
+    links: [
+      { label: "Website Redesign",    desc: "A patient-first hospital-group website",               href: "/projects/life-healthcare/website" },
+      { label: "Design System",       desc: "The tokenised component library beneath it",           href: "/projects/life-healthcare/design-system" },
+    ],
+  },
+  {
     company: "African Bank",
     links: [
       { label: "Improved Onboarding", desc: "Reducing friction in customer sign-up",                 href: "/projects/african-bank/onboarding" },
@@ -42,7 +68,7 @@ const workItems = [
     ],
   },
   {
-    company: "IQ Business",
+    company: "iqbusiness",
     links: [
       { label: "SharePoint Redesign", desc: "Restructuring internal information architecture",        href: "/projects/corporate-banking" },
     ],
@@ -71,6 +97,7 @@ export default function FloatingNav() {
   const [mobileWorkOpen, setMobileWorkOpen] = useState(false);
   const [hoveredKey, setHoveredKey]         = useState<string | null>(null);
   const [scrolled, setScrolled]             = useState(false);
+  const [spyKey, setSpyKey]                 = useState<string | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pathname = usePathname();
 
@@ -86,6 +113,39 @@ export default function FloatingNav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Scroll-spy (homepage only): light the nav item for the section in view so
+  // the sliding pill glides between Home → Projects (#work) → About (#about).
+  useEffect(() => {
+    if (pathname !== "/") { setSpyKey(null); return; }
+    const sections = [
+      { id: "about", key: "about" },
+      { id: "work",  key: "projects" },
+    ];
+    const onScroll = () => {
+      const mid = window.innerHeight * 0.35;
+      const passed = sections
+        .map((s) => ({ key: s.key, el: document.getElementById(s.id) }))
+        .filter((s) => s.el)
+        .map((s) => ({ key: s.key, top: s.el!.getBoundingClientRect().top }))
+        .filter((s) => s.top <= mid);
+      setSpyKey(passed.length ? passed.sort((a, b) => b.top - a.top)[0].key : "home");
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [pathname]);
+
+  // Escape closes the dropdown / mobile menu.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setDropdownOpen(false);
+      setMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   const { scrollYProgress } = useScroll();
   const progressX = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
 
@@ -93,7 +153,7 @@ export default function FloatingNav() {
   const closeDropdown = () => { timeoutRef.current = setTimeout(() => setDropdownOpen(false), 200); };
 
   const activeKey =
-    pathname === "/" ? "home"
+    pathname === "/" ? (spyKey ?? "home")
     : pathname === "/cv" ? "cv"
     : pathname.startsWith("/projects") ? "projects"
     : null;
@@ -122,11 +182,11 @@ export default function FloatingNav() {
         >
           {/* Reading progress bar — hugs the bottom of the pill */}
           <div aria-hidden="true" style={{ position: "absolute", left: "30px", right: "30px", bottom: "7px", height: "2px", borderRadius: "var(--radius-pill)", background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
-            <motion.div style={{ height: "100%", borderRadius: "var(--radius-pill)", background: "var(--gold)", transformOrigin: "0% 50%", scaleX: progressX, boxShadow: "0 0 8px rgb(var(--gold-rgb) / 0.6)" }} />
+            <motion.div style={{ height: "100%", borderRadius: "var(--radius-pill)", background: "linear-gradient(90deg, var(--gold), var(--teal))", transformOrigin: "0% 50%", scaleX: progressX, boxShadow: "0 0 8px rgb(var(--gold-rgb) / 0.5)" }} />
           </div>
 
           {/* Logo */}
-          <Link href="/" className="text-ghost transition-opacity duration-200 shrink-0 md:mr-9" aria-label="AM. — Azhar Mohamed, home">
+          <Link href="/" className="text-ghost transition-opacity duration-200 shrink-0 md:mr-10" aria-label="AM. — Azhar Mohamed, home">
             <LogoMark />
           </Link>
 
@@ -164,9 +224,17 @@ export default function FloatingNav() {
                     />
                   )}
                   {item.dropdown ? (
-                    <button className="flex items-center px-5 py-2.5 rounded-full">{inner}</button>
+                    <button
+                      className="flex items-center px-6 py-2.5 rounded-full"
+                      aria-haspopup="true"
+                      aria-expanded={dropdownOpen}
+                      onClick={() => setDropdownOpen((v) => !v)}
+                      onFocus={openDropdown}
+                    >
+                      {inner}
+                    </button>
                   ) : (
-                    <Link href={item.href!} className="flex items-center px-5 py-2.5 rounded-full">{inner}</Link>
+                    <Link href={item.href!} className="flex items-center px-6 py-2.5 rounded-full">{inner}</Link>
                   )}
                 </div>
               );
@@ -174,12 +242,12 @@ export default function FloatingNav() {
           </nav>
 
           {/* Contact + mobile toggle */}
-          <span className="hidden md:inline-flex md:ml-7">
+          <span className="hidden md:inline-flex md:ml-8">
             <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" magnetic={false} icon={<Mail size={14} />} iconPosition="left">
               Contact
             </Button>
           </span>
-          <button className="flex md:hidden items-center justify-center w-10 h-10 rounded-full" onClick={() => setMenuOpen(v => !v)} aria-label="Toggle menu">
+          <button className="flex md:hidden items-center justify-center w-10 h-10 rounded-full" onClick={() => setMenuOpen(v => !v)} aria-label="Open menu" aria-expanded={menuOpen} aria-controls="mobile-menu">
             <Menu size={20} color="white" />
           </button>
         </motion.header>
@@ -198,7 +266,7 @@ export default function FloatingNav() {
               onMouseLeave={closeDropdown}
               className="pointer-events-auto"
               style={{
-                width: "min(900px, calc(100vw - 32px))",
+                width: "min(1040px, calc(100vw - 32px))",
                 background: "rgba(14,14,14,0.92)",
                 backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
                 border: "1px solid rgba(255,255,255,0.1)",
@@ -207,14 +275,14 @@ export default function FloatingNav() {
                 overflow: "hidden",
               }}
             >
-              <div style={{ display: "flex", gap: "14px", padding: "24px" }}>
+              <div style={{ display: "flex", gap: "20px", padding: "24px 28px" }}>
                 {workItems.map((col, ci) => (
                   <Fragment key={col.company}>
                     {ci > 0 && <div className="divider-gold-v" aria-hidden="true" />}
                   <div className="flex flex-col" style={{ flex: 1 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", padding: "0 12px", marginBottom: "10px" }}>
-                      <Briefcase size={13} color="var(--gold)" />
-                      <p style={{ fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "9px", padding: "0 12px", marginBottom: "10px" }}>
+                      <LogoChip company={col.company} />
+                      <p className="eyebrow" style={{ color: "rgba(255,255,255,0.6)" }}>
                         {col.company}
                       </p>
                     </div>
@@ -224,20 +292,18 @@ export default function FloatingNav() {
                           key={link.href + link.label}
                           href={link.href}
                           onClick={() => setDropdownOpen(false)}
-                          className="group flex items-center justify-between rounded-xl transition-colors duration-150"
-                          style={{ padding: "10px 12px" }}
+                          className="group block rounded-xl transition-colors duration-150"
+                          style={{ padding: "11px 12px" }}
                           onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
                           onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                         >
-                          <div className="flex flex-col gap-0.5">
-                            <span className="transition-colors duration-150 group-hover:text-[var(--gold)]" style={{ fontSize: "var(--text-ui)", fontWeight: 500, color: "#FFFFFF" }}>
+                          <span className="flex items-center" style={{ gap: "7px", fontSize: "var(--text-ui)", fontWeight: 500 }}>
+                            <span className="transition-colors duration-150 group-hover:text-[var(--gold)]" style={{ color: "#FFFFFF", whiteSpace: "nowrap" }}>
                               {link.label}
                             </span>
-                            <span style={{ fontSize: "12.5px", color: "rgba(255,255,255,0.55)", lineHeight: 1.4 }}>{link.desc}</span>
-                          </div>
-                          <span className="shrink-0 ml-3 transition-transform duration-200 group-hover:translate-x-1">
-                            <ArrowRight size={14} className="transition-colors duration-200 group-hover:text-[var(--gold)]" style={{ color: "rgba(255,255,255,0.55)" }} />
+                            <ArrowRight size={13} className="shrink-0 text-white/35 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[var(--gold)]" />
                           </span>
+                          <span style={{ display: "block", fontSize: "12.5px", color: "rgba(255,255,255,0.52)", lineHeight: 1.5, marginTop: "4px" }}>{link.desc}</span>
                         </Link>
                       ))}
                     </div>
@@ -254,6 +320,7 @@ export default function FloatingNav() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -315,12 +382,12 @@ export default function FloatingNav() {
                             {colIdx > 0 && (
                               <div style={{ height: "1px", background: "rgba(255,255,255,0.08)", margin: "4px 0 0" }} />
                             )}
-                            <p style={{
-                              fontSize: "var(--text-label)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em",
-                              color: "rgba(255,255,255,0.55)", marginTop: "24px", marginBottom: "12px",
-                            }}>
-                              {col.company}
-                            </p>
+                            <div style={{ display: "flex", alignItems: "center", gap: "9px", marginTop: "24px", marginBottom: "12px" }}>
+                              <LogoChip company={col.company} />
+                              <p className="eyebrow" style={{ color: "rgba(255,255,255,0.6)" }}>
+                                {col.company}
+                              </p>
+                            </div>
                             <div className="flex flex-col" style={{ paddingLeft: "16px" }}>
                               {col.links.map(link => (
                                 <Link

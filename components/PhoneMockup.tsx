@@ -115,7 +115,7 @@ export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true }:
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img ref={imgRef} src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
+            <img loading="lazy" decoding="async" ref={imgRef} src={src} alt="" style={{ display: "block", width: "100%", height: "auto" }} />
           </div>
 
           {/* Home indicator */}

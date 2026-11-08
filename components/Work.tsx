@@ -18,7 +18,7 @@ const experiences = [
     href: "/projects/african-bank",
   },
   {
-    company: "IQ Business",
+    company: "iqbusiness",
     logo: "/images/logo-iqbusiness.svg",
     logoW: 260, logoH: 148, logoMaxH: 36,
     role: "Senior Principal Consultant",

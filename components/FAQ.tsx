@@ -6,6 +6,7 @@ import { Plus, Mail } from "lucide-react";
 import { useReveal } from "./useReveal";
 import { useSpotlight } from "./useSpotlight";
 import Button from "./Button";
+import Motif from "./Motif";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -71,7 +72,7 @@ function FAQLeft() {
   const { ref, style } = useReveal({ y: 70, scale: 0.94, blur: 10 });
   return (
     <motion.div ref={ref} style={style} className="md:sticky md:top-32 flex flex-col gap-5 self-start">
-      <p style={{ fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)" }}>
+      <p className="eyebrow" style={{ color: "var(--teal)" }}>
         FAQ
       </p>
       <h2 style={{ fontSize: "var(--text-h2)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F5F1EC" }}>
@@ -110,11 +111,7 @@ export default function FAQ() {
   return (
     <section id="faq" className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "120px", paddingBottom: "120px" }}>
 
-      <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
-        top: "20%", right: "-10%",
-        width: "500px", height: "500px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.13) 0%, transparent 70%)",
-      }} />
+      <Motif variant="arcs" tone="teal" size={560} parallax={55} style={{ top: "10%", right: "-10%" }} />
 
       <div className="page-container">
         <div className="grid grid-cols-1 md:grid-cols-[5fr_7fr] gap-12 lg:gap-20 items-start">

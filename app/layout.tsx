@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Inter, Cormorant, Montserrat } from "next/font/google";
+import { Inter, Cormorant, Montserrat, Arimo } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import MotionProvider from "@/components/MotionProvider";
@@ -7,16 +7,14 @@ import CustomCursor from "@/components/CustomCursor";
 
 const SITE_URL = "https://azhar-portfolio-gold.vercel.app";
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-});
-
+// One typeface for the whole portfolio UI — Inter, across the full weight range
+// so hierarchy comes from weight + size + tracking, not a second family.
+// (Cormorant stays as the italic serif accent; Montserrat/Arimo are scoped to
+// the client design-system showcases only.)
 const inter = Inter({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 // Elegant high-contrast serif — used for the hero monogram
@@ -32,6 +30,14 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+});
+
+// Helvetica-metric fallback — used in the Life Healthcare DS components so they
+// render like Helvetica Neue on any OS (not Arial).
+const arimo = Arimo({
+  variable: "--font-arimo",
+  subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 
@@ -65,7 +71,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${inter.variable} ${cormorant.variable} ${montserrat.variable}`}>
+    <html lang="en" className={`${inter.variable} ${cormorant.variable} ${montserrat.variable} ${arimo.variable}`}>
       <body className="min-h-screen antialiased">
         <a href="#main-content" className="skip-link">Skip to content</a>
         <MotionProvider>{children}</MotionProvider>

@@ -2,7 +2,8 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from "framer-motion";
-import { ChevronDown, Mail, Building2, PenTool, Sparkles, Layers, GraduationCap, Award, BookOpen, TrendingUp, Users, AtSign, Download, type LucideIcon } from "lucide-react";
+import { ChevronDown, Mail, Building2, PenTool, Sparkles, Layers, GraduationCap, Award, BookOpen, TrendingUp, Users, AtSign, Download, Briefcase, type LucideIcon } from "lucide-react";
+import Motif from "@/components/Motif";
 
 function LinkedinIcon({ size = 14 }: { size?: number }) {
   return (
@@ -37,21 +38,115 @@ function AnimatedBlock({ children, delay = 0, className }: { children: React.Rea
   );
 }
 
+/* ── Sidebar inline list — dot-separated; each item stays unbreakable, the
+   line wraps only at the separators ── */
+function InlineItems({ items }: { items: string[] }) {
+  return (
+    <p style={{ fontSize: 13, color: "rgba(255,255,255,0.68)", lineHeight: 1.75, margin: 0 }}>
+      {items.map((it, i) => (
+        <span key={it}>
+          {i > 0 && <span style={{ color: "rgba(255,255,255,0.22)" }}> · </span>}
+          <span style={{ whiteSpace: "nowrap" }}>{it}</span>
+        </span>
+      ))}
+    </p>
+  );
+}
+
+/* ── Sidebar grouped list — a small teal sub-label over each inline group,
+   so a long list reads as structure instead of a chip cloud ── */
+function GroupedList({ groups }: { groups: { label: string; items: string[] }[] }) {
+  return (
+    <div className="flex flex-col" style={{ gap: 15 }}>
+      {groups.map(g => (
+        <div key={g.label}>
+          <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "rgb(var(--teal-rgb) / 0.85)", margin: "0 0 6px" }}>
+            {g.label}
+          </p>
+          <InlineItems items={g.items} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── iqbusiness brand mark — just the gradient "iq" glyph lifted from the full
+   logo lockup, so it reads cleanly as a square brand tile ── */
+function IqMark({ size = 24 }: { size?: number }) {
+  return (
+    <svg width={(size * 100) / 148} height={size} viewBox="0 0 100 148" fill="none" aria-hidden="true">
+      <path d="M96.9659 61.7089C94.5977 43.7742 79.2665 29.889 60.7569 29.889C40.6131 29.889 24.2224 46.3303 24.2224 66.5364C24.2224 86.7426 40.6131 103.184 60.7569 103.184C68.2148 103.184 75.1533 100.926 80.9354 97.0644V147.993L97.4091 125.349V66.8004C97.4091 64.8277 97.1114 63.5774 96.9659 61.702V61.7089ZM60.75 86.6662C49.6844 86.6662 40.6893 77.6363 40.6893 66.5434C40.6893 55.4505 49.6913 46.4206 60.75 46.4206C71.8087 46.4206 80.8107 55.4505 80.8107 66.5434C80.8107 77.6363 71.8087 86.6662 60.75 86.6662ZM0 11.0443C0 4.9456 4.93035 0 11.0102 0C17.09 0 22.0204 4.9456 22.0204 11.0443C22.0204 17.1429 17.09 22.0885 11.0102 22.0885C4.93035 22.0885 0 17.1429 0 11.0443ZM43.2652 102.962H35.3642C17.3947 102.962 2.77679 88.2985 2.77679 70.2734V30.6808H19.3821V66.5434C19.3821 70.3359 19.8045 74.6356 20.7324 78.3031C24.3402 89.8891 32.719 98.2522 43.2722 102.962H43.2652Z" fill="url(#iqmark)" />
+      <defs>
+        <linearGradient id="iqmark" x1="48.7011" y1="148" x2="48.7011" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0.04" stopColor="#1CB0DF" />
+          <stop offset="0.35" stopColor="#B330E0" />
+          <stop offset="0.71" stopColor="#DE229A" />
+          <stop offset="1" stopColor="#E88751" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+/* ── Employment timeline — LinkedIn-style: one employer, a promotion ladder on
+   a connected rail, current role marked in gold ── */
+function EmploymentTimeline() {
+  return (
+    <div>
+      <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 16 }}>
+        <span style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", display: "grid", placeItems: "center", flexShrink: 0 }}>
+          <IqMark size={23} />
+        </span>
+        <div style={{ minWidth: 0 }}>
+          <p style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF", margin: 0, letterSpacing: "-0.01em" }}>{employment.company}</p>
+          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", margin: "2px 0 0" }}>{employment.meta}</p>
+        </div>
+      </div>
+      <ol style={{ listStyle: "none", margin: 0, padding: 0 }}>
+        {employment.roles.map((r, i) => {
+          const last = i === employment.roles.length - 1;
+          const current = i === 0;
+          return (
+            <li key={r.title} style={{ position: "relative", paddingLeft: 22, paddingBottom: last ? 0 : 16 }}>
+              {!last && (
+                <span aria-hidden="true" style={{ position: "absolute", left: 4, top: 13, bottom: -1, width: 1.5, background: "rgba(255,255,255,0.12)" }} />
+              )}
+              <span
+                aria-hidden="true"
+                style={{
+                  position: "absolute", left: 0, top: 4, width: 9, height: 9, borderRadius: "50%",
+                  background: current ? "var(--gold)" : "#2a2622",
+                  border: current ? "none" : "1.5px solid rgba(255,255,255,0.28)",
+                  boxShadow: current ? "0 0 0 3px rgb(var(--gold-rgb) / 0.18)" : "none",
+                }}
+              />
+              <p style={{ fontSize: 13, fontWeight: 600, color: "#F5F1EC", margin: 0, lineHeight: 1.35 }}>{r.title}</p>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", margin: "2px 0 0" }}>{r.period}{r.duration ? ` · ${r.duration}` : ""}</p>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
+  );
+}
+
 const bio = "With 6 years of experience, Azhar utilises his Design Thinking expertise supplemented with the power of AI to design and develop client-centric solutions in Retail and Corporate Investment Banking. He has taken on roles such as UX, UI, and Design Lead across various projects, working on a wide range of products, including Personal Banking, Value-Added Services, Staff Servicing, Product Maintenance, and Business Banking platforms.";
 
-const industries = ["Consulting", "Banking"];
+const industries = ["Healthcare", "Banking", "Consulting"];
 
-const toolkit = ["Figma", "Sketch", "Adobe XD", "Invision", "Miro", "Zoom", "Maze", "Jira", "Microsoft Office"];
+const toolkitGroups = [
+  { label: "Design", items: ["Figma", "Sketch", "Adobe XD", "Invision"] },
+  { label: "Research", items: ["Maze", "Miro"] },
+  { label: "Delivery", items: ["Jira", "Zoom", "Microsoft Office"] },
+];
 
 const aiTools = ["Claude", "Claude Code", "ChatGPT", "Gemini", "GitHub Copilot", "Microsoft Copilot"];
 
-const skills = [
-  "UX Design", "UI Design", "User Research", "Customer Journey Mapping",
-  "Information Architecture", "Wireframing", "Prototyping", "Design systems",
-  "Agile", "Usability Testing", "Problem Solving", "Concept Validation",
-  "Leadership", "Communication", "Time management", "Critical thinking",
-  "Quality assurance", "Working remotely", "Conflict management",
-  "Presentation skills", "Working under pressure",
+const skillGroups = [
+  { label: "Craft", items: ["UX Design", "UI Design", "Information Architecture", "Wireframing", "Prototyping"] },
+  { label: "Research", items: ["User Research", "Customer Journey Mapping", "Usability Testing", "Concept Validation"] },
+  { label: "Systems & delivery", items: ["Design systems", "Agile", "Quality assurance", "Problem Solving"] },
+  { label: "Collaboration", items: ["Leadership", "Communication", "Presentation skills", "Conflict management", "Critical thinking", "Time management", "Working under pressure", "Working remotely"] },
 ];
 
 const roles = [
@@ -61,11 +156,26 @@ const roles = [
   "CHOC Leadership/Chairperson",
 ];
 
+/* ── Employment & promotions (from LinkedIn) — a single employer with a title
+   ladder. The clients (Nedbank, African Bank, Life Healthcare) live in the
+   left-column project timeline; this is the actual employment record. ── */
+const employment = {
+  company: "iqbusiness South Africa",
+  meta: "Full-time · 6 yrs 10 mos",
+  roles: [
+    { title: "Manager", period: "Oct 2026 – Present", duration: "" },
+    { title: "Senior Principal Consultant", period: "Mar 2024 – Oct 2026", duration: "2 yrs 8 mos" },
+    { title: "Principal Consultant", period: "Dec 2021 – Mar 2024", duration: "2 yrs 4 mos" },
+    { title: "Senior Associate Consultant", period: "Feb 2021 – Dec 2021", duration: "11 mos" },
+    { title: "Associate Consultant", period: "Jan 2020 – Feb 2021", duration: "1 yr 2 mos" },
+  ],
+};
+
 const education = [
   {
     institution: "University of Johannesburg",
     qualification: "B.Com Information and Business Management",
-    year: "2020",
+    year: "2016 – 2020",
   },
 ];
 
@@ -104,6 +214,35 @@ type TimelineGroup = {
 };
 
 const experienceTimeline: TimelineGroup[] = [
+  {
+    company: "Life Healthcare",
+    dateRange: "2026 — Present",
+    role: "Design Lead",
+    logo: "/images/lhc-logo-navy.svg",
+    logoBg: "#F4ECDE",
+    projects: [
+      {
+        title: "Website Redesign",
+        overview: "At Bluegrass Digital, led the end-to-end redesign of Life Healthcare's website — South Africa's largest private-hospital group. Restructured a site built around the company's org chart into a patient-first experience organised around four core jobs: find a hospital, find a doctor, plan a hospital visit, and get in touch.",
+        bullets: [
+          "Ran the full UX audit — heuristic review, a machine-verified WCAG 2.1 AA scan, and an information-architecture review across the core patient journeys",
+          "Reframed the IA around patient mental models, replacing a 947-link find-a-doctor page with a single search and filterable results",
+          "Designed find-a-hospital around a map with \"near me\", built mobile-first for the 76% of traffic on mobile",
+          "Directed the UI across every core flow — homepage, search, and hospital and doctor profiles",
+        ],
+      },
+      {
+        title: "Design System",
+        overview: "Built the tokenised, accessible component library beneath the redesign — turning a UI with four navies, six button styles and ~118 contrast failures into a single themed system that lets the whole team build on-grid.",
+        bullets: [
+          "Defined semantic colour tokens, a single Helvetica Neue type ramp, and one spacing and radius scale",
+          "Built a card family (doctor, hospital, metric, information) and a library of 129 ready-made blocks",
+          "Established the Rows & Blocks layout contract so any page assembles from the system without breaking the grid",
+          "Closed the ~118 contrast failures at the source by making accessibility a property of the tokens",
+        ],
+      },
+    ],
+  },
   {
     company: "African Bank",
     dateRange: "2024 — Feb 2026",
@@ -174,15 +313,15 @@ const experienceTimeline: TimelineGroup[] = [
     ],
   },
   {
-    company: "IQ Business",
+    company: "iqbusiness",
     dateRange: "2023 — 2024",
     role: "Senior Principal Consultant",
     logo: "/images/iqbusiness logo (FC) black.png",
     logoBg: "#F5F1EC",
     projects: [
       {
-        title: "IQ Business SharePoint",
-        overview: "IQ Business required a redesign of their existing SharePoint site. As the business grew, the volume of information increased — resulting in a cluttered, maze-like structure that made it extremely difficult to locate relevant information and documentation.",
+        title: "iqbusiness SharePoint",
+        overview: "iqbusiness required a redesign of their existing SharePoint site. As the business grew, the volume of information increased — resulting in a cluttered, maze-like structure that made it extremely difficult to locate relevant information and documentation.",
         bullets: [
           "Led squad organisation and managed project timelines throughout the engagement",
           "Conducted heuristic evaluations and mapped the full existing information architecture",
@@ -332,13 +471,13 @@ function AccordionItem({
               transition={{ duration: 0.18, ease: "easeOut" }}
               style={{ padding: "4px 28px 26px" }}
             >
-              <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)", fontWeight: 600, marginTop: 20, marginBottom: 10 }}>
+              <p className="eyebrow" style={{ color: "var(--teal)", marginTop: 20, marginBottom: 10 }}>
                 Project Overview
               </p>
               <p style={{ fontSize: 13.5, color: "rgba(255,255,255,0.58)", lineHeight: 1.8, margin: 0 }}>
                 {project.overview}
               </p>
-              <p style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.55)", fontWeight: 600, marginTop: 22, marginBottom: 12 }}>
+              <p className="eyebrow" style={{ color: "var(--teal)", marginTop: 22, marginBottom: 12 }}>
                 Key Contributions
               </p>
               <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
@@ -407,7 +546,7 @@ function ExperienceTimeline({ forceOpen = false }: { forceOpen?: boolean }) {
       {/* rail track */}
       <div aria-hidden="true" className="cv-rail" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "rgba(255,255,255,0.08)" }} />
       {/* rail fill — grows with scroll */}
-      <motion.div aria-hidden="true" className="cv-rail" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "linear-gradient(to bottom, var(--gold-light), var(--gold), var(--gold-dark))", transformOrigin: "top", scaleY: fill, boxShadow: "0 0 8px rgb(var(--gold-rgb) / 0.5)" }} />
+      <motion.div aria-hidden="true" className="cv-rail" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "linear-gradient(to bottom, var(--teal-light), var(--teal), var(--teal-dark))", transformOrigin: "top", scaleY: fill, boxShadow: "0 0 8px rgb(var(--teal-rgb) / 0.55)" }} />
 
       {experienceTimeline.map((group, gi) => (
         <AnimatedBlock key={`${group.company}-${gi}`} delay={gi * 0.05}>
@@ -447,19 +586,15 @@ function SidebarSection({ title, icon: Icon, children }: { title: string; icon: 
       }}
     >
       <h2
-        className="flex items-center gap-2"
+        className="eyebrow eyebrow-row"
         style={{
-          fontSize: 11,
-          fontWeight: 700,
-          textTransform: "uppercase",
-          letterSpacing: "0.1em",
-          color: "rgba(255,255,255,0.55)",
+          color: "rgba(255,255,255,0.6)",
           marginBottom: 16,
           paddingBottom: 12,
           borderBottom: "1px solid rgba(255,255,255,0.08)",
         }}
       >
-        <Icon size={13} color="var(--gold)" />
+        <Icon size={14} color="var(--teal)" strokeWidth={2} />
         {title}
       </h2>
       {children}
@@ -487,7 +622,7 @@ function HeroStat({ value, suffix, label }: { value: number; suffix: string; lab
     return () => cancelAnimationFrame(raf);
   }, [inView, value]);
   return (
-    <div ref={ref} className="flex flex-col">
+    <div ref={ref} className="flex flex-col items-center text-center">
       <span style={{ fontSize: 30, fontWeight: 800, color: "#F5F1EC", lineHeight: 1, letterSpacing: "-0.02em", fontVariantNumeric: "tabular-nums" }}>
         {n}{suffix}
       </span>
@@ -537,7 +672,7 @@ function CVPhoto() {
             }}
           />
           <div className="relative overflow-hidden" style={{ width: 200, height: 200, borderRadius: 20, border: "1px solid rgba(255,255,255,0.1)" }}>
-            <Image src="/images/profile.jpg" alt="Azhar Mohamed" fill className="object-cover" priority />
+            <Image src="/images/profile.webp" alt="Azhar Mohamed" fill className="object-cover" priority />
           </div>
         </div>
       </motion.div>
@@ -598,12 +733,8 @@ export default function CVPage() {
 
           {heroSpot.overlay}
 
-          {/* Ambient orb */}
-          <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
-            top: "-20%", right: "-5%",
-            width: "600px", height: "600px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.14) 0%, transparent 65%)",
-          }} />
+          {/* Signature motif */}
+          <Motif variant="orbit" tone="duo" size={640} parallax={70} style={{ top: "-18%", right: "-7%" }} />
 
           <div className="page-container">
             <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start relative z-10">
@@ -617,7 +748,8 @@ export default function CVPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, ease: EASE }}
-                  style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)" }}
+                  className="eyebrow"
+                  style={{ color: "var(--teal)" }}
                 >
                   Portfolio · CV
                 </motion.p>
@@ -704,6 +836,12 @@ export default function CVPage() {
               {/* ── Right — Sidebar ── */}
               <div className="w-full md:w-[340px] shrink-0 flex flex-col gap-5">
 
+                <AnimatedBlock delay={0.06}>
+                  <SidebarSection title="Experience" icon={Briefcase}>
+                    <EmploymentTimeline />
+                  </SidebarSection>
+                </AnimatedBlock>
+
                 <AnimatedBlock delay={0.08}>
                   <SidebarSection title="Industries" icon={Building2}>
                     <ul className="flex flex-col gap-2">
@@ -716,70 +854,19 @@ export default function CVPage() {
 
                 <AnimatedBlock delay={0.1}>
                   <SidebarSection title="Toolkit" icon={PenTool}>
-                    <div className="flex flex-wrap gap-2">
-                      {toolkit.map(tool => (
-                        <span
-                          key={tool}
-                          style={{
-                            fontSize: 12,
-                            fontWeight: 500,
-                            color: "rgba(255,255,255,0.55)",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            background: "rgba(255,255,255,0.04)",
-                            borderRadius: 9999,
-                            padding: "4px 12px",
-                          }}
-                        >
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
+                    <GroupedList groups={toolkitGroups} />
                   </SidebarSection>
                 </AnimatedBlock>
 
                 <AnimatedBlock delay={0.11}>
                   <SidebarSection title="AI Tools" icon={Sparkles}>
-                    <div className="flex flex-wrap gap-2">
-                      {aiTools.map(tool => (
-                        <span
-                          key={tool}
-                          style={{
-                            fontSize: 12,
-                            fontWeight: 500,
-                            color: "rgba(255,255,255,0.55)",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            background: "rgba(255,255,255,0.04)",
-                            borderRadius: 9999,
-                            padding: "4px 12px",
-                          }}
-                        >
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
+                    <InlineItems items={aiTools} />
                   </SidebarSection>
                 </AnimatedBlock>
 
                 <AnimatedBlock delay={0.12}>
                   <SidebarSection title="Skills" icon={Layers}>
-                    <div className="flex flex-wrap gap-2">
-                      {skills.map(skill => (
-                        <span
-                          key={skill}
-                          style={{
-                            fontSize: 12,
-                            fontWeight: 500,
-                            color: "rgba(255,255,255,0.55)",
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            background: "rgba(255,255,255,0.04)",
-                            borderRadius: 9999,
-                            padding: "4px 12px",
-                          }}
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
+                    <GroupedList groups={skillGroups} />
                   </SidebarSection>
                 </AnimatedBlock>
 

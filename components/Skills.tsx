@@ -2,26 +2,77 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Compass, Layout, Settings } from "lucide-react";
 import { useReveal } from "./useReveal";
+import Motif from "./Motif";
+import Tilt from "./Tilt";
+
+const GOLD = "rgb(var(--gold-rgb))";
+const TEAL = "rgb(var(--teal-rgb))";
+
+/* ── Bespoke service glyphs ──────────────────────────────────────────
+   Hand-drawn in the same thin-line, dual-accent language as the motifs —
+   NOT a generic icon set. One custom mark per discipline. */
+function Glyph({ kind, hovered }: { kind: "ux" | "ui" | "ops"; hovered: boolean }) {
+  const common = { width: 46, height: 46, viewBox: "0 0 48 48", fill: "none" as const };
+  if (kind === "ux") {
+    // User Experience — a mapped journey: a flowing path through nodes
+    return (
+      <svg {...common}>
+        <motion.path
+          d="M6 33 C 15 33, 14 15, 24 15 C 34 15, 33 31, 42 20"
+          stroke={GOLD} strokeWidth="2" strokeLinecap="round"
+          initial={false} animate={{ pathLength: hovered ? 1 : 0.82 }} transition={{ duration: 0.5, ease: "easeOut" }}
+          style={{ pathLength: 1 }}
+        />
+        <circle cx="6" cy="33" r="3.2" fill={TEAL} />
+        <circle cx="24" cy="15" r="3.2" fill={GOLD} />
+        <circle cx="42" cy="20" r="3.2" fill={TEAL} />
+      </svg>
+    );
+  }
+  if (kind === "ui") {
+    // User Interface — nested frame with a content block + text lines
+    return (
+      <svg {...common}>
+        <rect x="7" y="9" width="34" height="30" rx="4.5" stroke={GOLD} strokeWidth="2" />
+        <line x1="7" y1="17.5" x2="41" y2="17.5" stroke={GOLD} strokeWidth="2" />
+        <circle cx="12" cy="13.2" r="1.4" fill={TEAL} />
+        <rect x="12" y="23" width="12" height="11" rx="2.5" stroke={TEAL} strokeWidth="1.6" fill={TEAL} fillOpacity="0.18" />
+        <line x1="28" y1="24.5" x2="36" y2="24.5" stroke={GOLD} strokeWidth="2" strokeLinecap="round" />
+        <line x1="28" y1="30" x2="34" y2="30" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    );
+  }
+  // Design Operations — a connected system of nodes
+  return (
+    <svg {...common}>
+      <path d="M11 13 L24 25 L37 11 M24 25 L13 38 M24 25 L38 36" stroke={GOLD} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="11" cy="13" r="3" fill={TEAL} />
+      <circle cx="37" cy="11" r="2.4" fill={GOLD} />
+      <circle cx="24" cy="25" r="3.4" fill={GOLD} />
+      <circle cx="13" cy="38" r="2.4" fill={TEAL} />
+      <circle cx="38" cy="36" r="2.4" fill={TEAL} />
+    </svg>
+  );
+}
 
 const services = [
   {
-    icon: Compass,
+    kind: "ux" as const,
     title: "User Experience",
     description:
       "Research, mapping journeys, and designing workflows that are intuitive, usable, and human-centered.",
     keywords: ["Research", "Prototyping", "Testing"],
   },
   {
-    icon: Layout,
+    kind: "ui" as const,
     title: "User Interface",
     description:
       "Translating ideas into visually compelling, consistent, and accessible interfaces that scale across platforms.",
     keywords: ["Design Systems", "Components", "Accessibility"],
   },
   {
-    icon: Settings,
+    kind: "ops" as const,
     title: "Design Operations",
     description:
       "Setting up systems, processes, and frameworks so design stays consistent, collaborative, and impactful.",
@@ -33,7 +84,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
   const [hovered, setHovered] = useState(false);
   const [pos, setPos] = useState({ x: 120, y: 80 });
   const { ref, style } = useReveal({ y: 120, scale: 0.76, blur: 18 });
-  const { icon: Icon, title, description, keywords } = service;
+  const { kind, title, description, keywords } = service;
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
@@ -42,6 +93,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
 
   return (
     <motion.div ref={ref} style={{ ...style, height: "100%" }}>
+      <Tilt fill max={7} sheen={false}>
       <div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -50,14 +102,13 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
           position: "relative",
           overflow: "hidden",
           height: "100%",
-          background: hovered ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.04)",
+          background: hovered ? "rgba(255,255,255,0.055)" : "rgba(255,255,255,0.035)",
           border: `1px solid ${hovered ? "rgb(var(--gold-rgb) / 0.35)" : "rgba(255,255,255,0.08)"}`,
           borderRadius: "var(--radius-2xl)",
-          padding: "36px",
+          padding: "34px",
           cursor: "default",
-          transform: hovered ? "translateY(-6px)" : "translateY(0)",
           boxShadow: hovered ? "0 24px 60px rgba(0,0,0,0.4)" : "none",
-          transition: "background 0.3s, border-color 0.3s, transform 0.3s, box-shadow 0.3s",
+          transition: "background 0.3s, border-color 0.3s, box-shadow 0.3s",
         }}
       >
         {/* Cursor-following spotlight */}
@@ -65,48 +116,40 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
           aria-hidden="true"
           style={{
             position: "absolute", inset: 0, pointerEvents: "none",
-            background: `radial-gradient(340px circle at ${pos.x}px ${pos.y}px, rgb(var(--gold-rgb) / 0.13), transparent 65%)`,
+            background: `radial-gradient(340px circle at ${pos.x}px ${pos.y}px, rgb(var(--gold-rgb) / 0.12), transparent 65%)`,
             opacity: hovered ? 1 : 0,
             transition: "opacity 0.3s ease",
           }}
         />
 
-        {/* Index number */}
-        <span aria-hidden="true" style={{
-          position: "absolute", top: "20px", right: "26px",
-          fontSize: "clamp(40px, 5vw, 60px)", fontWeight: 800, lineHeight: 1,
-          color: "rgba(255,255,255,0.55)", fontVariantNumeric: "tabular-nums",
-          userSelect: "none", pointerEvents: "none",
-        }}>
-          {String(index + 1).padStart(2, "0")}
-        </span>
-
-        {/* Content */}
         <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", height: "100%" }}>
-          <motion.div
-            animate={{ rotate: hovered ? -6 : 0, scale: hovered ? 1.08 : 1 }}
-            transition={{ type: "spring", stiffness: 300, damping: 18 }}
-            style={{
-              width: "54px", height: "54px", borderRadius: "var(--radius-lg)",
-              display: "grid", placeItems: "center", marginBottom: "24px",
-              background: "rgb(var(--gold-rgb) / 0.12)",
-              border: "1px solid rgb(var(--gold-rgb) / 0.25)",
-              boxShadow: hovered ? "0 0 24px rgb(var(--gold-rgb) / 0.25)" : "none",
-              transition: "box-shadow 0.3s",
-            }}
-          >
-            <Icon size={24} color="var(--gold)" />
-          </motion.div>
+          {/* Top row: bespoke glyph + outlined index */}
+          <div className="flex items-start justify-between" style={{ marginBottom: "26px" }}>
+            <motion.div
+              animate={{ y: hovered ? -2 : 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 18 }}
+            >
+              <Glyph kind={kind} hovered={hovered} />
+            </motion.div>
+            <span aria-hidden="true" style={{
+              fontSize: "clamp(34px, 4vw, 50px)", fontWeight: 800, lineHeight: 1,
+              color: "transparent", WebkitTextStroke: `1.3px rgb(var(--teal-rgb) / ${hovered ? 0.85 : 0.45})`,
+              fontVariantNumeric: "tabular-nums", letterSpacing: "-0.03em",
+              userSelect: "none", pointerEvents: "none", transition: "-webkit-text-stroke-color 0.3s",
+            }}>
+              {String(index + 1).padStart(2, "0")}
+            </span>
+          </div>
 
           <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 700, color: "#FFFFFF", marginBottom: "10px", letterSpacing: "-0.01em" }}>
             {title}
           </h3>
 
-          {/* Accent underline grows on hover */}
+          {/* Accent underline grows on hover — terracotta→teal */}
           <motion.div
-            animate={{ width: hovered ? 44 : 0, opacity: hovered ? 1 : 0 }}
+            animate={{ width: hovered ? 48 : 20, opacity: 1 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            style={{ height: "2px", background: "var(--gold)", borderRadius: "2px", marginBottom: "14px" }}
+            style={{ height: "2px", background: "linear-gradient(90deg, var(--gold), var(--teal))", borderRadius: "2px", marginBottom: "14px" }}
           />
 
           <p style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.5)", lineHeight: 1.75, flexGrow: 1 }}>
@@ -119,12 +162,13 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
                 key={kw}
                 style={{
                   fontSize: "var(--text-label)",
-                  fontWeight: 500,
-                  color: hovered ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.55)",
-                  border: `1px solid ${hovered ? "rgb(var(--gold-rgb) / 0.25)" : "rgba(255,255,255,0.08)"}`,
+                  fontWeight: 600,
+                  color: hovered ? "var(--teal)" : "rgb(var(--teal-rgb) / 0.82)",
+                  background: `rgb(var(--teal-rgb) / ${hovered ? 0.1 : 0.06})`,
+                  border: `1px solid rgb(var(--teal-rgb) / ${hovered ? 0.5 : 0.28})`,
                   borderRadius: "var(--radius-pill)",
                   padding: "4px 12px",
-                  transition: "color 0.3s, border-color 0.3s",
+                  transition: "color 0.3s, border-color 0.3s, background 0.3s",
                 }}
               >
                 {kw}
@@ -133,6 +177,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
           </div>
         </div>
       </div>
+      </Tilt>
     </motion.div>
   );
 }
@@ -141,7 +186,7 @@ function SkillsHeading() {
   const { ref, style } = useReveal({ y: 70, scale: 0.92, blur: 10 });
   return (
     <motion.div ref={ref} style={style} className="flex flex-col gap-4 mb-16">
-      <p style={{ fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)" }}>
+      <p className="eyebrow" style={{ color: "var(--teal)" }}>
         Services
       </p>
       <h2 style={{ fontSize: "var(--text-h2)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F5F1EC" }}>
@@ -158,11 +203,7 @@ export default function Skills() {
   return (
     <section id="skills" className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "120px", paddingBottom: "120px" }}>
 
-      <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
-        top: "-10%", right: "-10%",
-        width: "500px", height: "500px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.13) 0%, transparent 70%)",
-      }} />
+      <Motif variant="contour" tone="gold" size={560} parallax={60} style={{ top: "-12%", right: "-10%" }} />
 
       <div className="page-container">
 

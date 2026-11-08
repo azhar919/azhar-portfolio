@@ -7,6 +7,7 @@ import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import FloatingNav from "@/components/FloatingNav";
 import ContactFooter from "@/components/ContactFooter";
+import Motif from "@/components/Motif";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -14,7 +15,7 @@ const subProjects = [
   {
     case: "website-redesign",
     title: "Website Redesign",
-    image: "/images/ab-website-redesign.png",
+    image: "/images/ab-website-redesign.webp",
     description:
       "Rebuilding a fragmented website and online banking platform into a cohesive, structured, and scalable digital experience — establishing the bank's first unified design system.",
   },
@@ -69,9 +70,9 @@ function CaseCard({ project, index }: { project: typeof subProjects[0]; index: n
         {/* Content */}
         <div className="flex items-start justify-between" style={{ padding: "28px", flex: 1 }}>
           <div className="flex flex-col gap-3" style={{ flex: 1 }}>
-            <h3 style={{ fontSize: "20px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
+            <h2 style={{ fontSize: "20px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
               {project.title}
-            </h3>
+            </h2>
             <p style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.5)", lineHeight: 1.75 }}>
               {project.description}
             </p>
@@ -94,18 +95,15 @@ export default function AfricanBankPage() {
 
         {/* ── Hero ── */}
         <section className="relative overflow-hidden flex flex-col justify-center" style={{ background: "#0B0A09", paddingTop: "100px", paddingBottom: "100px", minHeight: "320px" }}>
-          <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
-            top: "-20%", right: "-8%",
-            width: "600px", height: "600px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.14) 0%, transparent 70%)",
-          }} />
+          <Motif variant="orbit" tone="duo" size={720} parallax={80} style={{ top: "-28%", right: "-8%" }} />
 
           <div className="page-container relative">
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: EASE }}
-              style={{ fontSize: "var(--text-label)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: "16px" }}
+              className="eyebrow"
+              style={{ color: "var(--teal)", marginBottom: "16px" }}
             >
               My Work
             </motion.p>
@@ -130,11 +128,7 @@ export default function AfricanBankPage() {
 
         {/* ── Case studies ── */}
         <section className="relative overflow-hidden" style={{ background: "#110E0B", paddingTop: "80px", paddingBottom: "120px" }}>
-          <div className="absolute pointer-events-none select-none" aria-hidden="true" style={{
-            bottom: "5%", left: "20%",
-            width: "500px", height: "400px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgb(var(--gold-rgb) / 0.05) 0%, transparent 70%)",
-          }} />
+          <Motif variant="hatch" tone="teal" size={620} parallax={60} style={{ bottom: "0%", left: "16%", opacity: 0.6 }} />
           <div className="page-container relative">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {subProjects.map((project, i) => (
