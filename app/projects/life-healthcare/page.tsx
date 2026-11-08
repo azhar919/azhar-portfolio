@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { notFound } from "next/navigation";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,6 +9,7 @@ import { ArrowUpRight } from "lucide-react";
 import FloatingNav from "@/components/FloatingNav";
 import ContactFooter from "@/components/ContactFooter";
 import Motif from "@/components/Motif";
+import { SHOW_LIFE_HEALTHCARE } from "@/lib/flags";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -88,6 +90,7 @@ function CaseCard({ project, index }: { project: typeof subProjects[0]; index: n
 }
 
 export default function LifeHealthcarePage() {
+  if (!SHOW_LIFE_HEALTHCARE) notFound();
   return (
     <main id="main-content" tabIndex={-1}>
       <FloatingNav />

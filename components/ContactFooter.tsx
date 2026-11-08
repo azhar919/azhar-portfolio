@@ -6,6 +6,7 @@ import { Mail } from "lucide-react";
 import { useSpotlight } from "./useSpotlight";
 import Button from "./Button";
 import Motif from "./Motif";
+import { SHOW_LIFE_HEALTHCARE } from "@/lib/flags";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
@@ -40,7 +41,7 @@ const navLinks = [
 ];
 
 const projectLinks = [
-  { label: "Life Healthcare", href: "/projects/life-healthcare" },
+  ...(SHOW_LIFE_HEALTHCARE ? [{ label: "Life Healthcare", href: "/projects/life-healthcare" }] : []),
   { label: "African Bank",    href: "/projects/african-bank" },
   { label: "iqbusiness",     href: "/projects/corporate-banking" },
   { label: "Nedbank",         href: "/projects/everyday-banking" },

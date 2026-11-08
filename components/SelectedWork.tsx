@@ -9,6 +9,7 @@ import { useReveal } from "./useReveal";
 import { useSpotlight } from "./useSpotlight";
 import Motif from "./Motif";
 import { EASE, SPRING } from "@/lib/motion";
+import { SHOW_LIFE_HEALTHCARE } from "@/lib/flags";
 
 // Tiny dark placeholder — fades from the card's #1C1813 backing into the image.
 const BLUR =
@@ -61,6 +62,11 @@ const secondary = [
   },
 ];
 
+// Life Healthcare is held back until the live client site launches (see lib/flags).
+const workItems = SHOW_LIFE_HEALTHCARE
+  ? [lifeHealthcare, ...featured, ...secondary]
+  : [...featured, ...secondary];
+
 function BrowserFrame({ image, url, title }: { image: string; url: string; title: string }) {
   return (
     <div style={{ borderRadius: "12px 12px 0 0", overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", borderBottom: "none" }}>
@@ -103,8 +109,8 @@ function BrowserFrame({ image, url, title }: { image: string; url: string; title
 // ── Desktop: editorial index with a cursor-following preview ──────────────
 function WorkIndex() {
   const [hover, setHover] = useState<number | null>(null);
-  const [shown, setShown] = useState<string>(lifeHealthcare.image);
-  const items: MobileItem[] = [lifeHealthcare, ...featured, ...secondary];
+  const [shown, setShown] = useState<string>(workItems[0].image ?? "");
+  const items: MobileItem[] = workItems;
 
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -215,7 +221,7 @@ type MobileItem = {
   company: string; title: string; description: string; href: string;
   image?: string; url?: string;
 };
-const mobileItems: MobileItem[] = [lifeHealthcare, ...featured, ...secondary];
+const mobileItems: MobileItem[] = workItems;
 
 function MobileWorkCard({ project }: { project: MobileItem }) {
   const { handlers, overlay } = useSpotlight({ radius: 360, color: "rgb(var(--gold-rgb) / 0.12)" });
@@ -290,7 +296,7 @@ function MobileCarousel() {
         }}
       >
         {mobileItems.map((project) => (
-          <div key={project.href} style={{ flex: "0 0 82%", scrollSnapAlign: "start" }}>
+          <div key={project.href} style={{ flex: "0 0 82%", scrollSnapAlign: "start", scrollSnapStop: "always" }}>
             <MobileWorkCard project={project} />
           </div>
         ))}

@@ -7,19 +7,23 @@ import { ArrowUpRight } from "lucide-react";
 import FloatingNav from "@/components/FloatingNav";
 import ContactFooter from "@/components/ContactFooter";
 import Motif from "@/components/Motif";
+import { SHOW_LIFE_HEALTHCARE } from "@/lib/flags";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
 type ProjItem = { slug: string; href?: string; company: string; title: string; description: string };
 const projects: ProjItem[] = [
-  {
-    slug: "life-healthcare",
-    href: "/projects/life-healthcare",
-    company: "Life Healthcare",
-    title: "Website Redesign + Design System",
-    description:
-      "Reimagining South Africa's largest private-hospital website around the patient — and building the tokenised, accessible design system beneath it. Two case studies.",
-  },
+  // Life Healthcare is held back until the live client site launches (see lib/flags).
+  ...(SHOW_LIFE_HEALTHCARE
+    ? [{
+        slug: "life-healthcare",
+        href: "/projects/life-healthcare",
+        company: "Life Healthcare",
+        title: "Website Redesign + Design System",
+        description:
+          "Reimagining South Africa's largest private-hospital website around the patient — and building the tokenised, accessible design system beneath it. Two case studies.",
+      }]
+    : []),
   {
     slug: "everyday-banking",
     company: "Nedbank",

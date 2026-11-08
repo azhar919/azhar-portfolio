@@ -7,6 +7,7 @@ import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { Menu, X, ChevronDown, ArrowRight, Mail } from "lucide-react";
 import Button from "./Button";
 import { EASE } from "@/lib/motion";
+import { SHOW_LIFE_HEALTHCARE } from "@/lib/flags";
 
 const NAV_H = 72;
 
@@ -53,13 +54,15 @@ function LogoMark() {
 }
 
 const workItems = [
-  {
-    company: "Life Healthcare",
-    links: [
-      { label: "Website Redesign",    desc: "A patient-first hospital-group website",               href: "/projects/life-healthcare/website" },
-      { label: "Design System",       desc: "The tokenised component library beneath it",           href: "/projects/life-healthcare/design-system" },
-    ],
-  },
+  ...(SHOW_LIFE_HEALTHCARE
+    ? [{
+        company: "Life Healthcare",
+        links: [
+          { label: "Website Redesign",    desc: "A patient-first hospital-group website",               href: "/projects/life-healthcare/website" },
+          { label: "Design System",       desc: "The tokenised component library beneath it",           href: "/projects/life-healthcare/design-system" },
+        ],
+      }]
+    : []),
   {
     company: "African Bank",
     links: [

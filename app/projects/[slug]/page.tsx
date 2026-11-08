@@ -2,9 +2,17 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { caseStudies, getCaseStudy } from "../data";
 import CaseStudyClient from "./CaseStudyClient";
+import { SHOW_LIFE_HEALTHCARE } from "@/lib/flags";
+
+// Life Healthcare case studies are also reachable via this [slug] route
+// (e.g. /projects/life-healthcare-website); keep them hidden until launch.
+const isHidden = (slug: string) =>
+  !SHOW_LIFE_HEALTHCARE && slug.startsWith("life-healthcare-");
 
 export async function generateStaticParams() {
-  return caseStudies.map((cs) => ({ slug: cs.slug }));
+  return caseStudies
+    .filter((cs) => !isHidden(cs.slug))
+    .map((cs) => ({ slug: cs.slug }));
 }
 
 export async function generateMetadata({
@@ -13,6 +21,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  if (isHidden(slug)) return {};
   const study = getCaseStudy(slug);
   if (!study) return {};
   const title = `${study.title} — Azhar Mohamed`;
@@ -32,6 +41,7 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  if (isHidden(slug)) notFound();
   const study = getCaseStudy(slug);
   if (!study) notFound();
   return <CaseStudyClient study={study} />;

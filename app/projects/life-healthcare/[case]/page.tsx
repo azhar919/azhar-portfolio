@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCaseStudy } from "../../data";
 import CaseStudyClient from "../../[slug]/CaseStudyClient";
+import { SHOW_LIFE_HEALTHCARE } from "@/lib/flags";
 
 const CASES = ["website", "design-system"];
 
 export async function generateStaticParams() {
+  // Held back until the live client site launches (see lib/flags).
+  if (!SHOW_LIFE_HEALTHCARE) return [];
   return CASES.map((c) => ({ case: c }));
 }
 
@@ -33,6 +36,7 @@ export default async function Page({
 }: {
   params: Promise<{ case: string }>;
 }) {
+  if (!SHOW_LIFE_HEALTHCARE) notFound();
   const { case: caseSlug } = await params;
   const slug = `life-healthcare-${caseSlug}`;
   const study = getCaseStudy(slug);
