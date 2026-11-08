@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, Fragment } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
-import { Menu, X, ChevronDown, ArrowRight, Mail } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight, ArrowUpRight, Mail } from "lucide-react";
 import Button from "./Button";
 import { EASE } from "@/lib/motion";
 import { SHOW_LIFE_HEALTHCARE } from "@/lib/flags";
@@ -379,30 +379,43 @@ export default function FloatingNav() {
                       transition={{ duration: 0.22, ease: "easeOut" }}
                       className="overflow-hidden"
                     >
-                      <div className="pb-5 flex flex-col">
-                        {workItems.map((col, colIdx) => (
+                      <div className="pb-6 flex flex-col" style={{ gap: "26px" }}>
+                        {workItems.map((col) => (
                           <div key={col.company}>
-                            {colIdx > 0 && (
-                              <div style={{ height: "1px", background: "rgba(255,255,255,0.08)", margin: "4px 0 0" }} />
-                            )}
-                            <div style={{ display: "flex", alignItems: "center", gap: "9px", marginTop: "24px", marginBottom: "12px" }}>
+                            {/* Client header */}
+                            <div style={{ display: "flex", alignItems: "center", gap: "9px", marginBottom: "12px", paddingLeft: "2px" }}>
                               <LogoChip company={col.company} />
-                              <p className="eyebrow" style={{ color: "rgba(255,255,255,0.6)" }}>
+                              <p className="eyebrow" style={{ color: "rgba(255,255,255,0.55)" }}>
                                 {col.company}
                               </p>
                             </div>
-                            <div className="flex flex-col" style={{ paddingLeft: "16px" }}>
+                            {/* Each case study is its own card so they read as separate */}
+                            <div className="flex flex-col" style={{ gap: "8px" }}>
                               {col.links.map(link => (
                                 <Link
                                   key={link.href + link.label}
                                   href={link.href}
                                   onClick={() => setMenuOpen(false)}
-                                  className="transition-colors duration-150 active:text-white"
-                                  style={{ fontSize: "var(--text-md)", fontWeight: 400, color: "rgba(255,255,255,0.7)", marginBottom: "10px" }}
-                                  onMouseEnter={e => (e.currentTarget.style.color = "#ffffff")}
-                                  onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}
+                                  className="flex items-center justify-between transition-colors duration-150 active:bg-white/[0.08]"
+                                  style={{
+                                    gap: "12px",
+                                    background: "rgba(255,255,255,0.04)",
+                                    border: "1px solid rgba(255,255,255,0.08)",
+                                    borderRadius: "14px",
+                                    padding: "13px 15px",
+                                  }}
                                 >
-                                  {link.label}
+                                  <span className="flex flex-col" style={{ gap: "3px", minWidth: 0 }}>
+                                    <span style={{ fontSize: "16px", fontWeight: 600, color: "#F5F1EC", letterSpacing: "-0.01em" }}>
+                                      {link.label}
+                                    </span>
+                                    <span style={{ fontSize: "12.5px", fontWeight: 400, color: "rgba(255,255,255,0.5)", lineHeight: 1.4 }}>
+                                      {link.desc}
+                                    </span>
+                                  </span>
+                                  <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "28px", height: "28px", borderRadius: "50%", background: "rgba(255,255,255,0.06)", flexShrink: 0 }}>
+                                    <ArrowUpRight size={15} style={{ color: "var(--gold)" }} />
+                                  </span>
                                 </Link>
                               ))}
                             </div>
