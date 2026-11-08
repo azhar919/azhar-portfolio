@@ -85,17 +85,18 @@ function BrowserFrame({ image, url, title }: { image: string; url: string; title
           <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#FFBD2E" }} />
           <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#27C93F" }} />
         </div>
-        <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+        <div style={{ flex: 1, minWidth: 0, display: "flex", justifyContent: "center", padding: "0 8px" }}>
           <div
             style={{
-              width: "40%", height: "22px",
+              maxWidth: "100%", height: "22px",
               background: "rgba(255,255,255,0.06)",
               border: "1px solid rgba(255,255,255,0.08)",
               borderRadius: "4px",
               display: "flex", alignItems: "center", justifyContent: "center",
+              padding: "0 12px", overflow: "hidden",
             }}
           >
-            <span style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.55)", userSelect: "none" }}>{url}</span>
+            <span style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.55)", userSelect: "none", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{url}</span>
           </div>
         </div>
       </div>
