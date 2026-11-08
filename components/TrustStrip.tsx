@@ -87,7 +87,7 @@ export default function TrustStrip() {
       <div className="divider-gold" style={{ marginBottom: "60px" }} />
       <div className="page-container relative">
         <Heading />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5" style={{ maxWidth: "1040px", margin: "0 auto" }}>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5" style={{ maxWidth: "1200px", margin: "0 auto" }}>
           {clients.map((client, i) => (
             <LogoChip key={client.name} client={client} index={i} />
           ))}

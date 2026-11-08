@@ -110,11 +110,17 @@
 @media (min-width: 1024px) {
   .page-container { padding-left: 72px; padding-right: 72px; }
 }
+/* Large screens: grow the content width continuously with the viewport
+   (clamp) instead of freezing at 1440px until 1920px — otherwise 27"/1440p
+   displays strand the layout in a narrow centre column with wide side gaps. */
+@media (min-width: 1440px) {
+  .page-container { max-width: clamp(1440px, 90vw, 2040px); }
+}
 @media (min-width: 1920px) {
-  .page-container { max-width: 1600px; padding-left: 120px; padding-right: 120px; }
+  .page-container { padding-left: 120px; padding-right: 120px; }
 }
 @media (min-width: 2560px) {
-  .page-container { max-width: 2000px; padding-left: 160px; padding-right: 160px; }
+  .page-container { padding-left: 160px; padding-right: 160px; }
 }
 
 /* 12 / 8 / 4 column grid */
