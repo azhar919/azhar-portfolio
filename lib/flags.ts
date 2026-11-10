@@ -6,4 +6,4 @@
 // Work card, projects list). Flip to true to republish it everywhere at once.
 // Note: the "Worked with" logo (TrustStrip) and the CV experience entry are
 // intentionally NOT gated — they stay visible as credentials.
-export const SHOW_LIFE_HEALTHCARE = false;
+export const SHOW_LIFE_HEALTHCARE = true;

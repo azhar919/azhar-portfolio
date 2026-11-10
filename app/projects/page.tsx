@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "@/components/icons";
 import FloatingNav from "@/components/FloatingNav";
 import ContactFooter from "@/components/ContactFooter";
 import Motif from "@/components/Motif";
@@ -69,23 +69,23 @@ function ProjectCard({ project, index }: { project: ProjItem; index: number }) {
         href={project.href ?? `/projects/${project.slug}`}
         className="group flex items-start justify-between transition-all duration-300"
         style={{
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          background: "rgb(var(--ink-rgb) / calc(0.04 * var(--ink-k)))",
+          border: "1px solid rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))",
           borderRadius: "var(--radius-2xl)",
           padding: "36px",
           display: "flex",
         }}
         onMouseEnter={e => {
           const el = e.currentTarget as HTMLAnchorElement;
-          el.style.background = "rgba(255,255,255,0.07)";
-          el.style.borderColor = "rgba(255,255,255,0.14)";
+          el.style.background = "rgb(var(--ink-rgb) / calc(0.07 * var(--ink-k)))";
+          el.style.borderColor = "rgb(var(--ink-rgb) / calc(0.14 * var(--ink-k)))";
           el.style.transform = "translateY(-4px)";
-          el.style.boxShadow = "0 24px 60px rgba(0,0,0,0.45)";
+          el.style.boxShadow = "0 24px 60px rgb(var(--shadow-rgb) / calc(0.45 * var(--shadow-k)))";
         }}
         onMouseLeave={e => {
           const el = e.currentTarget as HTMLAnchorElement;
-          el.style.background = "rgba(255,255,255,0.04)";
-          el.style.borderColor = "rgba(255,255,255,0.08)";
+          el.style.background = "rgb(var(--ink-rgb) / calc(0.04 * var(--ink-k)))";
+          el.style.borderColor = "rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))";
           el.style.transform = "translateY(0)";
           el.style.boxShadow = "none";
         }}
@@ -94,10 +94,10 @@ function ProjectCard({ project, index }: { project: ProjItem; index: number }) {
           <p className="eyebrow" style={{ color: "var(--teal)" }}>
             {project.company}
           </p>
-          <h2 style={{ fontSize: "22px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
+          <h2 style={{ fontSize: "22px", fontWeight: 700, color: "var(--ink-strong)", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
             {project.title}
           </h2>
-          <p style={{ fontSize: "var(--text-ui)", color: "rgba(255,255,255,0.5)", lineHeight: 1.75, maxWidth: "640px" }}>
+          <p style={{ fontSize: "var(--text-ui)", color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))", lineHeight: 1.75, maxWidth: "640px" }}>
             {project.description}
           </p>
           <span style={{ fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--gold)", marginTop: "8px" }}>
@@ -107,7 +107,7 @@ function ProjectCard({ project, index }: { project: ProjItem; index: number }) {
         <ArrowUpRight
           size={18}
           className="shrink-0 mt-1 ml-8"
-          style={{ color: "rgba(255,255,255,0.55)" }}
+          style={{ color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))" }}
         />
       </Link>
     </motion.div>
@@ -121,7 +121,7 @@ export default function ProjectsPage() {
       <div className="pt-[72px]">
 
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden flex flex-col justify-center" style={{ background: "#0B0A09", paddingTop: "100px", paddingBottom: "100px", minHeight: "340px" }}>
+        <section className="relative overflow-hidden flex flex-col justify-center" style={{ background: "var(--bg)", paddingTop: "100px", paddingBottom: "100px", minHeight: "340px" }}>
           <Motif variant="orbit" tone="duo" size={760} parallax={80} style={{ top: "-30%", right: "-8%" }} />
 
           <div className="page-container relative">
@@ -138,7 +138,7 @@ export default function ProjectsPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: EASE }}
-              style={{ fontSize: "var(--text-h1)", fontWeight: 800, color: "#F5F1EC", lineHeight: 1.08, letterSpacing: "-0.04em" }}
+              style={{ fontSize: "var(--text-h1)", fontWeight: 800, color: "var(--ink)", lineHeight: 1.08, letterSpacing: "-0.04em" }}
             >
               Where complexity<br className="hidden md:block" /> becomes clarity
             </motion.h1>
@@ -146,7 +146,7 @@ export default function ProjectsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
-              style={{ marginTop: "24px", fontSize: "var(--text-lg)", color: "rgba(255,255,255,0.5)", lineHeight: 1.65, maxWidth: "520px" }}
+              style={{ marginTop: "24px", fontSize: "var(--text-lg)", color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))", lineHeight: 1.65, maxWidth: "520px" }}
             >
               Case studies in banking and enterprise design — simplifying what banks make complex.
             </motion.p>
@@ -154,7 +154,7 @@ export default function ProjectsPage() {
         </section>
 
         {/* ── Projects list ── */}
-        <section className="relative overflow-hidden" style={{ background: "#110E0B", paddingTop: "80px", paddingBottom: "120px" }}>
+        <section className="relative overflow-hidden" style={{ background: "var(--bg-alt)", paddingTop: "80px", paddingBottom: "120px" }}>
           <Motif variant="constellation" tone="teal" size={560} parallax={55} style={{ bottom: "2%", left: "12%", opacity: 0.6 }} />
           <div className="page-container relative">
             <div className="flex flex-col gap-4">

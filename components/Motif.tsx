@@ -27,6 +27,7 @@ export default function Motif({
   spin,
   wash = true,
   parallax = 0,
+  draw = false,
   style,
   className,
 }: {
@@ -37,6 +38,8 @@ export default function Motif({
   wash?: boolean;
   /** Vertical scroll-parallax travel in px (drifts as the section scrolls past). 0 = static position. */
   parallax?: number;
+  /** Orbit only: rings draw themselves in on mount, then the nodes pop on. */
+  draw?: boolean;
   style?: React.CSSProperties;
   className?: string;
 }) {
@@ -49,6 +52,7 @@ export default function Motif({
   const teal = "rgb(var(--teal-rgb))";
   const a = tone === "teal" ? teal : gold;
   const b = tone === "gold" ? gold : teal;
+  const drawIn = draw && !reduced;
   const doSpin = (spin ?? (variant === "orbit" || variant === "arcs" || variant === "constellation")) && !reduced;
 
   return (
@@ -94,16 +98,41 @@ export default function Motif({
 
         {variant === "orbit" && (
           <>
-            <circle cx="100" cy="100" r="92" stroke={a} strokeOpacity="0.16" strokeWidth="0.6" />
-            <circle cx="100" cy="100" r="70" stroke={b} strokeOpacity="0.20" strokeWidth="0.6" />
-            <circle cx="100" cy="100" r="46" stroke={a} strokeOpacity="0.26" strokeWidth="0.7" />
-            <circle cx="100" cy="100" r="24" stroke={b} strokeOpacity="0.34" strokeWidth="0.8" />
-            <ellipse cx="100" cy="100" rx="92" ry="40" stroke={b} strokeOpacity="0.14" strokeWidth="0.6" transform="rotate(-24 100 100)" />
-            <circle cx="100" cy="8" r="2.4" fill={a} fillOpacity="0.9" />
-            <circle cx="170" cy="100" r="1.8" fill={b} fillOpacity="0.85" />
-            <circle cx="100" cy="146" r="1.6" fill={b} fillOpacity="0.7" />
-            <circle cx="54" cy="100" r="1.4" fill={a} fillOpacity="0.7" />
-            <circle cx="100" cy="100" r="2.2" fill={a} fillOpacity="0.9" />
+            {/* Rings: innermost first, each drawn as a stroke when `draw` is set */}
+            {[
+              { r: 24, c: b, o: 0.34, w: 0.8 },
+              { r: 46, c: a, o: 0.26, w: 0.7 },
+              { r: 70, c: b, o: 0.20, w: 0.6 },
+              { r: 92, c: a, o: 0.16, w: 0.6 },
+            ].map((ring, i) => (
+              <motion.circle
+                key={ring.r} cx="100" cy="100" r={ring.r} stroke={ring.c} strokeOpacity={ring.o} strokeWidth={ring.w}
+                initial={drawIn ? { pathLength: 0, opacity: 0 } : false}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{ pathLength: { duration: 1.5, delay: 0.15 + i * 0.22, ease: [0.16, 1, 0.3, 1] }, opacity: { duration: 0.2, delay: 0.15 + i * 0.22 } }}
+              />
+            ))}
+            <motion.ellipse
+              cx="100" cy="100" rx="92" ry="40" stroke={b} strokeOpacity="0.14" strokeWidth="0.6" transform="rotate(-24 100 100)"
+              initial={drawIn ? { pathLength: 0, opacity: 0 } : false}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ pathLength: { duration: 1.8, delay: 0.9, ease: [0.16, 1, 0.3, 1] }, opacity: { duration: 0.2, delay: 0.9 } }}
+            />
+            {[
+              { cx: 100, cy: 100, r: 2.2, c: a, o: 0.9 },
+              { cx: 54, cy: 100, r: 1.4, c: a, o: 0.7 },
+              { cx: 100, cy: 146, r: 1.6, c: b, o: 0.7 },
+              { cx: 170, cy: 100, r: 1.8, c: b, o: 0.85 },
+              { cx: 100, cy: 8, r: 2.4, c: a, o: 0.9 },
+            ].map((n, i) => (
+              <motion.circle
+                key={i} cx={n.cx} cy={n.cy} r={n.r} fill={n.c} fillOpacity={n.o}
+                initial={drawIn ? { scale: 0, opacity: 0 } : false}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 260, damping: 14, delay: 0.5 + i * 0.26 }}
+                style={{ transformBox: "fill-box", transformOrigin: "center" }}
+              />
+            ))}
           </>
         )}
 

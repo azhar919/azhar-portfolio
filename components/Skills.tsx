@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useReveal } from "./useReveal";
+import { Reveal, RevealText, Stagger } from "./Reveal";
 import Motif from "./Motif";
+import Parallax from "./Parallax";
 import Tilt from "./Tilt";
 
 const GOLD = "rgb(var(--gold-rgb))";
@@ -39,7 +40,7 @@ function Glyph({ kind, hovered }: { kind: "ux" | "ui" | "ops"; hovered: boolean 
         <circle cx="12" cy="13.2" r="1.4" fill={TEAL} />
         <rect x="12" y="23" width="12" height="11" rx="2.5" stroke={TEAL} strokeWidth="1.6" fill={TEAL} fillOpacity="0.18" />
         <line x1="28" y1="24.5" x2="36" y2="24.5" stroke={GOLD} strokeWidth="2" strokeLinecap="round" />
-        <line x1="28" y1="30" x2="34" y2="30" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" />
+        <line x1="28" y1="30" x2="34" y2="30" stroke="rgb(var(--ink-rgb) / calc(0.4 * var(--ink-k)))" strokeWidth="2" strokeLinecap="round" />
       </svg>
     );
   }
@@ -83,7 +84,6 @@ const services = [
 function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
   const [hovered, setHovered] = useState(false);
   const [pos, setPos] = useState({ x: 120, y: 80 });
-  const { ref, style } = useReveal({ y: 120, scale: 0.76, blur: 18 });
   const { kind, title, description, keywords } = service;
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -92,7 +92,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
   };
 
   return (
-    <motion.div ref={ref} style={{ ...style, height: "100%" }}>
+    <Reveal item variant="rise" style={{ height: "100%" }}>
       <Tilt fill max={7} sheen={false}>
       <div
         onMouseEnter={() => setHovered(true)}
@@ -102,12 +102,12 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
           position: "relative",
           overflow: "hidden",
           height: "100%",
-          background: hovered ? "rgba(255,255,255,0.055)" : "rgba(255,255,255,0.035)",
-          border: `1px solid ${hovered ? "rgb(var(--gold-rgb) / 0.35)" : "rgba(255,255,255,0.08)"}`,
+          background: hovered ? "rgb(var(--ink-rgb) / calc(0.055 * var(--ink-k)))" : "rgb(var(--ink-rgb) / calc(0.035 * var(--ink-k)))",
+          border: `1px solid ${hovered ? "rgb(var(--gold-rgb) / 0.35)" : "rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))"}`,
           borderRadius: "var(--radius-2xl)",
           padding: "34px",
           cursor: "default",
-          boxShadow: hovered ? "0 24px 60px rgba(0,0,0,0.4)" : "none",
+          boxShadow: hovered ? "0 24px 60px rgb(var(--shadow-rgb) / calc(0.4 * var(--shadow-k)))" : "none",
           transition: "background 0.3s, border-color 0.3s, box-shadow 0.3s",
         }}
       >
@@ -141,7 +141,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
             </span>
           </div>
 
-          <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 700, color: "#FFFFFF", marginBottom: "10px", letterSpacing: "-0.01em" }}>
+          <h3 style={{ fontSize: "var(--text-lg)", fontWeight: 700, color: "var(--ink-strong)", marginBottom: "10px", letterSpacing: "-0.01em" }}>
             {title}
           </h3>
 
@@ -152,7 +152,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
             style={{ height: "2px", background: "linear-gradient(90deg, var(--gold), var(--teal))", borderRadius: "2px", marginBottom: "14px" }}
           />
 
-          <p style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.5)", lineHeight: 1.75, flexGrow: 1 }}>
+          <p style={{ fontSize: "var(--text-sm)", color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))", lineHeight: 1.75, flexGrow: 1 }}>
             {description}
           </p>
 
@@ -178,30 +178,35 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
         </div>
       </div>
       </Tilt>
-    </motion.div>
+    </Reveal>
   );
 }
 
 function SkillsHeading() {
-  const { ref, style } = useReveal({ y: 70, scale: 0.92, blur: 10 });
   return (
-    <motion.div ref={ref} style={style} className="flex flex-col gap-4 mb-16">
-      <p className="eyebrow" style={{ color: "var(--teal)" }}>
-        Services
-      </p>
-      <h2 style={{ fontSize: "var(--text-h2)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#F5F1EC" }}>
+    <Parallax travel={-22}>
+    <Stagger gap={0.12} className="flex flex-col gap-4 mb-16">
+      <Reveal item variant="fade">
+        <p className="eyebrow" style={{ color: "var(--teal)" }}>
+          Services
+        </p>
+      </Reveal>
+      <RevealText item style={{ fontSize: "var(--text-h2)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "var(--ink)" }}>
         What I do
-      </h2>
-      <p style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.55)", maxWidth: "420px" }}>
-        Three core disciplines I bring to every project
-      </p>
-    </motion.div>
+      </RevealText>
+      <Reveal item variant="rise">
+        <p style={{ fontSize: "var(--text-md)", color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))", maxWidth: "420px" }}>
+          Three core disciplines I bring to every project
+        </p>
+      </Reveal>
+    </Stagger>
+    </Parallax>
   );
 }
 
 export default function Skills() {
   return (
-    <section id="skills" className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "120px", paddingBottom: "120px" }}>
+    <section id="skills" className="relative overflow-hidden" style={{ background: "var(--bg)", paddingTop: "120px", paddingBottom: "120px" }}>
 
       <Motif variant="contour" tone="gold" size={560} parallax={60} style={{ top: "-12%", right: "-10%" }} />
 
@@ -209,11 +214,11 @@ export default function Skills() {
 
         <SkillsHeading />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <Stagger gap={0.12} className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {services.map((service, i) => (
             <ServiceCard key={service.title} service={service} index={i} />
           ))}
-        </div>
+        </Stagger>
 
       </div>
     </section>

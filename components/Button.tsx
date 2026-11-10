@@ -25,11 +25,11 @@ interface ButtonProps {
 }
 
 const BASE =
-  "group inline-flex items-center justify-center font-medium rounded-full whitespace-nowrap transition-all duration-200";
+  "group inline-flex items-center justify-center font-medium rounded-full whitespace-nowrap transition-all duration-200 active:scale-[0.96] active:translate-y-0 active:duration-75";
 
 const VARIANTS: Record<Variant, string> = {
   primary:
-    "bg-[var(--gold-dark)] text-white font-semibold shadow-[0_6px_20px_rgb(var(--gold-rgb)_/_0.28)] hover:bg-[var(--gold-darker)] hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgb(var(--gold-rgb)_/_0.4)]",
+    "bg-[var(--gold-dark)] text-[#fff] font-semibold shadow-[0_6px_20px_rgb(var(--gold-rgb)_/_0.28)] hover:bg-[var(--gold-darker)] hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgb(var(--gold-rgb)_/_0.4)]",
   secondary:
     "text-white border border-white/15 bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/25 hover:-translate-y-0.5",
 };

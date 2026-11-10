@@ -4,10 +4,12 @@ import { useState, useRef, useEffect, Fragment } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
-import { Menu, X, ChevronDown, ArrowRight, ArrowUpRight, Mail } from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight, ArrowUpRight, Mail } from "@/components/icons";
 import Button from "./Button";
 import { EASE } from "@/lib/motion";
 import { SHOW_LIFE_HEALTHCARE } from "@/lib/flags";
+import { isFirstLoad } from "@/lib/viewTransition";
+import ThemeToggle from "./ThemeToggle";
 
 const NAV_H = 72;
 
@@ -23,7 +25,7 @@ function LogoChip({ company }: { company: string }) {
   const l = COMPANY_LOGO[company];
   if (!l) return null;
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", background: l.bg, borderRadius: "5px", height: "22px", padding: "0 7px", flexShrink: 0 }}>
+    <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", background: l.bg, border: "1px solid rgb(var(--ink-rgb) / calc(0.1 * var(--ink-k)))", borderRadius: "5px", height: "22px", padding: "0 7px", flexShrink: 0 }}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={l.src} alt="" style={{ height: `${l.h}px`, maxWidth: "62px", objectFit: "contain", display: "block" }} />
     </span>
@@ -44,7 +46,7 @@ function LogoMark() {
         fontWeight: 800,
         fontSize: "22px",
         letterSpacing: "-0.03em",
-        color: "#F5F1EC",
+        color: "var(--ink)",
         userSelect: "none",
       }}
     >
@@ -161,30 +163,35 @@ export default function FloatingNav() {
     : pathname.startsWith("/projects") ? "projects"
     : null;
 
+  // Drop in on the first page of a visit only; on client navigations the nav
+  // is already there and must not re-animate.
+  const [dropIn] = useState(isFirstLoad);
+
   return (
     <>
       {/* ── Floating pill nav ── */}
-      <div className="no-print fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-3 pointer-events-none">
+      {/* Named so it stays anchored while pages transition beneath it */}
+      <div className="no-print fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-3 pointer-events-none" style={{ viewTransitionName: "site-nav" }}>
         <motion.header
-          initial={{ opacity: 0, y: -16 }}
+          initial={dropIn ? { opacity: 0, y: -16 } : false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: EASE }}
           className="pointer-events-auto flex items-center gap-2 w-full md:w-auto justify-between md:justify-start"
           style={{
-            background: scrolled ? "rgba(10,10,10,0.85)" : "rgba(10,10,10,0.55)",
+            background: scrolled ? "rgb(var(--bg-rgb) / 0.85)" : "rgb(var(--bg-rgb) / 0.55)",
             backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-            border: "1px solid rgba(255,255,255,0.1)",
+            border: "1px solid rgb(var(--ink-rgb) / calc(0.1 * var(--ink-k)))",
             borderRadius: "var(--radius-pill)",
             boxShadow: scrolled
-              ? "0 12px 40px rgba(0,0,0,0.5)"
-              : "0 8px 32px rgba(0,0,0,0.35)",
+              ? "0 12px 40px rgb(var(--shadow-rgb) / calc(0.5 * var(--shadow-k)))"
+              : "0 8px 32px rgb(var(--shadow-rgb) / calc(0.35 * var(--shadow-k)))",
             padding: "13px 13px 13px 30px",
             transition: "background 0.3s, box-shadow 0.3s",
             position: "relative",
           }}
         >
           {/* Reading progress bar — hugs the bottom of the pill */}
-          <div aria-hidden="true" style={{ position: "absolute", left: "30px", right: "30px", bottom: "7px", height: "2px", borderRadius: "var(--radius-pill)", background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
+          <div aria-hidden="true" style={{ position: "absolute", left: "30px", right: "30px", bottom: "7px", height: "2px", borderRadius: "var(--radius-pill)", background: "rgb(var(--ink-rgb) / calc(0.07 * var(--ink-k)))", overflow: "hidden" }}>
             <motion.div style={{ height: "100%", borderRadius: "var(--radius-pill)", background: "linear-gradient(90deg, var(--gold), var(--teal))", transformOrigin: "0% 50%", scaleX: progressX, boxShadow: "0 0 8px rgb(var(--gold-rgb) / 0.5)" }} />
           </div>
 
@@ -203,7 +210,7 @@ export default function FloatingNav() {
               const inner = (
                 <span
                   className="relative z-10 inline-flex items-center gap-1.5"
-                  style={{ fontSize: "var(--text-ui)", fontWeight: 500, color: lit ? "#fff" : "rgba(255,255,255,0.62)", transition: "color 0.2s" }}
+                  style={{ fontSize: "var(--text-ui)", fontWeight: 500, color: lit ? "var(--ink-strong)" : "rgb(var(--ink-rgb) / calc(0.62 * var(--ink-k)))", transition: "color 0.2s" }}
                 >
                   {item.label}
                   {item.dropdown && (
@@ -223,7 +230,7 @@ export default function FloatingNav() {
                     <motion.div
                       layoutId="navPill"
                       transition={{ type: "spring", stiffness: 260, damping: 30 }}
-                      style={{ position: "absolute", inset: 0, background: "rgba(255,255,255,0.09)", borderRadius: "var(--radius-pill)" }}
+                      style={{ position: "absolute", inset: 0, background: "rgb(var(--ink-rgb) / calc(0.09 * var(--ink-k)))", borderRadius: "var(--radius-pill)" }}
                     />
                   )}
                   {item.dropdown ? (
@@ -245,14 +252,18 @@ export default function FloatingNav() {
           </nav>
 
           {/* Contact + mobile toggle */}
-          <span className="hidden md:inline-flex md:ml-8">
+          <span className="hidden md:inline-flex md:ml-8 items-center" style={{ gap: "10px" }}>
+            <ThemeToggle />
             <Button href="mailto:Azhar919@gmail.com" external variant="primary" size="sm" magnetic={false} icon={<Mail size={14} />} iconPosition="left">
               Contact
             </Button>
           </span>
-          <button className="flex md:hidden items-center justify-center w-10 h-10 rounded-full" onClick={() => setMenuOpen(v => !v)} aria-label="Open menu" aria-expanded={menuOpen} aria-controls="mobile-menu">
-            <Menu size={20} color="white" />
-          </button>
+          <span className="flex md:hidden items-center" style={{ gap: "6px" }}>
+            <ThemeToggle size={38} />
+            <button className="flex items-center justify-center w-10 h-10 rounded-full" onClick={() => setMenuOpen(v => !v)} aria-label="Open menu" aria-expanded={menuOpen} aria-controls="mobile-menu">
+              <Menu size={20} color="var(--ink-strong)" />
+            </button>
+          </span>
         </motion.header>
       </div>
 
@@ -270,11 +281,11 @@ export default function FloatingNav() {
               className="pointer-events-auto"
               style={{
                 width: "min(1040px, calc(100vw - 32px))",
-                background: "rgba(14,14,14,0.92)",
+                background: "color-mix(in srgb, var(--bg-raised) 94%, transparent)",
                 backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)",
-                border: "1px solid rgba(255,255,255,0.1)",
+                border: "1px solid rgb(var(--ink-rgb) / calc(0.1 * var(--ink-k)))",
                 borderRadius: "var(--radius-2xl)",
-                boxShadow: "0 30px 80px rgba(0,0,0,0.55)",
+                boxShadow: "0 30px 80px rgb(var(--shadow-rgb) / calc(0.55 * var(--shadow-k)))",
                 overflow: "hidden",
               }}
             >
@@ -285,7 +296,7 @@ export default function FloatingNav() {
                   <div className="flex flex-col" style={{ flex: 1 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "9px", padding: "0 12px", marginBottom: "10px" }}>
                       <LogoChip company={col.company} />
-                      <p className="eyebrow" style={{ color: "rgba(255,255,255,0.6)" }}>
+                      <p className="eyebrow" style={{ color: "rgb(var(--ink-rgb) / calc(0.6 * var(--ink-k)))" }}>
                         {col.company}
                       </p>
                     </div>
@@ -297,16 +308,16 @@ export default function FloatingNav() {
                           onClick={() => setDropdownOpen(false)}
                           className="group block rounded-xl transition-colors duration-150"
                           style={{ padding: "11px 12px" }}
-                          onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
+                          onMouseEnter={e => (e.currentTarget.style.background = "rgb(var(--ink-rgb) / calc(0.05 * var(--ink-k)))")}
                           onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
                         >
                           <span className="flex items-center" style={{ gap: "7px", fontSize: "var(--text-ui)", fontWeight: 500 }}>
-                            <span className="transition-colors duration-150 group-hover:text-[var(--gold)]" style={{ color: "#FFFFFF", whiteSpace: "nowrap" }}>
+                            <span className="transition-colors duration-150 group-hover:text-[var(--gold)]" style={{ color: "var(--ink-strong)", whiteSpace: "nowrap" }}>
                               {link.label}
                             </span>
-                            <ArrowRight size={13} className="shrink-0 text-white/35 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[var(--gold)]" />
+                            <ArrowRight size={13} className="shrink-0 opacity-70 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-[var(--gold)]" />
                           </span>
-                          <span style={{ display: "block", fontSize: "12.5px", color: "rgba(255,255,255,0.52)", lineHeight: 1.5, marginTop: "4px" }}>{link.desc}</span>
+                          <span style={{ display: "block", fontSize: "12.5px", color: "rgb(var(--ink-rgb) / calc(0.52 * var(--ink-k)))", lineHeight: 1.5, marginTop: "4px" }}>{link.desc}</span>
                         </Link>
                       ))}
                     </div>
@@ -329,44 +340,44 @@ export default function FloatingNav() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-[49] flex flex-col md:hidden"
-            style={{ background: "#0B0A09" }}
+            style={{ background: "var(--bg)" }}
           >
             {/* Mobile header — logo left, X right */}
             <div
               className="flex items-center justify-between px-5 shrink-0"
-              style={{ height: `${NAV_H}px`, borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+              style={{ height: `${NAV_H}px`, borderBottom: "1px solid rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))" }}
             >
               <Link href="/" className="text-ghost hover:opacity-60 transition-opacity duration-200" aria-label="AM. — Azhar Mohamed, home" onClick={() => setMenuOpen(false)}>
                 <LogoMark />
               </Link>
               <button onClick={() => setMenuOpen(false)} aria-label="Close menu">
-                <X size={20} color="white" />
+                <X size={20} color="var(--ink-strong)" />
               </button>
             </div>
 
             <nav className="flex-1 overflow-y-auto px-5 py-6 flex flex-col">
 
               {/* Home */}
-              <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+              <div style={{ borderBottom: "1px solid rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))" }}>
                 <Link
                   href="/"
                   onClick={() => setMenuOpen(false)}
                   className="block py-5 transition-colors duration-150"
-                  style={{ fontSize: "32px", fontWeight: 500, color: "#ffffff" }}
+                  style={{ fontSize: "32px", fontWeight: 500, color: "var(--ink-strong)" }}
                 >
                   Home
                 </Link>
               </div>
 
               {/* Projects accordion */}
-              <div style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+              <div style={{ borderBottom: "1px solid rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))" }}>
                 <button
                   className="w-full flex items-center justify-between py-5"
                   onClick={() => setMobileWorkOpen(v => !v)}
                 >
-                  <span style={{ fontSize: "32px", fontWeight: 500, color: "#ffffff" }}>Projects</span>
+                  <span style={{ fontSize: "32px", fontWeight: 500, color: "var(--ink-strong)" }}>Projects</span>
                   <motion.span animate={{ rotate: mobileWorkOpen ? 180 : 0 }} transition={{ duration: 0.2 }} style={{ display: "flex" }}>
-                    <ChevronDown size={18} color="rgba(255,255,255,0.4)" />
+                    <ChevronDown size={18} color="rgb(var(--ink-rgb) / calc(0.4 * var(--ink-k)))" />
                   </motion.span>
                 </button>
 
@@ -385,7 +396,7 @@ export default function FloatingNav() {
                             {/* Client header */}
                             <div style={{ display: "flex", alignItems: "center", gap: "9px", marginBottom: "12px", paddingLeft: "2px" }}>
                               <LogoChip company={col.company} />
-                              <p className="eyebrow" style={{ color: "rgba(255,255,255,0.55)" }}>
+                              <p className="eyebrow" style={{ color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))" }}>
                                 {col.company}
                               </p>
                             </div>
@@ -399,21 +410,21 @@ export default function FloatingNav() {
                                   className="flex items-center justify-between transition-colors duration-150 active:bg-white/[0.08]"
                                   style={{
                                     gap: "12px",
-                                    background: "rgba(255,255,255,0.04)",
-                                    border: "1px solid rgba(255,255,255,0.08)",
+                                    background: "rgb(var(--ink-rgb) / calc(0.04 * var(--ink-k)))",
+                                    border: "1px solid rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))",
                                     borderRadius: "14px",
                                     padding: "13px 15px",
                                   }}
                                 >
                                   <span className="flex flex-col" style={{ gap: "3px", minWidth: 0 }}>
-                                    <span style={{ fontSize: "16px", fontWeight: 600, color: "#F5F1EC", letterSpacing: "-0.01em" }}>
+                                    <span style={{ fontSize: "16px", fontWeight: 600, color: "var(--ink)", letterSpacing: "-0.01em" }}>
                                       {link.label}
                                     </span>
-                                    <span style={{ fontSize: "12.5px", fontWeight: 400, color: "rgba(255,255,255,0.5)", lineHeight: 1.4 }}>
+                                    <span style={{ fontSize: "12.5px", fontWeight: 400, color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))", lineHeight: 1.4 }}>
                                       {link.desc}
                                     </span>
                                   </span>
-                                  <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "28px", height: "28px", borderRadius: "50%", background: "rgba(255,255,255,0.06)", flexShrink: 0 }}>
+                                  <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "28px", height: "28px", borderRadius: "50%", background: "rgb(var(--ink-rgb) / calc(0.06 * var(--ink-k)))", flexShrink: 0 }}>
                                     <ArrowUpRight size={15} style={{ color: "var(--gold)" }} />
                                   </span>
                                 </Link>
@@ -434,13 +445,13 @@ export default function FloatingNav() {
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.08 + i * 0.06, duration: 0.3, ease: EASE }}
-                  style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+                  style={{ borderBottom: "1px solid rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))" }}
                 >
                   <Link
                     href={link.href}
                     onClick={() => setMenuOpen(false)}
                     className="block py-5 transition-colors duration-150"
-                    style={{ fontSize: "32px", fontWeight: 500, color: "#ffffff" }}
+                    style={{ fontSize: "32px", fontWeight: 500, color: "var(--ink-strong)" }}
                   >
                     {link.label}
                   </Link>

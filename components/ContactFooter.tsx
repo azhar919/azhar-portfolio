@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Mail } from "lucide-react";
+import { Mail } from "@/components/icons";
 import { useSpotlight } from "./useSpotlight";
 import Button from "./Button";
+import CopyEmail from "./CopyEmail";
 import Motif from "./Motif";
+import Parallax from "./Parallax";
 import { SHOW_LIFE_HEALTHCARE } from "@/lib/flags";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
@@ -53,7 +55,7 @@ const connectLinks = [
 ];
 
 const labelStyle: React.CSSProperties = {
-  color: "rgba(255,255,255,0.5)",
+  color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))",
   marginBottom: "16px",
   display: "block",
 };
@@ -70,9 +72,9 @@ function FooterLinkCol({ label, links }: { label: string; links: { label: string
             target="_blank"
             rel="noopener noreferrer"
             className="transition-colors duration-200"
-            style={{ fontSize: "var(--text-sm)", fontWeight: 400, color: "rgba(255,255,255,0.5)", marginBottom: "10px" }}
+            style={{ fontSize: "var(--text-sm)", fontWeight: 400, color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))", marginBottom: "10px" }}
             onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#ffffff")}
-            onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)")}
+            onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))")}
           >
             {link.label}
           </a>
@@ -81,9 +83,9 @@ function FooterLinkCol({ label, links }: { label: string; links: { label: string
             key={link.label}
             href={link.href}
             className="transition-colors duration-200"
-            style={{ fontSize: "var(--text-sm)", fontWeight: 400, color: "rgba(255,255,255,0.5)", marginBottom: "10px" }}
+            style={{ fontSize: "var(--text-sm)", fontWeight: 400, color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))", marginBottom: "10px" }}
             onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#ffffff")}
-            onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.5)")}
+            onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))")}
           >
             {link.label}
           </a>
@@ -96,7 +98,7 @@ function FooterLinkCol({ label, links }: { label: string; links: { label: string
 export default function ContactFooter() {
   const { handlers, overlay } = useSpotlight({ radius: 600, color: "rgb(var(--gold-rgb) / 0.1)" });
   return (
-    <footer className="no-print" style={{ background: "#0D0B09", position: "relative", overflow: "hidden" }} {...handlers}>
+    <footer className="no-print" style={{ background: "var(--bg)", position: "relative", overflow: "hidden" }} {...handlers}>
       {overlay}
       {/* motif bookend — mirrors the hero's orbit at the foot of the page */}
       <Motif variant="orbit" tone="duo" size={620} parallax={70} style={{ bottom: "-26%", right: "-9%", opacity: 0.55 }} />
@@ -109,7 +111,7 @@ export default function ContactFooter() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: EASE }}
           className="flex flex-col items-start"
-          style={{ paddingBottom: "64px", marginBottom: "56px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+          style={{ paddingBottom: "64px", marginBottom: "56px", borderBottom: "1px solid rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))" }}
         >
           <span className="eyebrow eyebrow-row" style={{ color: "var(--teal)", marginBottom: "24px" }}>
             <motion.span
@@ -120,21 +122,17 @@ export default function ContactFooter() {
             Available for new projects
           </span>
 
-          <h2 style={{ fontSize: "clamp(36px, 6vw, 72px)", fontWeight: 800, letterSpacing: "-0.04em", lineHeight: 1.04, color: "#F5F1EC", maxWidth: "820px" }}>
+          <Parallax travel={-18}>
+          <h2 style={{ fontSize: "clamp(36px, 6vw, 72px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.04, color: "var(--ink)", maxWidth: "820px" }}>
             Let&apos;s create something <span className="accent-serif" style={{ color: "var(--teal)" }}>effortless</span>.
           </h2>
+          </Parallax>
 
-          <p style={{ fontSize: "var(--text-body)", color: "rgba(255,255,255,0.5)", lineHeight: 1.7, marginTop: "24px", maxWidth: "520px" }}>
+          <p style={{ fontSize: "var(--text-body)", color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))", lineHeight: 1.7, marginTop: "24px", maxWidth: "520px" }}>
             Have a project, role, or idea in mind? I&apos;m always open to a good conversation.
           </p>
 
-          <a
-            href="mailto:Azhar919@gmail.com"
-            className="group relative inline-block after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-accent after:transition-[width] after:duration-300 hover:after:w-full"
-            style={{ marginTop: "40px", fontSize: "clamp(22px, 4vw, 44px)", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em" }}
-          >
-            Azhar919@gmail.com
-          </a>
+          <CopyEmail email="Azhar919@gmail.com" style={{ marginTop: "40px", fontSize: "clamp(22px, 4vw, 44px)" }} />
 
           <div className="flex flex-wrap gap-3" style={{ marginTop: "36px" }}>
             <Button href="mailto:Azhar919@gmail.com" external variant="primary" icon={<Mail size={16} />} iconPosition="left">
@@ -154,7 +152,7 @@ export default function ContactFooter() {
             <Link href="/" className="text-white hover:opacity-60 transition-opacity duration-200 inline-block" style={{ marginBottom: "16px" }}>
               <LogoMark />
             </Link>
-            <p style={{ fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.55)", lineHeight: 1.7 }}>
+            <p style={{ fontSize: "var(--text-sm)", color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))", lineHeight: 1.7 }}>
               Designing effortless digital experiences from Johannesburg, South Africa.
             </p>
           </div>
@@ -169,14 +167,14 @@ export default function ContactFooter() {
         </div>
 
         {/* Divider */}
-        <div style={{ height: "1px", background: "rgba(255,255,255,0.08)", margin: "40px 0 24px" }} />
+        <div style={{ height: "1px", background: "rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))", margin: "40px 0 24px" }} />
 
         {/* Bottom row */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-          <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.55)" }}>
+          <span style={{ fontSize: "var(--text-xs)", color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))" }}>
             © 2026 Azhar Mohamed. All rights reserved.
           </span>
-          <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.55)" }}>
+          <span style={{ fontSize: "var(--text-xs)", color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))" }}>
             Built with Claude Code
           </span>
         </div>

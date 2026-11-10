@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Cormorant, Montserrat, Arimo } from "next/font/google";
+import { Inter, Bricolage_Grotesque, Cormorant, Montserrat, Arimo } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import MotionProvider from "@/components/MotionProvider";
@@ -15,6 +15,15 @@ const inter = Inter({
   variable: "--font-body",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
+});
+
+// Display face for headings only — a grotesque with more character than Inter.
+// Variable (200–800) with the optical-size axis, so big headlines get the
+// tighter display cut automatically.
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-display",
+  subsets: ["latin"],
+  axes: ["opsz"],
 });
 
 // Elegant high-contrast serif — used for the hero monogram
@@ -71,10 +80,16 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${cormorant.variable} ${montserrat.variable} ${arimo.variable}`}>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" style={{ viewTransitionName: "root" }} className={`${inter.variable} ${bricolage.variable} ${cormorant.variable} ${montserrat.variable} ${arimo.variable}`}>
+      <head>
+        {/* Apply the saved theme before first paint (no flash). Dark is the default. */}
+        <script dangerouslySetInnerHTML={{ __html: `try{if(localStorage.getItem("theme")==="light")document.documentElement.dataset.theme="light"}catch(e){}` }} />
+      </head>
       <body className="min-h-screen antialiased">
         <a href="#main-content" className="skip-link">Skip to content</a>
-        <MotionProvider>{children}</MotionProvider>
+        <MotionProvider>
+          {children}
+        </MotionProvider>
         <CustomCursor />
         <Analytics />
       </body>

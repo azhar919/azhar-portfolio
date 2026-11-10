@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { useReveal } from "./useReveal";
+import { Reveal, RevealText, Stagger } from "./Reveal";
 import Motif from "./Motif";
+import Parallax from "./Parallax";
 import Tilt from "./Tilt";
 
 const clients = [
@@ -14,11 +14,10 @@ const clients = [
 ];
 
 function LogoChip({ client, index }: { client: typeof clients[0]; index: number }) {
-  const { ref, style } = useReveal({ y: 70, scale: 0.88, blur: 12 });
   const [hovered, setHovered] = useState(false);
 
   return (
-    <motion.div ref={ref} style={style}>
+    <Reveal item variant="pop">
       <div
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -36,8 +35,8 @@ function LogoChip({ client, index }: { client: typeof clients[0]; index: number 
             display: "grid",
             placeItems: "center",
             padding: "0 24px",
-            border: "1px solid rgba(255,255,255,0.08)",
-            boxShadow: hovered ? "0 22px 55px rgba(0,0,0,0.45)" : "0 8px 30px rgba(0,0,0,0.25)",
+            border: "1px solid rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))",
+            boxShadow: hovered ? "0 22px 55px rgb(var(--shadow-rgb) / calc(0.45 * var(--shadow-k)))" : "0 8px 30px rgb(var(--shadow-rgb) / calc(0.25 * var(--shadow-k)))",
             outline: hovered ? "2px solid rgb(var(--gold-rgb) / 0.55)" : "2px solid transparent",
             outlineOffset: "3px",
             transition: "box-shadow 0.3s ease, outline-color 0.3s ease",
@@ -56,42 +55,46 @@ function LogoChip({ client, index }: { client: typeof clients[0]; index: number 
           <span className="eyebrow" style={{ color: "var(--teal)" }}>
             {client.sector}
           </span>
-          <span style={{ fontSize: "var(--text-xs)", color: hovered ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.55)", lineHeight: 1.45, transition: "color 0.3s" }}>
+          <span style={{ fontSize: "var(--text-xs)", color: hovered ? "rgb(var(--ink-rgb) / calc(0.8 * var(--ink-k)))" : "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))", lineHeight: 1.45, transition: "color 0.3s" }}>
             {client.role}
           </span>
         </div>
       </div>
-    </motion.div>
+    </Reveal>
   );
 }
 
 function Heading() {
-  const { ref, style } = useReveal({ y: 40, scale: 0.96, blur: 8 });
   return (
-    <motion.div ref={ref} style={{ ...style, marginBottom: "44px" }} className="flex flex-col items-center text-center gap-3">
-      <p className="eyebrow" style={{ color: "var(--teal)" }}>
-        Worked with
-      </p>
-      <h2 style={{ fontSize: "var(--text-h3)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.12, color: "#F5F1EC", maxWidth: "640px" }}>
-        Trusted by teams across banking, healthcare{" "}
-        <span className="accent-serif" style={{ color: "var(--teal)" }}>&amp;</span> consulting
-      </h2>
-    </motion.div>
+    <Parallax travel={-18}>
+    <Stagger gap={0.12} style={{ marginBottom: "44px" }} className="flex flex-col items-center text-center gap-3">
+      <Reveal item variant="fade">
+        <p className="eyebrow" style={{ color: "var(--teal)" }}>
+          Worked with
+        </p>
+      </Reveal>
+      <RevealText item gap={0.045} style={{ fontSize: "var(--text-h3)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: 1.12, color: "var(--ink)", maxWidth: "640px" }}>
+        Trusted by teams across banking, healthcare
+        <span className="accent-serif" style={{ color: "var(--teal)" }}>&amp;</span>
+        consulting
+      </RevealText>
+    </Stagger>
+    </Parallax>
   );
 }
 
 export default function TrustStrip() {
   return (
-    <section className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "88px", paddingBottom: "88px" }}>
+    <section className="relative overflow-hidden" style={{ background: "var(--bg)", paddingTop: "88px", paddingBottom: "88px" }}>
       <Motif variant="hatch" tone="duo" size={720} parallax={70} style={{ top: "-24%", left: "50%", marginLeft: "-360px", opacity: 0.6 }} />
       <div className="divider-gold" style={{ marginBottom: "60px" }} />
       <div className="page-container relative">
         <Heading />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5" style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <Stagger gap={0.1} className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5" style={{ maxWidth: "1200px", margin: "0 auto" }}>
           {clients.map((client, i) => (
             <LogoChip key={client.name} client={client} index={i} />
           ))}
-        </div>
+        </Stagger>
       </div>
     </section>
   );

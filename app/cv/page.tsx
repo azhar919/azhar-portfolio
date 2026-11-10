@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView, AnimatePresence, useScroll, useSpring, useMotionValue, useTransform } from "framer-motion";
-import { ChevronDown, Mail, Building2, PenTool, Sparkles, Layers, GraduationCap, Award, BookOpen, TrendingUp, Users, AtSign, Download, Briefcase, type LucideIcon } from "lucide-react";
+import { ChevronDown, Mail, Building2, PenTool, Sparkles, Layers, GraduationCap, Award, BookOpen, TrendingUp, Users, AtSign, Download, Briefcase, type Icon as LucideIcon } from "@/components/icons";
 import Motif from "@/components/Motif";
 
 function LinkedinIcon({ size = 14 }: { size?: number }) {
@@ -42,10 +42,10 @@ function AnimatedBlock({ children, delay = 0, className }: { children: React.Rea
    line wraps only at the separators ── */
 function InlineItems({ items }: { items: string[] }) {
   return (
-    <p style={{ fontSize: 13, color: "rgba(255,255,255,0.68)", lineHeight: 1.75, margin: 0 }}>
+    <p style={{ fontSize: 13, color: "rgb(var(--ink-rgb) / calc(0.68 * var(--ink-k)))", lineHeight: 1.75, margin: 0 }}>
       {items.map((it, i) => (
         <span key={it}>
-          {i > 0 && <span style={{ color: "rgba(255,255,255,0.22)" }}> · </span>}
+          {i > 0 && <span style={{ color: "rgb(var(--ink-rgb) / calc(0.22 * var(--ink-k)))" }}> · </span>}
           <span style={{ whiteSpace: "nowrap" }}>{it}</span>
         </span>
       ))}
@@ -94,12 +94,12 @@ function EmploymentTimeline() {
   return (
     <div>
       <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 16 }}>
-        <span style={{ width: 40, height: 40, borderRadius: 10, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.09)", display: "grid", placeItems: "center", flexShrink: 0 }}>
+        <span style={{ width: 40, height: 40, borderRadius: 10, background: "rgb(var(--ink-rgb) / calc(0.05 * var(--ink-k)))", border: "1px solid rgb(var(--ink-rgb) / calc(0.09 * var(--ink-k)))", display: "grid", placeItems: "center", flexShrink: 0 }}>
           <IqMark size={23} />
         </span>
         <div style={{ minWidth: 0 }}>
-          <p style={{ fontSize: 14, fontWeight: 700, color: "#FFFFFF", margin: 0, letterSpacing: "-0.01em" }}>{employment.company}</p>
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", margin: "2px 0 0" }}>{employment.meta}</p>
+          <p style={{ fontSize: 14, fontWeight: 700, color: "var(--ink-strong)", margin: 0, letterSpacing: "-0.01em" }}>{employment.company}</p>
+          <p style={{ fontSize: 12, color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))", margin: "2px 0 0" }}>{employment.meta}</p>
         </div>
       </div>
       <ol style={{ listStyle: "none", margin: 0, padding: 0 }}>
@@ -109,19 +109,19 @@ function EmploymentTimeline() {
           return (
             <li key={r.title} style={{ position: "relative", paddingLeft: 22, paddingBottom: last ? 0 : 16 }}>
               {!last && (
-                <span aria-hidden="true" style={{ position: "absolute", left: 4, top: 13, bottom: -1, width: 1.5, background: "rgba(255,255,255,0.12)" }} />
+                <span aria-hidden="true" style={{ position: "absolute", left: 4, top: 13, bottom: -1, width: 1.5, background: "rgb(var(--ink-rgb) / calc(0.12 * var(--ink-k)))" }} />
               )}
               <span
                 aria-hidden="true"
                 style={{
                   position: "absolute", left: 0, top: 4, width: 9, height: 9, borderRadius: "50%",
                   background: current ? "var(--gold)" : "#2a2622",
-                  border: current ? "none" : "1.5px solid rgba(255,255,255,0.28)",
+                  border: current ? "none" : "1.5px solid rgb(var(--ink-rgb) / calc(0.28 * var(--ink-k)))",
                   boxShadow: current ? "0 0 0 3px rgb(var(--gold-rgb) / 0.18)" : "none",
                 }}
               />
-              <p style={{ fontSize: 13, fontWeight: 600, color: "#F5F1EC", margin: 0, lineHeight: 1.35 }}>{r.title}</p>
-              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", margin: "2px 0 0" }}>{r.period}{r.duration ? ` · ${r.duration}` : ""}</p>
+              <p style={{ fontSize: 13, fontWeight: 600, color: "var(--ink)", margin: 0, lineHeight: 1.35 }}>{r.title}</p>
+              <p style={{ fontSize: 12, color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))", margin: "2px 0 0" }}>{r.period}{r.duration ? ` · ${r.duration}` : ""}</p>
             </li>
           );
         })}
@@ -431,7 +431,7 @@ function AccordionItem({
           position: "relative",
           overflow: "hidden",
           gap: 16,
-          background: open ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)",
+          background: open ? "rgb(var(--ink-rgb) / calc(0.07 * var(--ink-k)))" : "rgb(var(--ink-rgb) / calc(0.04 * var(--ink-k)))",
           borderRadius: open ? "12px 12px 0 0" : 12,
           borderLeft: `2px solid ${open ? "var(--gold)" : "transparent"}`,
           padding: "20px 24px",
@@ -440,10 +440,10 @@ function AccordionItem({
         }}
       >
         {overlay}
-        <span className="relative z-10" style={{ flex: 1, minWidth: 0, fontSize: 15, fontWeight: 600, color: open ? "#F5F1EC" : "#FFFFFF", letterSpacing: "-0.01em" }}>{project.title}</span>
+        <span className="relative z-10" style={{ flex: 1, minWidth: 0, fontSize: 15, fontWeight: 600, color: open ? "var(--ink)" : "var(--ink-strong)", letterSpacing: "-0.01em" }}>{project.title}</span>
         <ChevronDown
           size={16}
-          color={open ? "var(--gold)" : "rgba(255,255,255,0.35)"}
+          color={open ? "var(--gold)" : "rgb(var(--ink-rgb) / calc(0.35 * var(--ink-k)))"}
           className="relative z-10"
           style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s, color 0.2s", flexShrink: 0 }}
         />
@@ -458,9 +458,9 @@ function AccordionItem({
             transition={{ duration: 0.28, ease: "easeInOut" }}
             style={{
               overflow: "hidden",
-              background: "rgba(255,255,255,0.04)",
+              background: "rgb(var(--ink-rgb) / calc(0.04 * var(--ink-k)))",
               borderRadius: "0 0 12px 12px",
-              borderTop: "1px solid rgba(255,255,255,0.05)",
+              borderTop: "1px solid rgb(var(--ink-rgb) / calc(0.05 * var(--ink-k)))",
               borderLeft: "2px solid var(--gold)",
             }}
           >
@@ -474,7 +474,7 @@ function AccordionItem({
               <p className="eyebrow" style={{ color: "var(--teal)", marginTop: 20, marginBottom: 10 }}>
                 Project Overview
               </p>
-              <p style={{ fontSize: 13.5, color: "rgba(255,255,255,0.58)", lineHeight: 1.8, margin: 0 }}>
+              <p style={{ fontSize: 13.5, color: "rgb(var(--ink-rgb) / calc(0.58 * var(--ink-k)))", lineHeight: 1.8, margin: 0 }}>
                 {project.overview}
               </p>
               <p className="eyebrow" style={{ color: "var(--teal)", marginTop: 22, marginBottom: 12 }}>
@@ -484,7 +484,7 @@ function AccordionItem({
                 {project.bullets.map((bullet, i) => (
                   <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: i < project.bullets.length - 1 ? 10 : 0 }}>
                     <span style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--gold)", marginTop: "0.6em", flexShrink: 0 }} />
-                    <span style={{ fontSize: 13.5, color: "rgba(255,255,255,0.58)", lineHeight: 1.8 }}>{bullet}</span>
+                    <span style={{ fontSize: 13.5, color: "rgb(var(--ink-rgb) / calc(0.58 * var(--ink-k)))", lineHeight: 1.8 }}>{bullet}</span>
                   </li>
                 ))}
               </ul>
@@ -504,7 +504,7 @@ function CompanyGroup({ group, forceOpen = false }: { group: TimelineGroup; forc
     <div>
       <div style={{ marginBottom: 16, minHeight: 48, display: "flex", flexDirection: "column", justifyContent: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
-          <h3 style={{ fontSize: 20, fontWeight: 700, color: "#F5F1EC", margin: 0, letterSpacing: "-0.02em" }}>
+          <h3 style={{ fontSize: 20, fontWeight: 700, color: "var(--ink)", margin: 0, letterSpacing: "-0.02em" }}>
             {group.company}
           </h3>
           <span style={{
@@ -515,9 +515,9 @@ function CompanyGroup({ group, forceOpen = false }: { group: TimelineGroup; forc
             {group.dateRange}
           </span>
         </div>
-        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", marginTop: 5, marginBottom: 0 }}>
+        <p style={{ fontSize: 13, color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))", marginTop: 5, marginBottom: 0 }}>
           {group.role}
-          <span style={{ color: "rgba(255,255,255,0.55)" }}> · {group.projects.length} project{group.projects.length > 1 ? "s" : ""}</span>
+          <span style={{ color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))" }}> · {group.projects.length} project{group.projects.length > 1 ? "s" : ""}</span>
         </p>
       </div>
       <div>
@@ -544,7 +544,7 @@ function ExperienceTimeline({ forceOpen = false }: { forceOpen?: boolean }) {
   return (
     <div ref={ref} style={{ position: "relative" }}>
       {/* rail track */}
-      <div aria-hidden="true" className="cv-rail" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "rgba(255,255,255,0.08)" }} />
+      <div aria-hidden="true" className="cv-rail" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))" }} />
       {/* rail fill — grows with scroll */}
       <motion.div aria-hidden="true" className="cv-rail" style={{ position: "absolute", left: "31px", top: "14px", bottom: "14px", width: "2px", background: "linear-gradient(to bottom, var(--teal-light), var(--teal), var(--teal-dark))", transformOrigin: "top", scaleY: fill, boxShadow: "0 0 8px rgb(var(--teal-rgb) / 0.55)" }} />
 
@@ -556,8 +556,8 @@ function ExperienceTimeline({ forceOpen = false }: { forceOpen?: boolean }) {
               position: "absolute", left: 0, top: 0,
               width: "64px", height: "48px", borderRadius: "13px",
               background: group.logoBg, display: "grid", placeItems: "center",
-              border: "1px solid rgba(255,255,255,0.14)", overflow: "hidden",
-              zIndex: 1, boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+              border: "1px solid rgb(var(--ink-rgb) / calc(0.14 * var(--ink-k)))", overflow: "hidden",
+              zIndex: 1, boxShadow: "0 6px 20px rgb(var(--shadow-rgb) / calc(0.4 * var(--shadow-k)))",
             }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={group.logo} alt={group.company} style={{ maxWidth: "76%", maxHeight: "60%", objectFit: "contain", display: "block" }} />
@@ -578,8 +578,8 @@ function SidebarSection({ title, icon: Icon, children }: { title: string; icon: 
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: hovered ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.02)",
-        border: `1px solid ${hovered ? "rgb(var(--gold-rgb) / 0.25)" : "rgba(255,255,255,0.06)"}`,
+        background: hovered ? "rgb(var(--ink-rgb) / calc(0.04 * var(--ink-k)))" : "rgb(var(--ink-rgb) / calc(0.02 * var(--ink-k)))",
+        border: `1px solid ${hovered ? "rgb(var(--gold-rgb) / 0.25)" : "rgb(var(--ink-rgb) / calc(0.06 * var(--ink-k)))"}`,
         borderRadius: 16,
         padding: "20px 22px",
         transition: "background 0.25s, border-color 0.25s",
@@ -588,13 +588,13 @@ function SidebarSection({ title, icon: Icon, children }: { title: string; icon: 
       <h2
         className="eyebrow eyebrow-row"
         style={{
-          color: "rgba(255,255,255,0.6)",
+          color: "rgb(var(--ink-rgb) / calc(0.6 * var(--ink-k)))",
           marginBottom: 16,
           paddingBottom: 12,
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
+          borderBottom: "1px solid rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))",
         }}
       >
-        <Icon size={14} color="var(--teal)" strokeWidth={2} />
+        <Icon size={14} color="var(--teal)" />
         {title}
       </h2>
       {children}
@@ -623,10 +623,10 @@ function HeroStat({ value, suffix, label }: { value: number; suffix: string; lab
   }, [inView, value]);
   return (
     <div ref={ref} className="flex flex-col items-center text-center">
-      <span style={{ fontSize: 30, fontWeight: 800, color: "#F5F1EC", lineHeight: 1, letterSpacing: "-0.02em", fontVariantNumeric: "tabular-nums" }}>
+      <span style={{ fontSize: 30, fontWeight: 800, color: "var(--ink)", lineHeight: 1, letterSpacing: "-0.02em", fontVariantNumeric: "tabular-nums" }}>
         {n}{suffix}
       </span>
-      <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", marginTop: 6 }}>{label}</span>
+      <span style={{ fontSize: 12, color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))", marginTop: 6 }}>{label}</span>
     </div>
   );
 }
@@ -671,7 +671,7 @@ function CVPhoto() {
               background: "conic-gradient(rgb(var(--gold-rgb) / 0.75) 0deg, rgb(var(--gold-rgb) / 0.12) 55deg, transparent 95deg, transparent 360deg)",
             }}
           />
-          <div className="relative overflow-hidden" style={{ width: 200, height: 200, borderRadius: 20, border: "1px solid rgba(255,255,255,0.1)" }}>
+          <div className="relative overflow-hidden" style={{ width: 200, height: 200, borderRadius: 20, border: "1px solid rgb(var(--ink-rgb) / calc(0.1 * var(--ink-k)))" }}>
             <Image src="/images/profile.webp" alt="Azhar Mohamed" fill className="object-cover" priority />
           </div>
         </div>
@@ -705,7 +705,7 @@ export default function CVPage() {
       ]);
       const canvas = await html2canvas(el, {
         scale: SCALE,
-        backgroundColor: "#0B0A09",
+        backgroundColor: "var(--bg)",
         useCORS: true,
         windowWidth: el.scrollWidth,
         windowHeight: el.scrollHeight,
@@ -723,13 +723,13 @@ export default function CVPage() {
   };
 
   return (
-    <main id="main-content" tabIndex={-1} style={{ background: "#0B0A09", minHeight: "100vh" }}>
+    <main id="main-content" tabIndex={-1} style={{ background: "var(--bg)", minHeight: "100vh" }}>
       <FloatingNav />
       <div className="pt-[72px]">
        <div ref={contentRef} className={exporting ? "cv-exporting" : undefined}>
 
         {/* ── Hero ── */}
-        <section className="relative overflow-hidden" style={{ background: "#0B0A09", paddingTop: "72px", paddingBottom: "72px" }} {...heroSpot.handlers}>
+        <section className="relative overflow-hidden" style={{ background: "var(--bg)", paddingTop: "72px", paddingBottom: "72px" }} {...heroSpot.handlers}>
 
           {heroSpot.overlay}
 
@@ -758,7 +758,7 @@ export default function CVPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.06, ease: EASE }}
-                  style={{ fontSize: "var(--text-h2)", fontWeight: 800, lineHeight: 1.06, letterSpacing: "-0.03em", color: "#F5F1EC", margin: 0 }}
+                  style={{ fontSize: "var(--text-h2)", fontWeight: 800, lineHeight: 1.06, letterSpacing: "-0.03em", color: "var(--ink)", margin: 0 }}
                 >
                   Azhar Mohamed
                 </motion.h1>
@@ -776,7 +776,7 @@ export default function CVPage() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.18, ease: EASE }}
-                  style={{ fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: 1.75, maxWidth: 560 }}
+                  style={{ fontSize: 14, color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))", lineHeight: 1.75, maxWidth: 560 }}
                 >
                   {bio}
                 </motion.p>
@@ -817,7 +817,7 @@ export default function CVPage() {
         </section>
 
         {/* ── Main grid ── */}
-        <section style={{ background: "#0B0A09", paddingTop: "64px", paddingBottom: "96px" }}>
+        <section style={{ background: "var(--bg)", paddingTop: "64px", paddingBottom: "96px" }}>
           <div className="page-container">
             <div className="flex flex-col md:flex-row gap-y-14 md:gap-x-16 items-start">
 
@@ -825,7 +825,7 @@ export default function CVPage() {
               <div className="flex-1 min-w-0 flex flex-col">
 
                 <AnimatedBlock className="mb-10">
-                  <h2 style={{ fontSize: 22, fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.02em", paddingBottom: 16, borderBottom: "1px solid rgba(255,255,255,0.08)", margin: 0 }}>
+                  <h2 style={{ fontSize: 22, fontWeight: 700, color: "var(--ink-strong)", letterSpacing: "-0.02em", paddingBottom: 16, borderBottom: "1px solid rgb(var(--ink-rgb) / calc(0.08 * var(--ink-k)))", margin: 0 }}>
                     Project experience
                   </h2>
                 </AnimatedBlock>
@@ -846,7 +846,7 @@ export default function CVPage() {
                   <SidebarSection title="Industries" icon={Building2}>
                     <ul className="flex flex-col gap-2">
                       {industries.map(item => (
-                        <li key={item} style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{item}</li>
+                        <li key={item} style={{ fontSize: 13, color: "rgb(var(--ink-rgb) / calc(0.6 * var(--ink-k)))" }}>{item}</li>
                       ))}
                     </ul>
                   </SidebarSection>
@@ -874,9 +874,9 @@ export default function CVPage() {
                   <SidebarSection title="Education" icon={GraduationCap}>
                     {education.map(edu => (
                       <div key={edu.institution} className="flex flex-col gap-1">
-                        <p style={{ fontSize: 13, fontWeight: 600, color: "#FFFFFF", margin: 0 }}>{edu.institution}</p>
-                        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.55)", margin: 0 }}>{edu.qualification}</p>
-                        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", margin: 0 }}>{edu.year}</p>
+                        <p style={{ fontSize: 13, fontWeight: 600, color: "var(--ink-strong)", margin: 0 }}>{edu.institution}</p>
+                        <p style={{ fontSize: 13, color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))", margin: 0 }}>{edu.qualification}</p>
+                        <p style={{ fontSize: 12, color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))", margin: 0 }}>{edu.year}</p>
                       </div>
                     ))}
                   </SidebarSection>
@@ -887,8 +887,8 @@ export default function CVPage() {
                     <ul className="flex flex-col gap-3">
                       {certifications.map(cert => (
                         <li key={cert.name} className="flex flex-col gap-0.5">
-                          <span style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.5 }}>{cert.name}</span>
-                          {cert.year && <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)" }}>{cert.year}</span>}
+                          <span style={{ fontSize: 13, color: "rgb(var(--ink-rgb) / calc(0.6 * var(--ink-k)))", lineHeight: 1.5 }}>{cert.name}</span>
+                          {cert.year && <span style={{ fontSize: 12, color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))" }}>{cert.year}</span>}
                         </li>
                       ))}
                     </ul>
@@ -900,8 +900,8 @@ export default function CVPage() {
                     <ul className="flex flex-col gap-3">
                       {training.map(item => (
                         <li key={item.name} className="flex flex-col gap-0.5">
-                          <span style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{item.name}</span>
-                          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.55)" }}>{item.year}</span>
+                          <span style={{ fontSize: 13, color: "rgb(var(--ink-rgb) / calc(0.6 * var(--ink-k)))" }}>{item.name}</span>
+                          <span style={{ fontSize: 12, color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))" }}>{item.year}</span>
                         </li>
                       ))}
                     </ul>
@@ -912,7 +912,7 @@ export default function CVPage() {
                   <SidebarSection title="Current Development" icon={TrendingUp}>
                     <ul className="flex flex-col gap-2">
                       {currentDevelopment.map(item => (
-                        <li key={item} style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{item}</li>
+                        <li key={item} style={{ fontSize: 13, color: "rgb(var(--ink-rgb) / calc(0.6 * var(--ink-k)))" }}>{item}</li>
                       ))}
                     </ul>
                   </SidebarSection>
@@ -922,7 +922,7 @@ export default function CVPage() {
                   <SidebarSection title="Roles" icon={Users}>
                     <ul className="flex flex-col gap-2">
                       {roles.map(role => (
-                        <li key={role} style={{ fontSize: 13, color: "rgba(255,255,255,0.6)" }}>{role}</li>
+                        <li key={role} style={{ fontSize: 13, color: "rgb(var(--ink-rgb) / calc(0.6 * var(--ink-k)))" }}>{role}</li>
                       ))}
                     </ul>
                   </SidebarSection>
@@ -945,9 +945,9 @@ export default function CVPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="transition-colors duration-200"
-                        style={{ fontSize: 13, color: "rgba(255,255,255,0.55)" }}
+                        style={{ fontSize: 13, color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))" }}
                         onMouseEnter={e => ((e.currentTarget as HTMLAnchorElement).style.color = "#FFFFFF")}
-                        onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgba(255,255,255,0.55)")}
+                        onMouseLeave={e => ((e.currentTarget as HTMLAnchorElement).style.color = "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))")}
                       >
                         LinkedIn
                       </a>

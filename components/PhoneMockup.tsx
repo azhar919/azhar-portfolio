@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const EASE = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
-export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true }: { src: string; delay?: number; showStatusBar?: boolean }) {
+export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true, instant = false }: { src: string; delay?: number; showStatusBar?: boolean; instant?: boolean }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const [hasOverflow, setHasOverflow] = useState(true);
@@ -26,11 +26,12 @@ export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true }:
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={instant ? false : { opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.9, delay, ease: EASE }}
-      style={{ display: "flex", justifyContent: "center", filter: "drop-shadow(0 60px 80px rgba(0,0,0,0.8))" }}
+      className="keep-dark"
+      style={{ display: "flex", justifyContent: "center", filter: "drop-shadow(0 60px 80px rgb(var(--shadow-rgb) / calc(0.8 * var(--shadow-k))))" }}
     >
       {/* Outer titanium frame */}
       <div style={{
@@ -40,21 +41,21 @@ export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true }:
         background: "linear-gradient(160deg, #8a8a8a 0%, #5a5a5a 15%, #3a3a3a 40%, #4a4a4a 60%, #6a6a6a 80%, #8a8a8a 100%)",
         padding: "3px",
         boxShadow: `
-          inset 0 1px 0 rgba(255,255,255,0.35),
+          inset 0 1px 0 rgb(var(--ink-rgb) / calc(0.35 * var(--ink-k))),
           inset 0 -1px 0 rgba(0,0,0,0.5),
           0 0 0 1px rgba(0,0,0,0.6)
         `,
       }}>
 
         {/* Side buttons — Power (right) */}
-        <div style={{ position: "absolute", right: "-4px", top: "140px", width: "4px", height: "72px", background: "linear-gradient(to right, #555, #777, #555)", borderRadius: "0 4px 4px 0", boxShadow: "inset -1px 0 0 rgba(255,255,255,0.1), 1px 0 0 rgba(0,0,0,0.4)" }} />
+        <div style={{ position: "absolute", right: "-4px", top: "140px", width: "4px", height: "72px", background: "linear-gradient(to right, #555, #777, #555)", borderRadius: "0 4px 4px 0", boxShadow: "inset -1px 0 0 rgb(var(--ink-rgb) / calc(0.1 * var(--ink-k))), 1px 0 0 rgb(var(--shadow-rgb) / calc(0.4 * var(--shadow-k)))" }} />
 
         {/* Volume up (left) */}
-        <div style={{ position: "absolute", left: "-4px", top: "110px", width: "4px", height: "52px", background: "linear-gradient(to left, #555, #777, #555)", borderRadius: "4px 0 0 4px", boxShadow: "inset 1px 0 0 rgba(255,255,255,0.1), -1px 0 0 rgba(0,0,0,0.4)" }} />
+        <div style={{ position: "absolute", left: "-4px", top: "110px", width: "4px", height: "52px", background: "linear-gradient(to left, #555, #777, #555)", borderRadius: "4px 0 0 4px", boxShadow: "inset 1px 0 0 rgb(var(--ink-rgb) / calc(0.1 * var(--ink-k))), -1px 0 0 rgb(var(--shadow-rgb) / calc(0.4 * var(--shadow-k)))" }} />
         {/* Volume down (left) */}
-        <div style={{ position: "absolute", left: "-4px", top: "174px", width: "4px", height: "52px", background: "linear-gradient(to left, #555, #777, #555)", borderRadius: "4px 0 0 4px", boxShadow: "inset 1px 0 0 rgba(255,255,255,0.1), -1px 0 0 rgba(0,0,0,0.4)" }} />
+        <div style={{ position: "absolute", left: "-4px", top: "174px", width: "4px", height: "52px", background: "linear-gradient(to left, #555, #777, #555)", borderRadius: "4px 0 0 4px", boxShadow: "inset 1px 0 0 rgb(var(--ink-rgb) / calc(0.1 * var(--ink-k))), -1px 0 0 rgb(var(--shadow-rgb) / calc(0.4 * var(--shadow-k)))" }} />
         {/* Action button (left, small) */}
-        <div style={{ position: "absolute", left: "-4px", top: "76px", width: "4px", height: "28px", background: "linear-gradient(to left, #555, #777, #555)", borderRadius: "4px 0 0 4px", boxShadow: "inset 1px 0 0 rgba(255,255,255,0.1), -1px 0 0 rgba(0,0,0,0.4)" }} />
+        <div style={{ position: "absolute", left: "-4px", top: "76px", width: "4px", height: "28px", background: "linear-gradient(to left, #555, #777, #555)", borderRadius: "4px 0 0 4px", boxShadow: "inset 1px 0 0 rgb(var(--ink-rgb) / calc(0.1 * var(--ink-k))), -1px 0 0 rgb(var(--shadow-rgb) / calc(0.4 * var(--shadow-k)))" }} />
 
         {/* Inner screen body */}
         <div style={{
@@ -72,13 +73,13 @@ export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true }:
               width: "118px", height: "34px",
               background: "#000",
               borderRadius: "var(--radius-2xl)",
-              border: "1px solid rgba(255,255,255,0.06)",
-              boxShadow: "0 0 0 1px rgba(0,0,0,1)",
+              border: "1px solid rgb(var(--ink-rgb) / calc(0.06 * var(--ink-k)))",
+              boxShadow: "0 0 0 1px rgb(var(--shadow-rgb) / calc(1 * var(--shadow-k)))",
               zIndex: 2,
               display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "10px", gap: "5px",
             }}>
               {/* Front camera */}
-              <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#1a1a2e", border: "1px solid rgba(255,255,255,0.04)", boxShadow: "inset 0 0 3px rgba(0,0,100,0.5)" }} />
+              <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#1a1a2e", border: "1px solid rgb(var(--ink-rgb) / calc(0.04 * var(--ink-k)))", boxShadow: "inset 0 0 3px rgba(0,0,100,0.5)" }} />
             </div>
             {/* Time */}
             <span style={{ position: "absolute", left: "22px", fontSize: "var(--text-xs)", fontWeight: 700, color: "white", letterSpacing: "-0.3px", fontFamily: "system-ui" }}>9:41</span>
@@ -96,10 +97,10 @@ export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true }:
                 <path d="M1 3.5C2.9 1.4 5.3.3 8 .3s5.1 1.1 7 3.2" stroke="white" strokeWidth="1.4" strokeLinecap="round" opacity="0.4"/>
               </svg>
               <div style={{ display: "flex", alignItems: "center", gap: "1px" }}>
-                <div style={{ width: "23px", height: "11px", border: "1.5px solid rgba(255,255,255,0.65)", borderRadius: "3px", padding: "1.5px", display: "flex", alignItems: "center" }}>
+                <div style={{ width: "23px", height: "11px", border: "1.5px solid rgb(var(--ink-rgb) / calc(0.65 * var(--ink-k)))", borderRadius: "3px", padding: "1.5px", display: "flex", alignItems: "center" }}>
                   <div style={{ width: "75%", height: "100%", background: "white", borderRadius: "1px" }} />
                 </div>
-                <div style={{ width: "2px", height: "5px", background: "rgba(255,255,255,0.4)", borderRadius: "0 1px 1px 0", marginLeft: "1px" }} />
+                <div style={{ width: "2px", height: "5px", background: "rgb(var(--ink-rgb) / calc(0.4 * var(--ink-k)))", borderRadius: "0 1px 1px 0", marginLeft: "1px" }} />
               </div>
             </div>
           </div>}
@@ -120,13 +121,13 @@ export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true }:
 
           {/* Home indicator */}
           <div style={{ height: "30px", background: "#000", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <div style={{ width: "110px", height: "5px", background: "rgba(255,255,255,0.3)", borderRadius: "var(--radius-pill)" }} />
+            <div style={{ width: "110px", height: "5px", background: "rgb(var(--ink-rgb) / calc(0.3 * var(--ink-k)))", borderRadius: "var(--radius-pill)" }} />
           </div>
 
           {/* Specular screen glare */}
           <div style={{
             position: "absolute", inset: 0, pointerEvents: "none",
-            background: "linear-gradient(135deg, rgba(255,255,255,0.06) 0%, transparent 40%)",
+            background: "linear-gradient(135deg, rgb(var(--ink-rgb) / calc(0.06 * var(--ink-k))) 0%, transparent 40%)",
             borderRadius: "50px",
           }} />
 
@@ -139,7 +140,7 @@ export default function PhoneMockup({ src, delay = 0.25, showStatusBar = true }:
                 style={{
                   display: "flex", alignItems: "center", gap: "5px",
                   background: "rgb(var(--gold-rgb) / 0.9)", backdropFilter: "blur(8px)",
-                  border: "1px solid rgba(255,255,255,0.15)",
+                  border: "1px solid rgb(var(--ink-rgb) / calc(0.15 * var(--ink-k)))",
                   borderRadius: "var(--radius-pill)", padding: "5px 12px",
                   boxShadow: "0 4px 16px rgb(var(--gold-rgb) / 0.5)",
                 }}

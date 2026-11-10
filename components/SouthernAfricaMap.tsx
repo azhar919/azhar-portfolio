@@ -43,11 +43,11 @@ function PulsingDot({ cx, cy, delay }: { cx: number; cy: number; delay: number }
 
 export default function SouthernAfricaMap() {
   return (
-    <div style={{ position: "relative", borderRadius: "var(--radius-2xl)", overflow: "hidden", background: "#0D0D0D", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 32px 80px rgba(0,0,0,0.5)", padding: "40px" }}>
+    <div className="keep-dark" style={{ position: "relative", borderRadius: "var(--radius-2xl)", overflow: "hidden", background: "#0D0D0D", border: "1px solid rgb(var(--ink-rgb) / calc(0.07 * var(--ink-k)))", boxShadow: "0 32px 80px rgb(var(--shadow-rgb) / calc(0.5 * var(--shadow-k)))", padding: "40px" }}>
       <svg viewBox="0 0 520 500" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }}>
         <defs>
           <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="0.8" fill="rgba(255,255,255,0.06)" />
+            <circle cx="1" cy="1" r="0.8" fill="rgb(var(--ink-rgb) / calc(0.06 * var(--ink-k)))" />
           </pattern>
           <filter id="glow">
             <feGaussianBlur stdDeviation="3" result="blur" />
@@ -61,8 +61,8 @@ export default function SouthernAfricaMap() {
           <motion.path
             key={c.id}
             d={c.path}
-            fill={c.highlighted ? "rgb(var(--gold-rgb) / 0.2)" : "rgba(255,255,255,0.04)"}
-            stroke={c.highlighted ? "var(--gold)" : "rgba(255,255,255,0.12)"}
+            fill={c.highlighted ? "rgb(var(--gold-rgb) / 0.2)" : "rgb(var(--ink-rgb) / calc(0.04 * var(--ink-k)))"}
+            stroke={c.highlighted ? "var(--gold)" : "rgb(var(--ink-rgb) / calc(0.12 * var(--ink-k)))"}
             strokeWidth={c.highlighted ? 1.5 : 0.8}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -113,11 +113,11 @@ export default function SouthernAfricaMap() {
       <div style={{ display: "flex", alignItems: "center", gap: "16px", marginTop: "20px", justifyContent: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
           <div style={{ width: "12px", height: "12px", borderRadius: "3px", background: "rgb(var(--gold-rgb) / 0.25)", border: "1.5px solid var(--gold)" }} />
-          <span style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.5)", fontWeight: 500 }}>Nedbank operating regions</span>
+          <span style={{ fontSize: "var(--text-label)", color: "rgb(var(--ink-rgb) / calc(0.5 * var(--ink-k)))", fontWeight: 500 }}>Nedbank operating regions</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-          <div style={{ width: "12px", height: "12px", borderRadius: "3px", background: "rgba(255,255,255,0.04)", border: "0.8px solid rgba(255,255,255,0.12)" }} />
-          <span style={{ fontSize: "var(--text-label)", color: "rgba(255,255,255,0.55)", fontWeight: 500 }}>Surrounding countries</span>
+          <div style={{ width: "12px", height: "12px", borderRadius: "3px", background: "rgb(var(--ink-rgb) / calc(0.04 * var(--ink-k)))", border: "0.8px solid rgb(var(--ink-rgb) / calc(0.12 * var(--ink-k)))" }} />
+          <span style={{ fontSize: "var(--text-label)", color: "rgb(var(--ink-rgb) / calc(0.55 * var(--ink-k)))", fontWeight: 500 }}>Surrounding countries</span>
         </div>
       </div>
     </div>

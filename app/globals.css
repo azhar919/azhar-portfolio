@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-heading: var(--font-body);      /* Inter (unified — headings + body) */
+  --font-heading: var(--font-display);   /* Bricolage Grotesque - headings only */
   --font-body:    var(--font-body);      /* Inter                              */
 
   /* ── Extra-large breakpoints ────────────────────────────── */
@@ -42,25 +42,15 @@
      --gold is tuned to clear WCAG AA (4.5:1) as small text on our dark surfaces;
      --gold-dark is the button background (white text on it passes 4.5:1);
      --gold-darker is the button hover. */
-  --gold:        #CC6A33;   /* terracotta (AA-safe as text) */
-  --gold-light:  #E8A06A;   /* light terracotta      */
   --gold-dark:   #A8521F;   /* deep terracotta — button bg (AA with white) */
   --gold-darker: #8E4417;   /* button hover          */
-  --gold-rgb:    204 106 51;
 
   /* ── SECOND ACCENT — teal. Pairs with terracotta on warm-dark; cools the palette
      so the site reads as a deliberate two-colour system, not a single-accent template.
      --teal is tuned to clear AA as small text on our dark surfaces. ── */
-  --teal:        #4FC4B2;   /* teal (AA-safe as text on dark) */
-  --teal-light:  #8BE0D3;
   --teal-dark:   #2C8577;   /* deep teal — solid fills */
-  --teal-rgb:    79 196 178;
 
-  /* ── DARK SURFACE SCALE — single source of truth for the dark chrome. ── */
-  --bg:          #0B0A09;   /* base page background (near-black) */
-  --bg-rgb:      11 10 9;
-  --bg-alt:      #110E0B;   /* alternating section band */
-  --bg-raised:   #17130E;   /* cards / raised surfaces  */
+  /* Surfaces, ink and shadows are theme tokens — see the THEMES block below. */
 
   /* ── RADIUS SCALE — single source of truth for corner rounding. ── */
   --radius-sm:   8px;    /* small chips, inputs        */
@@ -85,8 +75,87 @@
   --text-label: 11px;                    /* uppercase eyebrows  */
   --text-micro: 10px;                    /* tiny cues           */
 
+}
+
+/* ─── THEMES ────────────────────────────────────────────────────────
+   Components never hard-code page colours; they read these tokens:
+     --bg / --bg-alt / --bg-raised   page, alternating band, raised card
+     --ink / --ink-strong            body and heading text
+     --ink-rgb + --ink-k             for any tint/hairline/secondary text:
+                                     rgb(var(--ink-rgb) / calc(A * var(--ink-k)))
+                                     (--ink-k lifts alphas on paper, where ink
+                                     needs more weight than white does on black)
+     --shadow-rgb + --shadow-k       shadows: black on dark, soft warm on paper
+   DARK is the default. `.keep-dark` pins the dark tokens on a subtree —
+   device mock-ups, photo overlays and client showcases stay dark in both themes. */
+:root,
+.keep-dark {
+  color-scheme: dark;
+  --bg:          #0B0A09;
+  --bg-rgb:      11 10 9;
+  --bg-alt:      #110E0B;
+  --bg-raised:   #17130E;
+  --ink:         #F5F1EC;
+  --ink-strong:  #FFFFFF;
+  --ink-rgb:     255 255 255;
+  --ink-k:       1;
+  --shadow-rgb:  0 0 0;
+  --shadow-k:    1;
+  --gold:        #CC6A33;
+  --gold-light:  #E8A06A;
+  --gold-rgb:    204 106 51;
+  --teal:        #4FC4B2;
+  --teal-light:  #8BE0D3;
+  --color-white: #FFFFFF;
+  --color-ghost: #FFFFFF;
   --gradient-hero:        radial-gradient(ellipse at 70% 10%, #1C1813 0%, #0B0A09 60%);
   --gradient-hero-subtle: radial-gradient(ellipse at 60% 0%,  #161616 0%, #0B0A09 50%);
+  --vignette: rgba(0, 0, 0, 0.55);
+}
+
+/* LIGHT — warm paper: sandstone-ivory page, espresso ink, deeper accents for contrast */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg:          #F4ECDE;
+  --bg-rgb:      244 236 222;
+  --bg-alt:      #EEE4D3;
+  --bg-raised:   #FBF6EC;
+  --ink:         #2A2018;
+  --ink-strong:  #1C140D;
+  --ink-rgb:     42 32 24;
+  --ink-k:       1.32;
+  --shadow-rgb:  96 62 30;
+  --shadow-k:    0.4;
+  --gold:        #B0531C;
+  --gold-light:  #C4622D;
+  --gold-rgb:    184 88 34;
+  --teal:        #1C7568;
+  --teal-light:  #2C8577;
+  --teal-rgb:    28 117 104;
+  --color-white: #2A2018;
+  --color-ghost: #1C140D;
+  --gradient-hero:        radial-gradient(ellipse at 70% 10%, #FBF6EC 0%, #F4ECDE 60%);
+  --gradient-hero-subtle: radial-gradient(ellipse at 60% 0%,  #FBF6EC 0%, #F4ECDE 50%);
+  --vignette: rgba(120, 84, 44, 0.10);
+}
+/* A pinned-dark block that has no surface of its own gets one on paper. */
+:root[data-theme="light"] .keep-dark.stage {
+  background: var(--bg);
+  border-radius: var(--radius-2xl);
+  padding: clamp(18px, 3vw, 40px);
+  box-shadow: 0 30px 70px rgb(96 62 30 / 0.22);
+}
+
+/* Theme switch — the new theme opens in a circle from the toggle. */
+:root.theme-switching::view-transition-old(root) { animation: none; z-index: 0; }
+:root.theme-switching::view-transition-new(root) {
+  z-index: 1;
+  animation: 640ms cubic-bezier(0.4, 0, 0.2, 1) both theme-circle;
+}
+:root.theme-switching::view-transition-group(*) { animation-duration: 0s; }
+@keyframes theme-circle {
+  from { clip-path: circle(0 at var(--theme-x, 50%) var(--theme-y, 0)); }
+  to   { clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 50%) var(--theme-y, 0)); }
 }
 
 /* ─── Grid Container ────────────────────────────────────────
@@ -249,13 +318,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "cv05" 1, "ss01" 1; /* single-storey details — a touch of character on Inter */
   letter-spacing: -0.006em;                   /* Inter reads a hair tight at body sizes */
-  background-color: #0B0A09;
-  color: #FFFFFF;
+  background-color: var(--bg);
+  color: var(--ink-strong);
 }
 
 h1, h2, h3, h4 {
   font-family: var(--font-heading), system-ui, sans-serif;
-  letter-spacing: -0.022em; /* default display tracking for Inter; per-size classes refine */
+  font-feature-settings: normal; /* the body's Inter-specific alternates don't apply to the display face */
+  letter-spacing: -0.022em; /* default display tracking; per-size classes refine */
 }
 
 /* ── Typography line-height & tracking ────────────────────── */
@@ -354,4 +424,49 @@ h1, h2, h3, h4 {
 }
 main:focus {
   outline: none;
+}
+
+/* ── Page + shared-element transitions (React <ViewTransition>) ──────
+   root    — every route change: the old view drops away fast, the new one rises in
+   .morph  — a case-study card image flying into the case-study hero
+   site-nav — the floating nav stays anchored above both */
+@keyframes vt-out { to { opacity: 0; transform: translateY(-10px); } }
+@keyframes vt-in  { from { opacity: 0; transform: translateY(18px); } }
+
+::view-transition-old(root) {
+  animation: 200ms cubic-bezier(0.4, 0, 1, 1) both vt-out;
+}
+::view-transition-new(root) {
+  animation: 520ms cubic-bezier(0.16, 1, 0.3, 1) 140ms both vt-in;
+}
+
+::view-transition-group(.morph) {
+  animation-duration: 620ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 60;
+}
+::view-transition-old(.morph),
+::view-transition-new(.morph) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  animation-duration: 380ms;
+}
+
+/* A morph element with no partner on the other page just leaves/arrives with the page */
+::view-transition-old(.morph):only-child { animation: 200ms cubic-bezier(0.4, 0, 1, 1) both vt-out; }
+::view-transition-new(.morph):only-child { animation: 520ms cubic-bezier(0.16, 1, 0.3, 1) 140ms both vt-in; }
+
+::view-transition-group(site-nav) { animation: none; z-index: 100; }
+::view-transition-old(site-nav)   { display: none; }
+::view-transition-new(site-nav)   { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
 }

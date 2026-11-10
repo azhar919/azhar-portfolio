@@ -23,7 +23,7 @@ export default function Tilt({
   max = 7,
   hoverScale = 1.015,
   sheen = true,
-  glare = "rgba(255,255,255,0.14)",
+  glare = "rgb(var(--ink-rgb) / calc(0.14 * var(--ink-k)))",
   fill = false,
 }: {
   children: React.ReactNode;
